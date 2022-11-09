@@ -70,6 +70,8 @@ namespace BigLib {
 				Power *= (Class)Base;
 				Position--;
 			}
+
+			return Value;
 		}
 
 		template <typename Class>
@@ -93,6 +95,7 @@ namespace BigLib {
 				Power *= (Class)Base;
 				Position--;
 			}
+			return Value;
 		}
 	}
 }

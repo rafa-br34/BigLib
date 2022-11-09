@@ -5,8 +5,8 @@
 
 namespace BigLib {
 	namespace Math {
-		constexpr auto CONSTANTS_PI = 3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679;
-
+		CONST_EXPRESSION auto CONSTANTS_PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706;
+		CONST_EXPRESSION auto CONSTANTS_E  = 2.71828182845904523536028747135266249775724709369995957496696762772407663035354759457138217852516642;
 
 		template<typename Value>
 		CONST_EXPRESSION INLINE Value ImpreciseLerp(Value A, Value B, Value T) {
@@ -23,25 +23,10 @@ namespace BigLib {
 			return Math::ImpreciseLerp<Value>(A, B, T);
 		}
 
-		template<typename Value, typename ModuloFloored=int>
-		CONST_EXPRESSION INLINE Value Modulo(Value A, Value B) {
-			return A - ModuloFloored(A / B) * B;
-		}
 
-		template<typename Value>
-		CONST_EXPRESSION INLINE Value Absolute(Value X) {
-#if MATH_ABSOLUTE_APPROACH == 1
-			return X > 0 ? X : -X;
-#elif MATH_ABSOLUTE_APPROACH == 2
-			return (X * (X > 0)) + (-X * (X < 0));
-#elif MATH_ABSOLUTE_APPROACH == 3
-			Value Temp = X >> ((sizeof(Value) * 8) - 1);
-			X ^= Temp;
-			X += Temp & 1;
-			return X;
-#else
-#error MATH_ABSOLUTE Invalid Approach
-#endif
+		template<typename Value, typename ModuloRoundCastType=int>
+		CONST_EXPRESSION INLINE Value Modulo(Value A, Value B) {
+			return A - ModuloRoundCastType(A / B) * B;
 		}
 
 		template<typename Value>
@@ -62,6 +47,29 @@ namespace BigLib {
 			return Result;
 		}
 
+		template<typename Value>
+		CONST_EXPRESSION INLINE Value Absolute(Value X) {
+
+
+#if MATH_ABSOLUTE_APPROACH == 1
+			return X > 0 ? X : -X;
+#elif MATH_ABSOLUTE_APPROACH == 2
+			return (X * (X > 0)) + (-X * (X < 0));
+#elif MATH_ABSOLUTE_APPROACH == 3
+			Value Temp = X >> ((sizeof(Value) * 8) - 1);
+			X ^= Temp;
+			X += Temp & 1;
+			return X;
+#elif MATH_ABSOLUTE_APPROACH == 4
+			return abs(X);
+#elif MATH_ABSOLUTE_APPROACH == 5
+			return std::abs(X);
+#else
+#error MATH_ABSOLUTE Invalid Approach
+#endif
+		}
+
+		// TODO: Make actual SQRT implementation
 		INLINE double SquareRoot(double X) {
 			return std::sqrt(X);
 		}
@@ -70,8 +78,13 @@ namespace BigLib {
 			return std::sqrt(X);
 		}
 
-		INLINE int SquareRoot(int X) {
+		INLINE double SquareRoot(int X) {
 			return std::sqrt(X);
+		}
+
+		template<typename Value>
+		Value Exponent(Value A) {
+			return Power(CONSTANTS_E, A);
 		}
 
 		template<typename Value>
@@ -90,6 +103,32 @@ namespace BigLib {
 				Result += First[i] * Second[i];
 			}
 			return Result;
+		}
+
+		template <typename Value>
+		CONST_EXPRESSION INLINE Value StepFunction(Value Input) {
+			return (Input > Value(0)) ? Value(1) : Value(0);
+		}
+
+		template <typename Value>
+		CONST_EXPRESSION INLINE Value Sigmoid(Value Input) {
+			return Value(1) / (Value(1) + Exponent(-Input));
+		}
+
+		template <typename Value>
+		CONST_EXPRESSION INLINE Value HyperbolicTangent(Value Input) {
+			Value Val = Exponent(Value(2) * Input);
+			return (Val - Value(1)) / (Val + Value(1));
+		}
+
+		template <typename Value>
+		CONST_EXPRESSION INLINE Value SiLU(Value Input) {
+			return Input / (Value(1) + Exponent(-Input));
+		}
+
+		template <typename Value>
+		CONST_EXPRESSION INLINE Value ReLU(Value Input) {
+			return Max(Value(0), Input);
 		}
 	}
 }
