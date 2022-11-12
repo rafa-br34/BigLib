@@ -26,6 +26,7 @@
     <ClInclude Include="SOURCE\Configs\Approachs.h" />
     <ClInclude Include="SOURCE\Configs\Compiler.h" />
     <ClInclude Include="SOURCE\Includes.h" />
+    <ClInclude Include="SOURCE\Modules\MachineLearning\MachineLearning.h" />
     <ClInclude Include="SOURCE\Modules\MachineLearning\NeuralNetwork.h" />
     <ClInclude Include="SOURCE\Modules\Utils\Modules\BaseString.h" />
     <ClInclude Include="SOURCE\Modules\Code\Code.h" />

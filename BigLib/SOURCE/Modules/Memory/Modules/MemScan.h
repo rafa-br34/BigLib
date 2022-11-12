@@ -11,8 +11,8 @@ namespace BigLib {
 
 			// Makes A MemoryScanByte List From Characters, Use '?' For Wildcards
 			// Ex: "81 F? ?0 D8 FF ?? 7E"
-			INLINE size_t MaskFromStringA(const char* String) {
-				for (size_t i = 0; i < Utils::CStringLength(String); i++) {
+			INLINE size_t MaskFromStringA(const char* String, MemoryScanByte* Output) {
+				for (size_t i = 0; i < Utils::StringLength(String); i++) {
 
 				}
 			}

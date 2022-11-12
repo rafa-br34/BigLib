@@ -1,7 +1,7 @@
-//#include "BigLib.h"
+#include "BigLib.h"
 
 
-/*
+
 void TestThreadPool() {
 	const size_t Threads = std::thread::hardware_concurrency();
 
@@ -54,7 +54,5 @@ void TestList() {
 
 
 int main() {
-	
 	TestList();
 }
-*/
