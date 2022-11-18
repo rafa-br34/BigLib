@@ -21,7 +21,7 @@
     <ClInclude Include="SOURCE\Modules\Logging\Console.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\Modules\Math\Math.h">
+    <ClInclude Include="SOURCE\Modules\Data\Math.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\Modules\MultiThreading\ThreadPool\ThreadPool.h">
@@ -90,12 +90,6 @@
     <ClInclude Include="SOURCE\Modules\Memory\Modules\MemBaseWindows.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\Modules\Software\Software.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
-    <ClInclude Include="SOURCE\Modules\Software\WinSoftware.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
     <ClInclude Include="SOURCE\Modules\Memory\Modules\BaseMemory.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
@@ -112,6 +106,9 @@
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\Modules\MachineLearning\MachineLearning.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Modules\Data\Random.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
   </ItemGroup>
@@ -141,15 +138,6 @@
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
     <ClCompile Include="SOURCE\Modules\Code\Modules\CodePath.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
-    <ClCompile Include="SOURCE\Modules\Software\WinModules\CodePath.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
-    <ClCompile Include="SOURCE\Modules\Software\WinModules\MemoryScan.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
-    <ClCompile Include="SOURCE\Modules\Software\WinModules\Processes.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,12 +1,12 @@
 #pragma once
 #include "../../Includes.h"
-#include "../Math/Math.h"
+#include "../Data/Math.h"
 
 namespace BigLib {
 	namespace NeuralNetworks {
 
 		template <typename ValueType>
-		FORCE_INLINE ValueType ActivationFunction(ValueType Input) {
+		ValueType DefaultActivaionFunction(ValueType Input) {
 			return Math::ReLU(Input);
 		}
 
@@ -23,10 +23,12 @@ namespace BigLib {
 		struct Layer {
 			std::vector<Neuron<NeuronType>*> Neurons = {};
 		};
+		
 
-		template <typename NeuronType>
+		template <typename NeuronType=double, NeuronType(*ActivationFunction)(NeuronType) = DefaultActivaionFunction>
 		class NeuralNetwork {
 		public:
+			
 			std::vector<Layer<NeuronType>*> Layers = {};
 
 			void Evaluate() {

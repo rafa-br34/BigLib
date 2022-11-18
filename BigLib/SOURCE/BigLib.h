@@ -7,8 +7,9 @@
 // Code
 #include "Modules/Code/Code.h"
 
-// Math
-#include "Modules/Math/Math.h"
+// Data
+#include "Modules/Data/Math.h"
+#include "Modules/Data/Random.h"
 
 // MultiThreading
 #include "Modules/MultiThreading/ThreadSafeQueue/ThreadSafeQueue.h"

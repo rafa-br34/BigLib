@@ -1,5 +1,5 @@
 #pragma once
-#include "../../Math/Math.h"
+#include "../../Data/Math.h"
 
 namespace BigLib {
 	namespace Utils {

@@ -26,13 +26,14 @@
     <ClInclude Include="SOURCE\Configs\Approachs.h" />
     <ClInclude Include="SOURCE\Configs\Compiler.h" />
     <ClInclude Include="SOURCE\Includes.h" />
+    <ClInclude Include="SOURCE\Modules\Data\Random.h" />
     <ClInclude Include="SOURCE\Modules\MachineLearning\MachineLearning.h" />
     <ClInclude Include="SOURCE\Modules\MachineLearning\NeuralNetwork.h" />
     <ClInclude Include="SOURCE\Modules\Utils\Modules\BaseString.h" />
     <ClInclude Include="SOURCE\Modules\Code\Code.h" />
     <ClInclude Include="SOURCE\Modules\Exceptions\Exceptions.h" />
     <ClInclude Include="SOURCE\Modules\Logging\Console.h" />
-    <ClInclude Include="SOURCE\Modules\Math\Math.h" />
+    <ClInclude Include="SOURCE\Modules\Data\Math.h" />
     <ClInclude Include="SOURCE\Modules\MultiThreading\ThreadPool\ThreadPool.h" />
     <ClInclude Include="SOURCE\Modules\MultiThreading\ThreadSafeQueue\ThreadSafeQueue.h" />
     <ClInclude Include="SOURCE\Modules\Networking\Network.h" />
@@ -43,8 +44,6 @@
     <ClInclude Include="SOURCE\Modules\Memory\Modules\BaseMemory.h" />
     <ClInclude Include="SOURCE\Modules\Memory\Modules\MemBaseWindows.h" />
     <ClInclude Include="SOURCE\Modules\Memory\Modules\MemScan.h" />
-    <ClInclude Include="SOURCE\Modules\Software\Software.h" />
-    <ClInclude Include="SOURCE\Modules\Software\WinSoftware.h" />
     <ClInclude Include="SOURCE\Modules\ReversingEngineering\Utilities.h" />
     <ClInclude Include="SOURCE\Modules\Security\Crypts.h" />
     <ClInclude Include="SOURCE\Modules\Utils\Modules\Color24.h" />
@@ -61,9 +60,6 @@
     <ClCompile Include="SOURCE\Modules\Profiling\Profiler.cpp" />
     <ClCompile Include="SOURCE\Modules\ReversingEngineering\AnalyserTarget\AnalyserTarget.cpp" />
     <ClCompile Include="SOURCE\Modules\ReversingEngineering\Executables\Executables.cpp" />
-    <ClCompile Include="SOURCE\Modules\Software\WinModules\CodePath.cpp" />
-    <ClCompile Include="SOURCE\Modules\Software\WinModules\MemoryScan.cpp" />
-    <ClCompile Include="SOURCE\Modules\Software\WinModules\Processes.cpp" />
     <ClCompile Include="SOURCE\Modules\Security\Modules\Random.cpp" />
     <ClCompile Include="SOURCE\Test.cpp" />
   </ItemGroup>

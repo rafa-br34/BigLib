@@ -1,6 +1,6 @@
 #pragma once
 #include "../../Includes.h"
-#include "../ReversingEngineering/Software/Software.h"
+#include "../Software/Software.h"
 
 #ifdef _WIN64
 #define REG(Register) R ## Register

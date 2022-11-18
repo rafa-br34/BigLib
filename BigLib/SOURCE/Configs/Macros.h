@@ -6,10 +6,14 @@
 #define ALLOCATE(Type, Amount) new Type[Amount]
 #define FREE(Pointer) delete[] Pointer
 
+#define BIT(Index)						(1 << (Index))
+#define SIZEOF_BITS(Value)				(sizeof(Value) * 8)
 #define OFFSET(Address, Offset)			((uint8_t*)(Address) + (Offset))
 #define HAS_BIT(Value, Index)			((Value) & BIT(Index))
 #define GET_BIT(Value, Index)			(HAS_BIT(Value, Index) >> (Index))
 #define SET_BIT(Value, Index, NewBit)	(GET_BIT(Value, Index) == (BitValue) ? (Value) : (Value) ^ BIT(Index))
+#define LOWEST_BITS(Value, Lowest)		(((Value) << (SIZEOF_BITS(Value) - (Lowest))) >> (SIZEOF_BITS(Value) - (Lowest)))
+
 
 #define BIT_MASK(Size)                          (0xFF >> (8 - (Size)))
 #define GET_BITCHUNK(Value, StartIndex, Size)   (((Value) >> ((StartIndex) - 1)) & BIT_MASK(Size))
