@@ -135,16 +135,8 @@ namespace BigLib {
 			const Type LowerMask = (Type)((UI64(1) << R) - 1);
 			const Type UpperMask = LOWEST_BITS(~LowerMask, W);
 
-		public:
-			CONST_EXPRESSION INLINE void Seed(Type Seed=5489) {
-				this->Index = N;
-				this->MT[0] = Seed;
-				for (size_t i = 1; i < N; i++)
-					this->MT[i] = LOWEST_BITS((F * (this->MT[i-1] ^ (this->MT[i-1] >> (W - 2))) + i), W);
-			}
-
 			CONST_EXPRESSION FORCE_INLINE void Twist() {
-				for (size_t i = 0; i < N - 1; i++) {
+				for (size_t i = 0; i < (N - 1); i++) {
 					Type X = (this->MT[i] & this->UpperMask) | (MT[(i + 1) % N] & LowerMask);
 					Type XA = X >> 1;
 					if (X % 2 != 0) {
@@ -155,25 +147,30 @@ namespace BigLib {
 				this->Index = 0;
 			}
 
-			CONST_EXPRESSION FORCE_INLINE Type ExtractNumber() {
+		public:
+			CONST_EXPRESSION INLINE void Seed(Type Seed=5489) {
+				this->Index = N;
+				this->MT[0] = Seed;
+				for (size_t i = 1; i < (N - 1); i++)
+					this->MT[i] = LOWEST_BITS((F * (this->MT[i-1] ^ (this->MT[i-1] >> (W - 2))) + i), W);
+			}
+
+			CONST_EXPRESSION FORCE_INLINE Type Next() {
 				if (this->Index >= N) {
-					if (this->Index > N)
-						throw "Generator Wasn't Seeded";
+					IASSERT_EX(this->Index > N, "Generator Wasn't Seeded Properly.")
 					this->Twist();
 				}
-					
 
 				Type Y = this->MT[this->Index];
 				Y ^= ((Y >> U) & D);
-				Y ^= ((Y >> S) & B);
-				Y ^= ((Y >> T) & C);
-				Y ^= (Y >> 1);
+				Y ^= ((Y << S) & B);
+				Y ^= ((Y << T) & C);
+				Y ^= (Y >> L);
 
 				this->Index++;
 
 				return LOWEST_BITS(Y, W);
 			}
-
 		};
 
 

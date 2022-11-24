@@ -160,7 +160,7 @@ bool Console::p_ExecBypasses() {
 
 bool Console::p_ResetBypasses() {
 	for (uintptr_t i = 0; i < this->p_Bypasses.size(); i++) {
-		// Get The Bypasses In Our Executed Bypasses List
+		// Next The Bypasses In Our Executed Bypasses List
 		BypassItem* Bypass = (BypassItem*)(this->p_Bypasses[i]);
 		
 

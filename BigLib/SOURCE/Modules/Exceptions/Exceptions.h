@@ -1,6 +1,7 @@
 #pragma once
 #include "../../Includes.h"
 #include "../Software/Software.h"
+#include "../Data/Bitwise.h"
 
 #ifdef _WIN64
 #define REG(Register) R ## Register

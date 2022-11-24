@@ -60,7 +60,7 @@ void TestPRNGs() {
 
 		int Supposed[] = { -795755684, 581869302, -404620562, -708632711, 545404204, -133711905, -372047867, 949333985, -1579004998, 1323567403 };
 		for (size_t i = 0; i < sizeof(Supposed) / sizeof(int); i++) {
-			int Result = MersenneTwister19937.ExtractNumber();
+			int Result = MersenneTwister19937.Next();
 			if (Supposed[i] != Result) {
 				std::cout << "BigLib::Random::MersenneTwister19937 Failed At Index " << i << " Expected: " << Supposed[i] << " Got: " << Result << std::endl;
 				break;
@@ -68,7 +68,20 @@ void TestPRNGs() {
 
 		}
 	}
+	{
+		BigLib::Random::MersenneTwister19937_64 MersenneTwister19937 = {};
+		MersenneTwister19937.Seed();
 
+		int Supposed[] = { -795755684, 581869302, -404620562, -708632711, 545404204, -133711905, -372047867, 949333985, -1579004998, 1323567403 };
+		for (size_t i = 0; i < sizeof(Supposed) / sizeof(int); i++) {
+			int Result = MersenneTwister19937.Next();
+			if (Supposed[i] != Result) {
+				std::cout << "BigLib::Random::MersenneTwister19937_64 Failed At Index " << i << " Expected: " << Supposed[i] << " Got: " << Result << std::endl;
+				break;
+			}
+
+		}
+	}
 }
 
 int main() {

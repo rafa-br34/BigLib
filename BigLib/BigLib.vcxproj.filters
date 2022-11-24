@@ -111,6 +111,9 @@
     <ClInclude Include="SOURCE\Modules\Data\Random.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
+    <ClInclude Include="SOURCE\Modules\Data\Bitwise.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SOURCE\Modules\Exceptions\ExceptionsHandler.cpp">

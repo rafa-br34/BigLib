@@ -35,7 +35,7 @@ namespace BigLib {
 				}
 				
 
-				// Get And Return Task
+				// Next And Return Task
 				Task& ReturnTask = this->P_Queue.back();
 				this->P_Queue.pop_back();
 				return ReturnTask;

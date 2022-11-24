@@ -1,22 +1,30 @@
 #pragma once
 
+
+#define STRINGFY(Item) MAKE_STRING(Item)
+#define MAKE_STRING(Item) #Item
+
+
 #define DEBUG_PRINT(Printer) Printer
 
 // Replace These To Custom Allocate/Deallocate Methods
 #define ALLOCATE(Type, Amount) new Type[Amount]
 #define FREE(Pointer) delete[] Pointer
 
-#define BIT(Index)						(1 << (Index))
-#define SIZEOF_BITS(Value)				(sizeof(Value) * 8)
-#define OFFSET(Address, Offset)			((uint8_t*)(Address) + (Offset))
-#define HAS_BIT(Value, Index)			((Value) & BIT(Index))
-#define GET_BIT(Value, Index)			(HAS_BIT(Value, Index) >> (Index))
-#define SET_BIT(Value, Index, NewBit)	(GET_BIT(Value, Index) == (BitValue) ? (Value) : (Value) ^ BIT(Index))
-#define LOWEST_BITS(Value, Lowest)		(((Value) << (SIZEOF_BITS(Value) - (Lowest))) >> (SIZEOF_BITS(Value) - (Lowest)))
+// Exceptions
+#define BASE_EXCEPTION_MESSAGE "At File: \"" __FILE__ "\" Function: \"" __FUNCSIG__ "\" Line " STRINGFY(__LINE__)
+#define THROW(String) throw String;
 
+// Inverse Assert
+#define IASSERT(Condition)				if (Condition) { THROW("Assertion \"" STRINGFY(Condition) "\" Failed " BASE_EXCEPTION_MESSAGE) }
+// Inverse Extended Assert
+#define IASSERT_EX(Condition, Message)	if (Condition) { THROW(Message " " BASE_EXCEPTION_MESSAGE) }
 
-#define BIT_MASK(Size)                          (0xFF >> (8 - (Size)))
-#define GET_BITCHUNK(Value, StartIndex, Size)   (((Value) >> ((StartIndex) - 1)) & BIT_MASK(Size))
+// Assert
+#define ASSERT(Condition)				IASSERT(!(Condition))
+// Extended Assert
+#define ASSERT_EX(Condition, Message)	IASSERT_EX(!(Condition), Message)
+
 
 
 #define BIGGEST_DATATYPE long long

@@ -1,6 +1,6 @@
 #pragma once
 #include "../../../Includes.h"
-
+#include "../../Data/Bitwise.h"
 
 #ifdef MEMORY_BASE_UTILS_FORCEINLINE
 #define MEM_INLINE FORCE_INLINE

@@ -8,8 +8,10 @@
 #include "Modules/Code/Code.h"
 
 // Data
-#include "Modules/Data/Math.h"
+#include "Modules/Data/Bitwise.h"
 #include "Modules/Data/Random.h"
+#include "Modules/Data/Math.h"
+
 
 // MultiThreading
 #include "Modules/MultiThreading/ThreadSafeQueue/ThreadSafeQueue.h"
