@@ -150,5 +150,3 @@
 #define NO_INLINE __declspec(noinline)
 #define INLINE inline
 */
-
-
