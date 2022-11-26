@@ -3,9 +3,9 @@ import os
 import re
 import subprocess
 
-FILE_README = "../../README.md"
-FILE_README_TEMPLATE = "../../README_TEMPLATE.md"
-FOLDER_SOURCE = "../../BigLib/SOURCE"
+FILE_README = "README.md"
+FILE_README_TEMPLATE = "README_TEMPLATE.md"
+FOLDER_SOURCE = "BigLib/SOURCE"
 
 def main():
 	Result = subprocess.run(["cloc", FOLDER_SOURCE], stdout=subprocess.PIPE, text=True)

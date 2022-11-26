@@ -10,7 +10,7 @@ on:
     - cron:  '00 0 * * *'
 
 jobs:
-  blender-render:
+  updater:
     runs-on: ubuntu-latest
     
     strategy:
@@ -47,7 +47,7 @@ jobs:
         pip3 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip3 install -U 
 
     - name: Running Main Python Script
-      continue-on-error: true
+      #continue-on-error: true
       run: |
         python .github/workflows/Main.py
 
@@ -58,6 +58,7 @@ jobs:
         cd ../..
 
     - name: Pushing Changes
+      continue-on-error: true
       run: |
         git add .
         git commit -m "Updated"
