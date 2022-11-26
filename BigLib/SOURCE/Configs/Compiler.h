@@ -143,7 +143,6 @@
 #endif
   
 
-
 // Override Compiler Dependant Options If Needed
 /*
 #define CONST_EXPRESSION constexpr
