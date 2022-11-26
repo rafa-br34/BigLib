@@ -3,8 +3,12 @@ import os
 import re
 import subprocess
 
+FILE_README = "../../README.md"
+FILE_README_TEMPLATE = "../../README_TEMPLATE.md"
+FOLDER_SOURCE = "../../BigLib/SOURCE"
+
 def main():
-	Result = subprocess.run(["cloc", "../BigLib/SOURCE"], stdout=subprocess.PIPE, text=True)
+	Result = subprocess.run(["cloc", FOLDER_SOURCE], stdout=subprocess.PIPE, text=True)
 	Lines = Result.stdout.split("\n")
 	SeparatorLine = 0
 	Matrix = []
@@ -31,7 +35,7 @@ def main():
 	}
 
 	Template = ""
-	with open("../README_TEMPLATE.md", "r") as TemplateFile:
+	with open(FILE_README_TEMPLATE, "r") as TemplateFile:
 		Template = TemplateFile.read()
 		TemplateFile.close()
 
@@ -40,9 +44,9 @@ def main():
 		print(Flag, "->", Dictionary[Key])
 		Template = Template.replace(Flag, str(Dictionary[Key]))
 
-	if os.path.isfile("../README.md"):
-		os.remove("../README.md")
-	with open("../README.md", "w") as Output:
+	if os.path.isfile(FILE_README):
+		os.remove(FILE_README)
+	with open(FILE_README, "w") as Output:
 		Output.write(Template)
 		Output.close()
 
