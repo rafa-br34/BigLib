@@ -206,22 +206,6 @@ namespace BigLib {
 
 				return Result ^ (Result >> 31);
 			}
-
-			template<typename StateType=uint64_t>
-			CONST_EXPRESSION FORCE_INLINE void SeedState(StateType* State, size_t StateSize) {
-				size_t Iterations = StateSize / SIZEOF_BITS(StateType);
-				uint64_t Number = this->Next();
-				size_t Offset = 0;
-
-				for (size_t i = 0; i < Iterations; i++) {
-					State[i] = (StateType)(Number >> Offset);
-					Offset += SIZEOF_BITS(StateType);
-					if (Offset >= SIZEOF_BITS(Number)) {
-						Number = this->Next();
-					}
-				}
-			}
-			
 		};
 
 
