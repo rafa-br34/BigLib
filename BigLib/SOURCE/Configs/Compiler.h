@@ -77,10 +77,10 @@
 #define ARCH_UNKNOWN   20
 
 
-#if defined(__x86_64__) || defined(_M_X64)
+#if defined(__x86_64__)			|| defined(_M_X64)
 #define ARCH_NAME "x86_64"
 #define ARCH_ID 0
-#elif defined(i386)				|| defined(__i386__) || defined(__i386) || defined(_M_IX86)
+#elif defined(i386)				|| defined(__i386__)		|| defined(__i386)			|| defined(_M_IX86)
 #define ARCH_NAME "x86_32"
 #define ARCH_ID 1
 #elif defined(__ARM_ARCH_2__)
@@ -95,19 +95,19 @@
 #elif defined(__ARM_ARCH_5_)	|| defined(__ARM_ARCH_5E_)
 #define ARCH_NAME "ARM5"
 #define ARCH_ID 5
-#elif defined(__ARM_ARCH_6T2_) || defined(__ARM_ARCH_6T2_)
+#elif defined(__ARM_ARCH_6T2_)	|| defined(__ARM_ARCH_6T2_)
 #define ARCH_NAME "ARM6T2"
 #define ARCH_ID 6
-#elif defined(__ARM_ARCH_6__) || defined(__ARM_ARCH_6J__) || defined(__ARM_ARCH_6K__) || defined(__ARM_ARCH_6Z__) || defined(__ARM_ARCH_6ZK__)
+#elif defined(__ARM_ARCH_6__)	|| defined(__ARM_ARCH_6J__)	|| defined(__ARM_ARCH_6K__) || defined(__ARM_ARCH_6Z__) || defined(__ARM_ARCH_6ZK__)
 #define ARCH_NAME "ARM6"
 #define ARCH_ID 7
-#elif defined(__ARM_ARCH_7__) || defined(__ARM_ARCH_7A__) || defined(__ARM_ARCH_7R__) || defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7S__)
+#elif defined(__ARM_ARCH_7__)	|| defined(__ARM_ARCH_7A__) || defined(__ARM_ARCH_7R__) || defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7S__)
 #define ARCH_NAME "ARM7"
 #define ARCH_ID 8
-#elif defined(__ARM_ARCH_7A__) || defined(__ARM_ARCH_7R__) || defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7S__)
+#elif defined(__ARM_ARCH_7A__)	|| defined(__ARM_ARCH_7R__) || defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7S__)
 #define ARCH_NAME "ARM7A"
 #define ARCH_ID 9
-#elif defined(__ARM_ARCH_7R__) || defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7S__)
+#elif defined(__ARM_ARCH_7R__)	|| defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7S__)
 #define ARCH_NAME "ARM7R"
 #define ARCH_ID 10
 #elif defined(__ARM_ARCH_7M__)
@@ -116,22 +116,22 @@
 #elif defined(__ARM_ARCH_7S__)
 #define ARCH_NAME "ARM7S"
 #define ARCH_ID 12
-#elif defined(__aarch64__) || defined(_M_ARM64)
+#elif defined(__aarch64__)		|| defined(_M_ARM64)
 #define ARCH_NAME "ARM64"
 #define ARCH_ID 13
-#elif defined(mips) || defined(__mips__) || defined(__mips)
+#elif defined(mips)				|| defined(__mips__)		|| defined(__mips)
 #define ARCH_NAME "MIPS"
 #define ARCH_ID 14
 #elif defined(__sh__)
 #define ARCH_NAME "SUPERH"
 #define ARCH_ID 15
-#elif defined(__powerpc) || defined(__powerpc__) || defined(__powerpc64__) || defined(__POWERPC__) || defined(__ppc__) || defined(__PPC__) || defined(_ARCH_PPC)
+#elif defined(__powerpc)		|| defined(__powerpc__)		|| defined(__powerpc64__)	|| defined(__POWERPC__)		|| defined(__ppc__)		|| defined(__PPC__)		|| defined(_ARCH_PPC)
 #define ARCH_NAME "POWERPC"
 #define ARCH_ID 16
-#elif defined(__PPC64__) || defined(__ppc64__) || defined(_ARCH_PPC64)
+#elif defined(__PPC64__)		|| defined(__ppc64__)		|| defined(_ARCH_PPC64)
 #define ARCH_NAME "POWERPC64"
 #define ARCH_ID 17
-#elif defined(__sparc__) || defined(__sparc)
+#elif defined(__sparc__)		|| defined(__sparc)
 #define ARCH_NAME "SPARC"
 #define ARCH_ID 18
 #elif defined(__m68k__)

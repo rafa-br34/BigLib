@@ -1,0 +1,66 @@
+
+name: MainJob
+on:
+  push:
+    branches:
+      - 'main'
+    paths-ignore:
+      - '.github\workflows\**.*'
+  schedule:
+    - cron:  '00 0 * * *'
+
+jobs:
+  blender-render:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      max-parallel: 1
+      matrix:
+        python-version: [3.9]
+
+
+
+    steps:
+    - uses: actions/checkout@v3
+      
+
+    - name: Setting Up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Installing Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests
+        sudo apt install cloc
+
+    - name: Pre-Configuring Git
+      run: |
+        git config user.name github-workflow
+        git config user.email github-actions@github.com
+        git config --global http.postBuffer 1048576000
+
+    - name: Upgrading Packages
+      continue-on-error: true
+      run: |
+        pip3 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip3 install -U 
+
+    - name: Running Main Python Script
+      continue-on-error: true
+      run: |
+        python .github/workflows/Main.py
+
+    - name: Cleaning PYCACHE
+      run: |
+        cd .github/workflows/
+        sudo find . | grep -E "(/__pycache__$|\.pyc$|\.pyo$)" | xargs rm -rf
+        cd ../..
+
+    - name: Pushing Changes
+      run: |
+        git add .
+        git commit -m "Updated"
+        git push
+
+        
