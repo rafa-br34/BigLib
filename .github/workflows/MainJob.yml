@@ -61,7 +61,7 @@ jobs:
       continue-on-error: true
       run: |
         git add .
-        git commit -m "Updated"
+        git commit -m "<Updated File>"
         git push
 
         
