@@ -1,204 +1,207 @@
 #pragma once
 #include "../../Includes.h"
 
+// TODO: Add Option
+#define _INLINE_RANDOM_H_ FORCE_INLINE
+
 namespace BigLib {
 	namespace Random {
-		namespace XorShift {
-			// -- START OF THE XORSHIFT FAMILY -- //
+		
 
-			// XorShift32
-			struct XorShift32 {
-				// Must Not Be Zero
-				uint32_t State = 1;
+		// -- START OF THE XORSHIFT FAMILY -- //
 
-				CONST_EXPRESSION FORCE_INLINE uint32_t Next() {
-					uint32_t X = this->State;
-					X ^= X << 13;
-					X ^= X >> 17;
-					X ^= X << 5;
-					return X;
-				}
-			};
+		// XorShift32
+		struct XorShift32 {
+			// Must Not Be Zero
+			uint32_t State = 1;
 
-			// XorShift64
-			struct XorShift64 {
-				// Must Not Be Zero
-				uint64_t State = 1;
+			CONST_EXPRESSION _INLINE_RANDOM_H_ uint32_t Next() {
+				uint32_t X = this->State;
+				X ^= X << 13;
+				X ^= X >> 17;
+				X ^= X << 5;
+				return X;
+			}
+		};
 
-				CONST_EXPRESSION FORCE_INLINE uint64_t Next() {
-					uint64_t X = this->State;
-					X ^= X << 13;
-					X ^= X >> 7;
-					X ^= X << 17;
-					return X;
-				}
-			};
+		// XorShift64
+		struct XorShift64 {
+			// Must Not Be Zero
+			uint64_t State = 1;
 
-			// XorShift128
-			struct XorShift128 {
-				// Must Not Be All-Zero
-				uint32_t State[4];
+			CONST_EXPRESSION _INLINE_RANDOM_H_ uint64_t Next() {
+				uint64_t X = this->State;
+				X ^= X << 13;
+				X ^= X >> 7;
+				X ^= X << 17;
+				return X;
+			}
+		};
 
-				CONST_EXPRESSION FORCE_INLINE uint64_t Next() {
-					uint32_t* S = this->State;
-					uint32_t T = S[3];
+		// XorShift128
+		struct XorShift128 {
+			// Must Not Be All-Zero
+			uint32_t State[4];
 
-					uint32_t A = S[0];  /* Perform a contrived 32-bit shift. */
-					S[3] = S[2];
-					S[2] = S[1];
-					S[1] = A;
+			CONST_EXPRESSION _INLINE_RANDOM_H_ uint64_t Next() {
+				uint32_t* S = this->State;
+				uint32_t T = S[3];
 
-					T ^= T << 11;
-					T ^= T >> 8;
-					return S[0] = T ^ A ^ (A >> 19);
-				}
+				uint32_t A = S[0];  /* Perform a contrived 32-bit shift. */
+				S[3] = S[2];
+				S[2] = S[1];
+				S[1] = A;
 
-			};
+				T ^= T << 11;
+				T ^= T >> 8;
+				return S[0] = T ^ A ^ (A >> 19);
+			}
 
-
-			/*
-			* Non-Linear Variations
-			*/
+		};
 
 
-			// XorWow
-			// Recommended To Use As Floating Point Generator(Low Bits Are Weak)
-			struct XorWow {
-				// First 4 Words Must Not Be All-Zero
-				uint32_t State[5] = {1, 1, 1, 1, 0};
-				uint32_t Counter;
-
-				CONST_EXPRESSION FORCE_INLINE uint32_t Next() {
-					auto X = this->State;
-	
-					uint32_t T = X[4];
-
-					uint32_t S = X[0];
-					X[4] = X[3];
-					X[3] = X[2];
-					X[2] = X[1];
-					X[1] = S;
-
-					T ^= T >> 2;
-					T ^= T << 1;
-					T ^= S ^ (S << 4);
-					X[0] = T;
-					this->Counter += 362437;
-					return T + this->Counter;
-				}
-
-			};
-
-			// XorShift64*
-			// Recommended To Use As Floating Point Generator(Low Bits Are Weak), However, The High 32-40 Bits Are Still Safe To Use
-			struct XorShift64S {
-				// Must Not Be Zero
-				uint64_t State;
-
-				CONST_EXPRESSION FORCE_INLINE uint64_t Next() {
-					uint64_t X = this->State;
-					X ^= X >> 12;
-					X ^= X << 25;
-					X ^= X >> 27;
-					return X * UI64(0x2545F4914F6CDD1D);
-				}
-
-				// XorShift64* Modified To Return The High 32 Bits, Safest Version
-				CONST_EXPRESSION FORCE_INLINE uint32_t NextHigh32() {
-					return (Next() & UI64(0xFFFFFFFF00000000)) >> (64 - 32);
-				}
-
-				// XorShift64* Modified To Return The High 40 Bits, Safe Version
-				CONST_EXPRESSION FORCE_INLINE uint64_t NextHigh40() {
-					return (Next() & UI64(0xFFFFFFFFF0000000)) >> (64 - 40);
-				}
-			};
-
-			// XorShift128+
-			// Better Than Mersanne Twister Or WELL When Properly Seeded
-			// Do Not Reverse The Output
-			// Parameters Can Be Tuned
-			template<const uint8_t A=23, const uint8_t B=18, const uint8_t C=5>
-			struct XorShift128P {
-				// Must Not Be All-Zero
-				uint64_t State[2]{1, 1};
-
-				CONST_EXPRESSION FORCE_INLINE uint64_t Next() {
-					uint64_t T = this->State[0];
-					uint64_t S = this->State[1];
-
-					this->State[0] = S;
-
-					T ^= T << A;
-					T ^= T >> B;
-					T ^= S ^ (S >> C);
-
-					this->State[1] = T;
-					return T + S;
-				}
-			};
+		/*
+		* Non-Linear Variations
+		*/
 
 
-			/*
-			* XoShiro Generators
-			*/
+		// XorWow
+		// Recommended To Use As Floating Point Generator(Low Bits Are Weak)
+		struct XorWow {
+			// First 4 Words Must Not Be All-Zero
+			uint32_t State[5] = { 1, 1, 1, 1, 0 };
+			uint32_t Counter;
+
+			CONST_EXPRESSION _INLINE_RANDOM_H_ uint32_t Next() {
+				auto X = this->State;
+
+				uint32_t T = X[4];
+
+				uint32_t S = X[0];
+				X[4] = X[3];
+				X[3] = X[2];
+				X[2] = X[1];
+				X[1] = S;
+
+				T ^= T >> 2;
+				T ^= T << 1;
+				T ^= S ^ (S << 4);
+				X[0] = T;
+				this->Counter += 362437;
+				return T + this->Counter;
+			}
+
+		};
+
+		// XorShift64*
+		// Recommended To Use As Floating Point Generator(Low Bits Are Weak), However, The High 32-40 Bits Are Still Safe To Use
+		struct XorShift64S {
+			// Must Not Be Zero
+			uint64_t State;
+
+			CONST_EXPRESSION _INLINE_RANDOM_H_ uint64_t Next() {
+				uint64_t X = this->State;
+				X ^= X >> 12;
+				X ^= X << 25;
+				X ^= X >> 27;
+				return X * UI64(0x2545F4914F6CDD1D);
+			}
+
+			// XorShift64* Modified To Return The High 32 Bits, Safest Version
+			CONST_EXPRESSION _INLINE_RANDOM_H_ uint32_t NextHigh32() {
+				return (Next() & UI64(0xFFFFFFFF00000000)) >> (64 - 32);
+			}
+
+			// XorShift64* Modified To Return The High 40 Bits, Safe Version
+			CONST_EXPRESSION _INLINE_RANDOM_H_ uint64_t NextHigh40() {
+				return (Next() & UI64(0xFFFFFFFFF0000000)) >> (64 - 40);
+			}
+		};
+
+		// XorShift128+
+		// Better Than Mersanne Twister Or WELL When Properly Seeded
+		// Do Not Reverse The Output
+		// Parameters Can Be Tuned
+		template<const uint8_t A = 23, const uint8_t B = 18, const uint8_t C = 5>
+		struct XorShift128P {
+			// Must Not Be All-Zero
+			uint64_t State[2]{ 1, 1 };
+
+			CONST_EXPRESSION _INLINE_RANDOM_H_ uint64_t Next() {
+				uint64_t T = this->State[0];
+				uint64_t S = this->State[1];
+
+				this->State[0] = S;
+
+				T ^= T << A;
+				T ^= T >> B;
+				T ^= S ^ (S >> C);
+
+				this->State[1] = T;
+				return T + S;
+			}
+		};
 
 
-			// XoShiro256**
-			struct XoShiro256SS {
-				// Must Not Be All-Zero
-				uint64_t State[4];
+		/*
+		* XoShiro Generators
+		*/
 
-				CONST_EXPRESSION FORCE_INLINE uint64_t Next() {
-					uint64_t* S = this->State;
-					const uint64_t Result = Bitwise::RotateLeft(S[1] * 5, 7) * 9;
-					const uint64_t T = S[1] << 17;
 
-					S[2] ^= S[0];
-					S[3] ^= S[1];
-					S[1] ^= S[2];
-					S[0] ^= S[3];
+		// XoShiro256**
+		struct XoShiro256SS {
+			// Must Not Be All-Zero
+			uint64_t State[4];
 
-					S[2] ^= T;
-					S[3] = Bitwise::RotateLeft(S[3], 45);
+			CONST_EXPRESSION _INLINE_RANDOM_H_ uint64_t Next() {
+				uint64_t* S = this->State;
+				const uint64_t Result = Bitwise::RotateLeft(S[1] * 5, 7) * 9;
+				const uint64_t T = S[1] << 17;
 
-					return Result;
-				}
-			};
+				S[2] ^= S[0];
+				S[3] ^= S[1];
+				S[1] ^= S[2];
+				S[0] ^= S[3];
 
-			// XoShiro256+
-			// About 15% Faster Than XoShiro256** But The Low 3 Bits Have Low Linear Complexity
-			struct XoShiro256P {
-				// Must Not Be All-Zero
-				uint64_t State[4];
+				S[2] ^= T;
+				S[3] = Bitwise::RotateLeft(S[3], 45);
 
-				CONST_EXPRESSION FORCE_INLINE uint64_t Next() {
-					uint64_t* S = this->State;
-					const uint64_t Result = S[0] + S[3];
-					const uint64_t T = S[1] << 17;
+				return Result;
+			}
+		};
 
-					S[2] ^= S[0];
-					S[3] ^= S[1];
-					S[1] ^= S[2];
-					S[0] ^= S[3];
+		// XoShiro256+
+		// About 15% Faster Than XoShiro256** But The Low 3 Bits Have Low Linear Complexity
+		struct XoShiro256P {
+			// Must Not Be All-Zero
+			uint64_t State[4];
 
-					S[2] ^= T;
-					S[3] = Bitwise::RotateLeft(S[3], 45);
+			CONST_EXPRESSION _INLINE_RANDOM_H_ uint64_t Next() {
+				uint64_t* S = this->State;
+				const uint64_t Result = S[0] + S[3];
+				const uint64_t T = S[1] << 17;
 
-					return Result;
-				}
-			};
+				S[2] ^= S[0];
+				S[3] ^= S[1];
+				S[1] ^= S[2];
+				S[0] ^= S[3];
 
-			
-			// -- END OF THE XORSHIFT FAMILY -- //
-		}
+				S[2] ^= T;
+				S[3] = Bitwise::RotateLeft(S[3], 45);
 
-		// PRNG Recommended For Use In Seeding Random Generators That Need A Initial Non-Zero State, Such as XorShift And XoShiro Generators
+				return Result;
+			}
+		};
+
+		// -- END OF THE XORSHIFT FAMILY -- //
+		
+
+		// PRNG Recommended For Use In Seeding Random Generators That Need A Initial Non-Zero State
 		// You May Want To Use This When Seeding A Generator For Cryptographic Uses
 		struct SplitMix64 {
 			uint64_t State;
 
-			CONST_EXPRESSION FORCE_INLINE uint64_t Next() {
+			CONST_EXPRESSION _INLINE_RANDOM_H_ uint64_t Next() {
 				uint64_t Result = (this->State += 0x9E3779B97f4A7C15);
 
 				Result = (Result ^ (Result >> 30)) * 0xBF58476D1CE4E5B9;
@@ -207,6 +210,8 @@ namespace BigLib {
 				return Result ^ (Result >> 31);
 			}
 		};
+
+
 
 
 		template<
@@ -244,14 +249,14 @@ namespace BigLib {
 			}
 
 		public:
-			CONST_EXPRESSION INLINE void Seed(Type Seed=5489) {
+			CONST_EXPRESSION _INLINE_RANDOM_H_ void Seed(Type Seed=5489) {
 				this->Index = N;
 				this->MT[0] = Seed;
 				for (size_t i = 1; i < (N - 1); i++)
 					this->MT[i] = LOWEST_BITS((F * (this->MT[i-1] ^ (this->MT[i-1] >> (W - 2))) + i), W);
 			}
 
-			CONST_EXPRESSION FORCE_INLINE Type Next() {
+			CONST_EXPRESSION _INLINE_RANDOM_H_ Type Next() {
 				if (this->Index >= N) {
 					IASSERT_EX(this->Index > N, "Generator Wasn't Seeded Properly.")
 					this->Twist();
@@ -270,7 +275,7 @@ namespace BigLib {
 		};
 
 
-		// Normal Version Of MersenneTwister.
+		// MersenneTwister 19937 32-Bit.
 		using MersenneTwister19937 = MersenneTwister<
 			unsigned int,
 			32, 624, 397, 31,
@@ -281,7 +286,7 @@ namespace BigLib {
 			18, UI32(1812433253)
 		>;
 
-		// 64-Bit Version Of MersenneTwister.
+		// MersenneTwister 19937 64-Bit.
 		using MersenneTwister19937_64 = MersenneTwister<
 			unsigned long long,
 			64, 312, 156, 31,
@@ -294,3 +299,4 @@ namespace BigLib {
 	}
 }
 
+#undef _INLINE_RANDOM_H_
