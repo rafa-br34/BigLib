@@ -212,6 +212,45 @@ namespace BigLib {
 		};
 
 
+		template<const uint64_t Multiplier=6364136223846793005u, const uint64_t Increment=1442695040888963407u>
+		struct PCG32 {
+			uint64_t State = 0x4D595DF4D0F33173;
+			
+			uint32_t Next() {
+				uint64_t X = this->State;
+				unsigned Count = (unsigned)(X >> 59);		// 59 = 64 - 5
+
+				this->State = X * Multiplier + Increment;
+				X ^= X >> 18;								// 18 = (64 - 27)/2
+				return Bitwise::RotateRight((uint32_t)(X >> 27), Count);	// 27 = 32 - 5
+			}
+
+			void PCGInit(uint64_t Seed) {
+				this->State = Seed + Increment;
+				(void)this->Next();
+			}
+		};
+
+		template<const uint64_t Multiplier=6364136223846793005u, const uint64_t Increment=1442695040888963407u>
+		struct PCG32Fast {
+			// Must Be Odd
+			uint64_t State = 0xCAFEF00DD15EA5E5u;
+
+			uint32_t Next() {
+				uint64_t X = this->State;
+				unsigned Count = (unsigned)(X >> 61);	// 61 = 64 - 3
+
+				State = X * Multiplier;
+				X ^= X >> 22;
+				return (uint32_t)(X >> (22 + Count));	// 22 = 32 - 3 - 7
+			}
+
+			void PCGInit(uint64_t Seed) {
+				this->State = 2 * Seed + 1;
+				(void)this->Next();
+			}
+		};
+
 
 
 		template<
