@@ -1,5 +1,6 @@
 #pragma once
 #include "../../Includes.h"
+#include "Math.h"
 
 // TODO: Add Option
 #define _INLINE_RANDOM_H_ FORCE_INLINE
@@ -307,12 +308,14 @@ namespace BigLib {
 			const size_t L,
 			const size_t F
 		>
-		class MersenneTwister {
+		struct MersenneTwister {
+		private:
 			Type MT[N - 1];
 			Type Index = N + 1;
 			const Type LowerMask = (Type)((UI64(1) << R) - 1);
 			const Type UpperMask = LOWEST_BITS(~LowerMask, W);
 
+			// NOTE: Keep The FORCE_INLINE On This Function Since It's Only Used Once
 			CONST_EXPRESSION FORCE_INLINE void Twist() {
 				for (size_t i = 0; i < (N - 1); i++) {
 					Type X = (this->MT[i] & this->UpperMask) | (MT[(i + 1) % N] & LowerMask);

@@ -91,7 +91,6 @@ namespace BigLib {
 				return false;
 
 			for (Value B = Value(2); B < 2 + (A / 2); B++) {
-				std::cout << '\t' << A % B << " " << B << std::endl;
 				if (A % B == Value(0))
 					return false;
 			}
