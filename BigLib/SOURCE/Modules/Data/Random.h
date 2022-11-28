@@ -4,6 +4,8 @@
 // TODO: Add Option
 #define _INLINE_RANDOM_H_ FORCE_INLINE
 
+
+
 namespace BigLib {
 	namespace Random {
 		
@@ -216,7 +218,7 @@ namespace BigLib {
 		struct PCG32 {
 			uint64_t State = 0x4D595DF4D0F33173;
 			
-			uint32_t Next() {
+			CONST_EXPRESSION _INLINE_RANDOM_H_ uint32_t Next() {
 				uint64_t X = this->State;
 				unsigned Count = (unsigned)(X >> 59);		// 59 = 64 - 5
 
@@ -225,7 +227,7 @@ namespace BigLib {
 				return Bitwise::RotateRight((uint32_t)(X >> 27), Count);	// 27 = 32 - 5
 			}
 
-			void PCGInit(uint64_t Seed) {
+			CONST_EXPRESSION _INLINE_RANDOM_H_ void PCGInit(uint64_t Seed) {
 				this->State = Seed + Increment;
 				(void)this->Next();
 			}
@@ -236,7 +238,7 @@ namespace BigLib {
 			// Must Be Odd
 			uint64_t State = 0xCAFEF00DD15EA5E5u;
 
-			uint32_t Next() {
+			CONST_EXPRESSION _INLINE_RANDOM_H_ uint32_t Next() {
 				uint64_t X = this->State;
 				unsigned Count = (unsigned)(X >> 61);	// 61 = 64 - 3
 
@@ -245,9 +247,45 @@ namespace BigLib {
 				return (uint32_t)(X >> (22 + Count));	// 22 = 32 - 3 - 7
 			}
 
-			void PCGInit(uint64_t Seed) {
+			CONST_EXPRESSION _INLINE_RANDOM_H_ void PCGInit(uint64_t Seed) {
 				this->State = 2 * Seed + 1;
 				(void)this->Next();
+			}
+		};
+
+		template<typename Type=long double, const size_t K=150, const long double S=2.0L>
+		struct ACORN {
+			Type SV1[K + 1];
+			Type SV2[K + 1];
+			Type M = Math::Power<Type>(Type(2), Type(60.0) * S);
+			bool Swap = false;
+
+			// Seed Needs To Be A Prime Number
+			CONST_EXPRESSION _INLINE_RANDOM_H_ void Seed(Type Seed) {
+				for (size_t i = 1; i < K + 1; i++) {
+					this->SV1[i - 1] = Math::Power<Type>(Seed, (Type)i);
+				}
+			}
+
+			CONST_EXPRESSION _INLINE_RANDOM_H_ Type Next() {
+				Swap = !Swap;
+
+				Type* S1;
+				Type* S2;
+				if (Swap) {
+					S1 = this->SV2;
+					S2 = this->SV1;
+				}
+				else {
+					S1 = this->SV1;
+					S2 = this->SV2;
+				}
+
+				for (size_t i = 1; i < K; i++) {
+					S1[i] = Math::Modulo((S1[i - 1] + S2[i]), this->M);
+				}
+
+				return S1[K - 1] / M;
 			}
 		};
 

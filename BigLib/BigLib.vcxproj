@@ -32,7 +32,6 @@
     <ClInclude Include="SOURCE\Modules\MachineLearning\NeuralNetwork.h" />
     <ClInclude Include="SOURCE\Modules\Utils\Modules\BaseString.h" />
     <ClInclude Include="SOURCE\Modules\Code\Code.h" />
-    <ClInclude Include="REMOVED FILES\Exceptions\Exceptions.h" />
     <ClInclude Include="SOURCE\Modules\Logging\Console.h" />
     <ClInclude Include="SOURCE\Modules\Data\Math.h" />
     <ClInclude Include="SOURCE\Modules\MultiThreading\ThreadPool\ThreadPool.h" />
@@ -55,7 +54,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SOURCE\Modules\Code\Modules\CodePath.cpp" />
-    <ClCompile Include="REMOVED FILES\Exceptions\ExceptionsHandler.cpp" />
     <ClCompile Include="SOURCE\Modules\Logging\Console.cpp" />
     <ClCompile Include="SOURCE\Modules\Networking\Modules\Request.cpp" />
     <ClCompile Include="SOURCE\Modules\Profiling\Profiler.cpp" />

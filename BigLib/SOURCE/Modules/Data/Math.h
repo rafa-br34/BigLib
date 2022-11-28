@@ -86,6 +86,20 @@ namespace BigLib {
 		}
 
 		template<typename Value>
+		bool IsPrimeInteger(Value A) {
+			if (A == Value(0) || A == Value(1))
+				return false;
+
+			for (Value B = Value(2); B < 2 + (A / 2); B++) {
+				std::cout << '\t' << A % B << " " << B << std::endl;
+				if (A % B == Value(0))
+					return false;
+			}
+			return true;
+		}
+
+
+		template<typename Value>
 		CONST_EXPRESSION INLINE Value Average(Value List[], size_t Items) {
 			Value Sum{};
 			for (size_t i = 0; i < Items; i++) {

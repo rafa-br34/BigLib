@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="REMOVED FILES\Exceptions\Exceptions.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
     <ClInclude Include="SOURCE\Modules\Logging\Console.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
@@ -116,9 +113,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="REMOVED FILES\Exceptions\ExceptionsHandler.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
     <ClCompile Include="SOURCE\Modules\Logging\Console.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
