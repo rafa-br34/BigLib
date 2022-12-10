@@ -17,8 +17,8 @@
 #include "Modules/MultiThreading/ThreadSafeQueue/ThreadSafeQueue.h"
 #include "Modules/MultiThreading/ThreadPool/ThreadPool.h"
 
-// Utils
-#include "Modules/Utils/Utils.h"
+// Types
+#include "Modules/Types/Types.h"
 
 // Machine Learning
 #include "Modules/MachineLearning/NeuralNetwork.h"

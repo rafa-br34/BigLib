@@ -42,17 +42,25 @@ namespace BigLib {
 			const List<Class>& operator*(size_t B);
 
 		private:
-			INLINE void Reallocate(size_t NewSize, const bool IgnoreLowerSize = false) {
+			template<const bool WriteItemsCount=true, const bool IgnoreLowerSize=false>
+			INLINE void Reallocate(size_t NewSize) {
 
 				if (NewSize == 0) {
 					FREE(this->Allocation);
 					this->Allocation = nullptr;
 					this->AllocationSize = NewSize;
-					this->ItemsCount = NewSize;
+
+					if CONST_EXPRESSION (WriteItemsCount)
+						this->ItemsCount = NewSize;
 				}
 				else if (this->ItemsCount != NewSize) {
-					constexpr size_t MaxItemsDifference = (t_MaxAllocationDifference / sizeof(Class));
 
+					if CONST_EXPRESSION(WriteItemsCount)
+						this->ItemsCount = NewSize;
+
+					CONST_EXPRESSION size_t MaxItemsDifference = (t_MaxAllocationDifference / sizeof(Class));
+
+					// Snap To Size Difference
 					if (NewSize > this->AllocationSize) {
 						this->AllocationSize += MaxItemsDifference;
 					}
@@ -61,7 +69,7 @@ namespace BigLib {
 						if (this->AllocationSize - NewSize > MaxItemsDifference) {
 							this->AllocationSize -= MaxItemsDifference;
 						}
-						else if (IgnoreLowerSize) {
+						else if CONST_EXPRESSION (IgnoreLowerSize) {
 							this->AllocationSize = NewSize;
 						}
 						else
@@ -73,12 +81,8 @@ namespace BigLib {
 
 					Class* OldAllocation = this->Allocation;
 					this->Allocation = ALLOCATE(Class, this->AllocationSize);
-					for (size_t i = 0; i < this->ItemsCount; i++) {
-						this->Allocation[i] = OldAllocation[i];
-					}
+					Memory::MemorySet(this->Allocation, OldAllocation, this->ItemsCount * sizeof(Class));
 					FREE(OldAllocation);
-
-					this->ItemsCount = NewSize;
 				}
 			}
 
@@ -125,12 +129,12 @@ namespace BigLib {
 
 		template<typename Class, const size_t MaxAllocationDifference>
 		void List<Class, MaxAllocationDifference>::Resize() {
-			this->Reallocate(this->ItemsCount, true);
+			this->Reallocate(this->ItemsCount);
 		}
 
 		template<typename Class, const size_t MaxAllocationDifference>
 		void List<Class, MaxAllocationDifference>::PreAllocate(size_t Size) {
-			this->Reallocate(this->ItemsCount + Size);
+			this->Reallocate<false>(this->ItemsCount + Size);
 		}
 
 		template<typename Class, const size_t MaxAllocationDifference>
@@ -140,23 +144,37 @@ namespace BigLib {
 
 
 		template<typename Class, const size_t MaxAllocationDifference>
-		void List<Class, MaxAllocationDifference>::Move(size_t Start, size_t Size, size_t NewLocation, const bool Zero) {
-			this->Reallocate(NewLocation + Size);
+		void List<Class, MaxAllocationDifference>::Move(size_t Start, size_t Size, size_t NewLocation, const bool ZeroGap) {
+			if (Start == NewLocation)
+				return;
+			else {
+				this->Reallocate(NewLocation + Size);
 
-			Class Next = this->Allocation[Start];
-			for (size_t i = 0; i < Size; i++) {
-				Next = this->Allocation[Start + i];
-				this->Allocation[NewLocation + i] = this->Allocation[Start + i];
+				if (Start < NewLocation) {
+					// Iterate Backwards
+					for (size_t i = Size; i > 0; i--) {
+						this->Allocation[NewLocation + (i - 1)] = this->Allocation[Start + (i - 1)];
 
-				if (Zero == true)
-					this->Allocation[Start + i] = 0;
+						if (ZeroGap == true)
+							this->Allocation[Start + (i - 1)] = 0;
+					}
+				}
+				else if (Start > NewLocation) {
+					// Iterate Forward
+					for (size_t i = 0; i < Size; i++) {
+						this->Allocation[NewLocation + i] = this->Allocation[Start + i];
+
+						if (ZeroGap == true)
+							this->Allocation[Start + i] = 0;
+					}
+				}				
 			}
 		}
 
 
 		template<typename Class, const size_t MaxAllocationDifference>
 		void List<Class, MaxAllocationDifference>::PushFront(Class Item) {
-			this->Reallocate(this->ItemsCount++);
+			this->Reallocate(++this->ItemsCount);
 			this->Allocation[this->ItemsCount - 1] = Item;
 		}
 
@@ -229,7 +247,7 @@ namespace BigLib {
 		template<typename Class, const size_t MaxAllocationDifference>
 		const List<Class>& List<Class, MaxAllocationDifference>::operator+(Class B) {
 			this->PushFront(B);
-			return this;
+			return *this;
 		}
 
 		template<typename Class, const size_t MaxAllocationDifference>

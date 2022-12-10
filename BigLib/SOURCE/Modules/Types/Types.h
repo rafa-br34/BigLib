@@ -10,4 +10,3 @@
 #include "Modules/Vector2.h"
 #include "Modules/Vector3.h"
 #include "Modules/Color24.h"
-#include "Modules/BaseString.h"

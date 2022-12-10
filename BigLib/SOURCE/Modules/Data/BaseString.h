@@ -1,8 +1,8 @@
 #pragma once
-#include "../../../Includes.h"
+#include "../../Includes.h"
 
 namespace BigLib {
-	namespace Utils {
+	namespace Strings {
 		// Reads The Length Of A C String
 		FORCE_INLINE CONST_EXPRESSION size_t StringLength(const char* Pointer) {
 			const char* Initial = Pointer;

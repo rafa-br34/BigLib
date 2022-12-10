@@ -49,21 +49,21 @@ namespace BigLib {
 
 		template<typename Value>
 		CONST_EXPRESSION INLINE Value Absolute(Value X) {
-#if MATH_ABSOLUTE_APPROACH == 1
+#if APPROACH__MATH_ABSOLUTE == 1
 			return X > Value(0) ? X : -X;
-#elif MATH_ABSOLUTE_APPROACH == 2
+#elif APPROACH__MATH_ABSOLUTE == 2
 			return (X * (X > Value(0))) + (-X * (X < Value(0)));
-#elif MATH_ABSOLUTE_APPROACH == 3
+#elif APPROACH__MATH_ABSOLUTE == 3
 			Value Temp = X >> ((sizeof(Value) * 8) - 1);
 			X ^= Temp;
 			X += Temp & 1;
 			return X;
-#elif MATH_ABSOLUTE_APPROACH == 4
+#elif APPROACH__MATH_ABSOLUTE == 4
 			return abs(X);
-#elif MATH_ABSOLUTE_APPROACH == 5
+#elif APPROACH__MATH_ABSOLUTE == 5
 			return std::abs(X);
 #else
-#error MATH_ABSOLUTE Invalid Approach
+#error APPROACH__MATH_ABSOLUTE Invalid Value
 #endif
 		}
 

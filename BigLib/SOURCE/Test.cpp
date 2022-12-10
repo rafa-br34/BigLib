@@ -19,7 +19,7 @@ void TestThreadPool() {
 			while (Tsk.Type > 0) {
 				Tsk.Type--;
 			}
-			std::cout << "D";
+			std::cout << "Done";
 			});
 	}
 
@@ -40,16 +40,18 @@ void TestThreadPool() {
 }
 
 void TestList() {
-	BigLib::Utils::List<size_t> List = {};
+	BigLib::Utils::List<uint8_t> List = {};
 	List.PreAllocate(10);
 
-	for (size_t i = 0; i < 5; i++)
+	for (uint8_t i = 1; i <= 10; i++)
 		List.PushFront(i * 10);
-	for (size_t i = 0; i < 5; i++)
+	
+	//List.Move(0, 10, 1, true);
+	for (uint8_t i = 1; i <= 10; i++)
 		List.PushBack(i * 10);
 
 	for (size_t i = 0; i < List.Size(); i++) {
-		std::cout << i << " : " << List[i] << '\n';
+		std::cout << i + 1 << " : " << (size_t)List[i] << '\n';
 	}
 }
 
@@ -87,9 +89,9 @@ void TestPRNGs() {
 
 int main() {
 	//TestThreadPool();
-	//TestList();
+	TestList();
 	//TestPRNGs();
-
+	return 0;
 	
 	BigLib::Random::ACORN Gen = {};
 	Gen.Seed(1);

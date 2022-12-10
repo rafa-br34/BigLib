@@ -13,7 +13,7 @@ L"0123456789";
 
 namespace BigLib {
 	namespace Security {
-		std::string Crypts::RandomStringA(unsigned int Length) {
+		char* Crypts::RandomStringA(unsigned int Length) {
 			std::string Buffer{};
 			Buffer.reserve(Length); // Pre-Allocate
 
@@ -21,10 +21,10 @@ namespace BigLib {
 			for (unsigned int i = 0; i < Length; i++) {
 				Buffer.append(1, AsciiDict[Crypts::Random<unsigned int>(0, (sizeof(AsciiDict) / sizeof(char)))]);
 			}
-			return Buffer;
+			return (char*)"0";//Buffer;
 		}
 
-		std::wstring Crypts::RandomStringW(unsigned int Length) {
+		wchar_t* Crypts::RandomStringW(unsigned int Length) {
 			std::wstring Buffer{};
 			Buffer.reserve(Length); // Pre-Allocate
 
@@ -32,7 +32,7 @@ namespace BigLib {
 			for (unsigned int i = 0; i < Length; i++) {
 				Buffer.append(1, WideDict[Crypts::Random<unsigned int>(0, (sizeof(WideDict) / sizeof(wchar_t)))]);
 			}
-			return Buffer;
+			return (wchar_t*)L"0";//Buffer;
 		}
 	}
 }

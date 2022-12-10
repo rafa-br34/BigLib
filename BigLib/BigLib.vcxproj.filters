@@ -45,19 +45,19 @@
     <ClInclude Include="SOURCE\Modules\Security\Crypts.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\Modules\Utils\Modules\Color24.h">
+    <ClInclude Include="SOURCE\Modules\Types\Modules\Color24.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\Modules\Utils\Modules\List.h">
+    <ClInclude Include="SOURCE\Modules\Types\Modules\List.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\Modules\Utils\Modules\Vector2.h">
+    <ClInclude Include="SOURCE\Modules\Types\Modules\Vector2.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\Modules\Utils\Modules\Vector3.h">
+    <ClInclude Include="SOURCE\Modules\Types\Modules\Vector3.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\Modules\Utils\Utils.h">
+    <ClInclude Include="SOURCE\Modules\Types\Types.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\BigLib.h">
@@ -87,16 +87,13 @@
     <ClInclude Include="SOURCE\Modules\Memory\Modules\MemBaseWindows.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\Modules\Memory\Modules\BaseMemory.h">
+    <ClInclude Include="SOURCE\Modules\Data\BaseMemory.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\Configs\Macros.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\Modules\Memory\Modules\MemScan.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
-    <ClInclude Include="SOURCE\Modules\Utils\Modules\BaseString.h">
+    <ClInclude Include="SOURCE\Modules\Data\BaseString.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\Modules\MachineLearning\NeuralNetwork.h">
@@ -109,6 +106,9 @@
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\Modules\Data\Bitwise.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Modules\Types\Modules\CString.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
   </ItemGroup>

@@ -115,7 +115,7 @@ namespace BigLib {
 				while (Hue > 360.f) {
 					Hue -= 360.f;
 				}
-
+				
 				auto C = Saturation * Lightness;
 				auto X = C * (1.0f - Math::Absolute(Math::Modulo(Hue / 60.f, 2.f) - 1.f));
 				auto SaturationKey = Lightness - C;
@@ -169,7 +169,7 @@ namespace BigLib {
 			}
 			// CMYK(Cyan, Magenta, Yellow, Key) Color (0-255)
 			CONST_EXPRESSION INLINE Color24& FromCMYK(uint8_t Cyan, uint8_t Magenta, uint8_t Yellow, uint8_t Key) {
-				uint8_t
+				const uint8_t
 					R = 255 - Cyan,
 					G = 255 - Magenta,
 					B = 255 - Yellow;

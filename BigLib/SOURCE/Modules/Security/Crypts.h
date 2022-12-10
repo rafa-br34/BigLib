@@ -6,6 +6,7 @@ namespace BigLib {
 	namespace Security {
 		namespace Crypts {
 
+			// TODO: Remove STDs :)
 			template <typename Class = int>
 			Class Random(Class Min, Class Max) {
 				std::random_device RandomDevice;
@@ -15,8 +16,8 @@ namespace BigLib {
 				return Distribution(Generator);
 			}
 
-			std::string RandomStringA(unsigned int Length);
-			std::wstring RandomStringW(unsigned int Length);
+			char* RandomStringA(unsigned int Length);
+			wchar_t* RandomStringW(unsigned int Length);
 		}
 
 	}
