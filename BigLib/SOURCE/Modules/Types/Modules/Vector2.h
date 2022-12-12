@@ -2,7 +2,7 @@
 #include "../../Data/Math.h"
 
 namespace BigLib {
-	namespace Utils {
+	namespace Types {
 		template<typename Value>
 		class Vector2 {
 		public:

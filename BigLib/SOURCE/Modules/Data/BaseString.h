@@ -3,7 +3,7 @@
 
 namespace BigLib {
 	namespace Strings {
-		// Reads The Length Of A C String
+		// Reads The Length Of An ASCII String
 		FORCE_INLINE CONST_EXPRESSION size_t StringLength(const char* Pointer) {
 			const char* Initial = Pointer;
 			while (*Pointer != char(0))
@@ -12,7 +12,7 @@ namespace BigLib {
 			return Pointer - Initial;
 		}
 		
-		// Reads The Length Of A Wide String
+		// Reads The Length Of An Wide String
 		FORCE_INLINE CONST_EXPRESSION size_t StringLength(const wchar_t* Pointer) {
 			const wchar_t* Initial = Pointer;
 			while (*Pointer != wchar_t(0))

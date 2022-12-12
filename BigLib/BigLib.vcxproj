@@ -45,8 +45,9 @@
     <ClInclude Include="SOURCE\Modules\Memory\Modules\MemBaseWindows.h" />
     <ClInclude Include="SOURCE\Modules\ReversingEngineering\Utilities.h" />
     <ClInclude Include="SOURCE\Modules\Security\Crypts.h" />
+    <ClInclude Include="SOURCE\Modules\Security\Modules\CRCs.h" />
     <ClInclude Include="SOURCE\Modules\Types\Modules\Color24.h" />
-    <ClInclude Include="SOURCE\Modules\Types\Modules\CString.h" />
+    <ClInclude Include="SOURCE\Modules\Types\Modules\String.h" />
     <ClInclude Include="SOURCE\Modules\Types\Modules\List.h" />
     <ClInclude Include="SOURCE\Modules\Types\Modules\Vector2.h" />
     <ClInclude Include="SOURCE\Modules\Types\Modules\Vector3.h" />
@@ -59,7 +60,6 @@
     <ClCompile Include="SOURCE\Modules\Profiling\Profiler.cpp" />
     <ClCompile Include="SOURCE\Modules\ReversingEngineering\AnalyserTarget\AnalyserTarget.cpp" />
     <ClCompile Include="SOURCE\Modules\ReversingEngineering\Executables\Executables.cpp" />
-    <ClCompile Include="SOURCE\Modules\Security\Modules\Random.cpp" />
     <ClCompile Include="SOURCE\Test.cpp" />
   </ItemGroup>
   <ItemGroup>

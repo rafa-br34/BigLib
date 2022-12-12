@@ -3,7 +3,7 @@
 #include "../../Data/Math.h"
 
 namespace BigLib {
-	namespace Utils {
+	namespace Types {
 		class Color24 {
 			uint8_t R, G, B;
 

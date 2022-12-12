@@ -2,7 +2,7 @@
 #include "../../../Includes.h"
 
 namespace BigLib {
-	namespace Utils {
+	namespace Types {
 		template<typename Class, const size_t t_MaxAllocationDifference = 1048576>
 		class List {
 		public:

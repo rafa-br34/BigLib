@@ -58,10 +58,6 @@ namespace BigLib {
 			X ^= Temp;
 			X += Temp & 1;
 			return X;
-#elif APPROACH__MATH_ABSOLUTE == 4
-			return abs(X);
-#elif APPROACH__MATH_ABSOLUTE == 5
-			return std::abs(X);
 #else
 #error APPROACH__MATH_ABSOLUTE Invalid Value
 #endif

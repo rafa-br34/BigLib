@@ -108,7 +108,10 @@
     <ClInclude Include="SOURCE\Modules\Data\Bitwise.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\Modules\Types\Modules\CString.h">
+    <ClInclude Include="SOURCE\Modules\Types\Modules\String.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Modules\Security\Modules\CRCs.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
   </ItemGroup>
@@ -126,9 +129,6 @@
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
     <ClCompile Include="SOURCE\Modules\ReversingEngineering\Executables\Executables.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
-    <ClCompile Include="SOURCE\Modules\Security\Modules\Random.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
     <ClCompile Include="SOURCE\Test.cpp">

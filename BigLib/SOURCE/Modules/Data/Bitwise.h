@@ -15,13 +15,39 @@
 
 namespace BigLib {
 	namespace Bitwise {
+
 		template<typename Type, typename RType=unsigned>
 		CONST_EXPRESSION FORCE_INLINE Type RotateRight(Type X, RType R) {
-			return (X >> R) | (X << (-R & (SIZEOF_BITS(X) - 1)));
+			return (X >> R) | (X << (-R & (SIZEOF_BITS(Type) - 1)));
 		}
+
 		template<typename Type, typename RType=unsigned>
 		CONST_EXPRESSION FORCE_INLINE Type RotateLeft(Type X, RType R) {
-			return (X << R) | (X >> (-R & (SIZEOF_BITS(X) - 1)));
+			return (X << R) | (X >> (-R & (SIZEOF_BITS(Type) - 1)));
+		}
+
+
+		template<typename Type, const size_t Size=SIZEOF_BITS(Type)>
+		CONST_EXPRESSION FORCE_INLINE Type BinaryReflect(Type X) {
+			Type Result = 0;
+			
+#if APPROACH__BINARYREFLECT == 1 || APPROACH__BINARYREFLECT == 2
+			for (size_t i = 0; i < Size; i++)
+	#if APPROACH__BINARYREFLECT == 1
+				if (X & (Type(1) << i)) Result |= (Type(1) << ((Size - Type(1)) - i));
+	#elif APPROACH__BINARYREFLECT == 2
+				Result |= (Type(1) << ((Size - Type(1)) - i)) * ((X & (Type(1) << i)) > 0);
+	#endif
+#endif
+			return Result;
+		}
+
+		template<typename Type>
+		CONST_EXPRESSION FORCE_INLINE Type MakeBinaryMask(size_t Size) {
+			Type Output = 0;
+			for (size_t i = 0; i < Size; i++)
+				Output = (Output << 1) + 1;
+			return Output;
 		}
 	}
 }

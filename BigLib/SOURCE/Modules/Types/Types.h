@@ -1,5 +1,5 @@
 /*
-* Name: Utils Library
+* Name: Types Library
 * Desc: Library With Lots Of Utilities Classes
 * Status: Done, More Features To Add
 */
