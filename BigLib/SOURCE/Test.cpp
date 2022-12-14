@@ -57,6 +57,8 @@ void TestList() {
 }
 
 void TestPRNGs() {
+	// TODO: I Couldn't Find Any Reference For XorShift Generators Output Data.
+
 	{
 		BigLib::Random::MersenneTwister19937 MersenneTwister19937 = {};
 		MersenneTwister19937.Seed();
@@ -153,6 +155,27 @@ void _TEST_CRC(BigLib::Crypts::CRC::CRC_Base<Type, Polynomial, ReflectPolynomial
 		0xD64E, // 16 GENIBUS
 		0xCE3C, // 16 GSM
 		0x29B1, // 16 IBM 3740
+
+		0x906E, // 16 IBM SDLC
+		0xBF05, // 16 ISO-IEC-14443-3-A
+		0x2189, // 16 KERMIT
+		0xBDf4, // 16 LJ1200
+		0x772B, // 16 M17
+		0x44C2, // 16 MAXIM-DOW
+		0x6F91, // 16 MCRF4XX
+		0x4B37, // 16 MODBUS
+		0xA066, // 16 NRSC-5
+		0x5D38, // 16 OPENSAFETY-A
+		0x20FE, // 16 OPENSAFETY-B
+		0xA819, // 16 PROFIBUS
+		0x63D0, // 16 RIELLO
+		0xE5CC, // 16 SPI-FUJITSU
+		0xD0DB, // 16 T10-DIF
+		0x0FB3, // 16 TELEDISK
+		0x26B1, // 16 TMS37157
+		0xFEE8, // 16 UMTS
+		0xB4C8, // 16 USB
+		0x31C3, // 16 XMODEM
 	};
 	const char* AlgoNames[] = {
 		"8 CDMA2000",
@@ -200,6 +223,27 @@ void _TEST_CRC(BigLib::Crypts::CRC::CRC_Base<Type, Polynomial, ReflectPolynomial
 		"16 GENIBUS",
 		"16 GSM",
 		"16 IBM 3740",
+
+		"16 IBM SDLC",
+		"16 ISO-IEC-14443-3-A",
+		"16 KERMIT",
+		"16 LJ1200",
+		"16 M17",
+		"16 MAXIM-DOW",
+		"16 MCRF4XX",
+		"16 MODBUS",
+		"16 NRSC-5",
+		"16 OPENSAFETY-A",
+		"16 OPENSAFETY-B",
+		"16 PROFIBUS",
+		"16 RIELLO",
+		"16 SPI-FUJITSU",
+		"16 T10-DIF",
+		"16 TELEDISK",
+		"16 TMS37157",
+		"16 UMTS",
+		"16 USB",
+		"16 XMODEM",
 	};
 
 	
@@ -271,6 +315,28 @@ void TEST_CRCs() {
 	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_GENIBUS());
 	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_GSM());
 	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_IBM_3740());
+
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_IBM_SDLC());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_ISO_IEC_14443_3_A());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_KERMIT());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_LJ1200());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_M17());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_MAXIM_DOW());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_MCRF4XX());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_MODBUS());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_NRSC_5());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_OPENSAFETY_A());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_OPENSAFETY_B());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_PROFIBUS());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_RIELLO());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_SPI_FUJITSU());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_T10_DIF());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_TELEDISK());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_TMS37157());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_UMTS());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_USB());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_XMODEM());
+
 
 
 	if (_TEST_CRC_PASS != _TEST_CRC_I)

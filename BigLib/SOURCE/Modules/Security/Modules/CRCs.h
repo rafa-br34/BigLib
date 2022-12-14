@@ -5,6 +5,8 @@
 namespace BigLib {
 	namespace Crypts {
 		namespace CRC {
+
+			// TODO: Fix CRCs With Width Lower Than 8
 			template<
 				typename Type,
 				const Type Polynomial,
@@ -163,6 +165,26 @@ namespace BigLib {
 			typedef CRC_Base<uint16_t,	0x1021,		false,		false,	false,	0xFFFF,		0xFFFF> CRC_16_GENIBUS;
 			typedef CRC_Base<uint16_t,	0x1021,		false,		false,	false,	0x0000,		0xFFFF> CRC_16_GSM;
 			typedef CRC_Base<uint16_t,	0x1021,		false,		false,	false,	0xFFFF,		0x0000> CRC_16_IBM_3740;
+			typedef CRC_Base<uint16_t,	0x1021,		false,		true,	true,	0xFFFF,		0xFFFF> CRC_16_IBM_SDLC;
+			typedef CRC_Base<uint16_t,	0x1021,		false,		true,	true,	0x6363,		0x0000> CRC_16_ISO_IEC_14443_3_A;
+			typedef CRC_Base<uint16_t,	0x1021,		false,		true,	true,	0x0000,		0x0000> CRC_16_KERMIT;
+			typedef CRC_Base<uint16_t,	0x6F63,		false,		false,	false,	0x0000,		0x0000> CRC_16_LJ1200;
+			typedef CRC_Base<uint16_t,	0x5935,		false,		false,	false,	0xFFFF,		0x0000> CRC_16_M17;
+			typedef CRC_Base<uint16_t,	0x8005,		false,		true,	true,	0x0000,		0xFFFF> CRC_16_MAXIM_DOW;
+			typedef CRC_Base<uint16_t,	0x1021,		false,		true,	true,	0xFFFF,		0x0000> CRC_16_MCRF4XX;
+			typedef CRC_Base<uint16_t,	0x8005,		false,		true,	true,	0xFFFF,		0x0000> CRC_16_MODBUS;
+			typedef CRC_Base<uint16_t,	0x080B,		false,		true,	true,	0xFFFF,		0x0000> CRC_16_NRSC_5;
+			typedef CRC_Base<uint16_t,	0x5935,		false,		false,	false,	0x0000,		0x0000> CRC_16_OPENSAFETY_A;
+			typedef CRC_Base<uint16_t,	0x755B,		false,		false,	false,	0x0000,		0x0000> CRC_16_OPENSAFETY_B;
+			typedef CRC_Base<uint16_t,	0x1DCF,		false,		false,	false,	0xFFFF,		0xFFFF> CRC_16_PROFIBUS;
+			typedef CRC_Base<uint16_t,	0x1021,		false,		true,	true,	0x554D,		0x0000> CRC_16_RIELLO;
+			typedef CRC_Base<uint16_t,	0x1021,		false,		false,	false,	0x1D0F,		0x0000> CRC_16_SPI_FUJITSU;
+			typedef CRC_Base<uint16_t,	0x8BB7,		false,		false,	false,	0x0000,		0x0000> CRC_16_T10_DIF;
+			typedef CRC_Base<uint16_t,	0xA097,		false,		false,	false,	0x0000,		0x0000> CRC_16_TELEDISK;
+			typedef CRC_Base<uint16_t,	0x1021,		false,		true,	true,	0x3791,		0x0000> CRC_16_TMS37157;
+			typedef CRC_Base<uint16_t,	0x8005,		false,		false,	false,	0x0000,		0x0000> CRC_16_UMTS;
+			typedef CRC_Base<uint16_t,	0x8005,		false,		true,	true,	0xFFFF,		0xFFFF> CRC_16_USB;
+			typedef CRC_Base<uint16_t,	0x1021,		false,		false,	false,	0x0000,		0x0000> CRC_16_XMODEM;
 
 			typedef CRC_Base<uint32_t,	0x04C11DB7, false,		true,	true,	0xFFFFFFFF, 0xFFFFFFFF> CRC_32;
 		}
