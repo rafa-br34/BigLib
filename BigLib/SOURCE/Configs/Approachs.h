@@ -17,8 +17,6 @@
 // Approach Used In The BinaryReflect Function
 // 1: Normal "If" 1 Bit			(Normal "If" Statement, Ran Each Per Bit)
 // 2: Branchless "If" 1 Bit		(Branchless "If" Statement, Ran Each Per Bit)
-// 3: Normal "If" 8 Bits		(Normal "If" Statement, Ran Each Byte)
-// 4: Branchless "If" 8 Bits	(Branchless "If" Statement, Ran Each Byte)
 #define APPROACH__BINARYREFLECT 1
 
 

@@ -10,7 +10,6 @@ namespace BigLib {
 			template<
 				typename Type,
 				const Type Polynomial,
-				const bool ReflectPolynomial,
 				
 				const bool ReflectIn=false,
 				const bool ReflectOut=false,
@@ -18,32 +17,38 @@ namespace BigLib {
 				const Type XOROut=0,
 				
 				const size_t Width=SIZEOF_BITS(Type),
-				const size_t TableLen=256
+			
+				const size_t TableLen=256,
+				typename TableType=uint16_t
 			>
 			class CRC_Base {
 			private:
 				Type LookupTable[TableLen];
 				const Type LimiterMask = Bitwise::MakeBinaryMask<Type>(Width);
-				const Type MSBMask = 1 << (Width - 1);
 
 				CONST_EXPRESSION void GenerateLookupTable() {
-					for (size_t Dividend = 0; Dividend < TableLen; Dividend++) {
+					// 0x80 Would Be (1 << (Width - 1)) << (8 - Width)
+					const Type MSBMask	= (Width < 8 ? 0x80 : 1 << (Width - 1));
+					Type Poly;
+					if CONST_EXPRESSION(Width < 8) Poly = (Polynomial << (8 - Width)); else Poly = Polynomial;
+
+
+					for (TableType Dividend = 0; Dividend < TableLen; Dividend++) {
 						// Only Mirror The First 8 Bits Here, Otherwise The Left Shift Will Remove Our Bits.
 						Type Remainder = (ReflectIn ? Bitwise::BinaryReflect<Type, 8>((Type)Dividend) : (Type)Dividend);
 						
 						if CONST_EXPRESSION(Width > 8)
-							Remainder = Remainder << (Width - 8);
+							Remainder <<= (Width - 8);
 
-						for (size_t i = 0; i < 8; i++) {							
+						for (size_t i = 0; i < 8; i++) {					
+							//if CONST_EXPRESSION(Width < 8 && ReflectIn)
+							//	Remainder = Remainder & 1		? ((Remainder >> 1) ^ Poly) : (Remainder >> 1);
+							//else
+							Remainder = Remainder & MSBMask ? ((Remainder << 1) ^ Poly) : (Remainder << 1);
 							
-							if (Remainder & this->MSBMask)
-								// Hopefully The Compiler Will Optimize.
-								Remainder = (Remainder << 1) ^ (ReflectPolynomial ? Bitwise::BinaryReflect<Type, Width>(Polynomial) : Polynomial);
-							else
-								Remainder = (Remainder << 1);
 						}
 						// Reflecting The Table Item Will Have The Same Effect Of ReflectIn.
-						this->LookupTable[Dividend] = (ReflectIn ? Bitwise::BinaryReflect<Type, Width>(Remainder) : Remainder) & this->LimiterMask;
+						this->LookupTable[Dividend] = (ReflectIn ? Bitwise::BinaryReflect<Type, Width < 8 ? 8 : Width>(Remainder) : Remainder);
 					}
 				}
 
@@ -52,20 +57,19 @@ namespace BigLib {
 						this->CRC = this->LookupTable[(Data ^ (this->CRC >> (Width - 8)) & 0xFF)] ^ (this->CRC << 8);
 					else
 						// (this->CRC << 8) Becomes Zero If Width <= 8 
-						// If Width Is Less Than 8 There Will Be Problems With (Width - 8).
-						if CONST_EXPRESSION(Width < 8)
-							this->CRC = this->LookupTable[(Data ^ this->CRC) & 0xFF];
-						else
-							this->CRC = this->LookupTable[(Data ^ (this->CRC >> (Width - 8))) & 0xFF];
-					this->CRC &= this->LimiterMask;
+						// If Width Is Less Than Or Equal To 8 It Should Be Removed.
+						this->CRC = this->LookupTable[(Data ^ this->CRC) & 0xFF];
+						
+					if CONST_EXPRESSION(Width >= 8)
+						this->CRC &= this->LimiterMask;
 				}
 
 				CONST_EXPRESSION FORCE_INLINE void InversedUpdateCRC(Type Data) {
-					if CONST_EXPRESSION (Width > 8)
+					if CONST_EXPRESSION(Width > 8)
 						this->CRC = this->LookupTable[((this->CRC ^ Data) & 0xFF)] ^ (this->CRC >> 8);
 					else
 						// (this->CRC >> 8) Becomes Zero When Width Is Lower Or Equal To 8 
-						this->CRC = this->LookupTable[((this->CRC ^ Data) & 0xFF)];
+						this->CRC = this->LookupTable[(this->CRC ^ Data)];
 				}
 
 			public:
@@ -76,14 +80,26 @@ namespace BigLib {
 				Type CRC = Initial;
 
 				CONST_EXPRESSION FORCE_INLINE void ResetCRC() {
-					this->CRC = Initial;
+					if CONST_EXPRESSION(Width < 8)
+						this->CRC = (Initial << (8 - Width));
+					else
+						this->CRC = Initial;
 				}
 
 				CONST_EXPRESSION FORCE_INLINE Type GetCRC() {
-					if CONST_EXPRESSION(ReflectOut && !ReflectIn)
-						return Bitwise::BinaryReflect<Type, Width>(this->CRC ^ XOROut);
+					Type CRCOut;
+					
+					if CONST_EXPRESSION(Width < 8 && !ReflectIn)
+						CRCOut = (this->CRC >> (8 - Width));
 					else
-						return this->CRC ^ XOROut;
+						CRCOut = this->CRC;
+					
+					CRCOut ^= XOROut;
+
+					//if CONST_EXPRESSION(ReflectOut && !ReflectIn)
+					//	return Bitwise::BinaryReflect<Type, Width>(CRCOut);
+					//else
+					return CRCOut;
 				}
 
 				CONST_EXPRESSION FORCE_INLINE Type& UpdateCRC(Type Data) {
@@ -111,82 +127,102 @@ namespace BigLib {
 
 
 			// Predefined CRCs
-			//				 Type		Polynomial	RefPoly		RefIn	RefOut	Initial		XOROut Width TableLen
+			//				 Type		Polynomial	RefIn	RefOut	Initial		XOROut	Width TableLen
 
-			typedef CRC_Base<uint8_t,	0x9B,		false,		false,	false,	0xFF,		0x00> CRC_8_CDMA2000;
-			typedef CRC_Base<uint8_t,	0x9B,		false,		true,	true,	0x00,		0x00> CRC_8_WCDMA;		// Mobile Networks
-			typedef CRC_Base<uint8_t,	0xD5,		false,		false,	false,	0x00,		0x00> CRC_8_DBV_S2;		// Digital Video Broadcasting - Satellite - Second Generation (DVB-S2)
-			typedef CRC_Base<uint8_t,	0x31,		false,		true,	true,	0x00,		0x00> CRC_8_MAXIM;		// 1-Wire Bus
-			typedef CRC_Base<uint8_t,	0x39,		false,		true,	true,	0x00,		0x00> CRC_8_DARC;		// Data Channel Radio
-			typedef CRC_Base<uint8_t,	0x1D,		false,		false,	false,	0xFD,		0x00> CRC_8_I_CODE;		// Philips Semiconductors(SL2 ICS11)
-			typedef CRC_Base<uint8_t,	0x1D,		false,		true,	true,	0xFF,		0x00> CRC_8_EBU;		// AKA CRC-8/AES Or CRC-8/TECH-3250
-			typedef CRC_Base<uint8_t,	0x07,		false,		true,	true,	0xFF,		0x00> CRC_8_ROHC;
-			typedef CRC_Base<uint8_t,	0x07,		false,		false,	false,	0x00,		0x55> CRC_8_ITU;		// AKA CRC-8/I-432-1, Used As The Asynchronous Transfer Mode Header Error Control Sequence
-			typedef CRC_Base<uint8_t,	0x07,		false,		false,	false,	0x00,		0x00> CRC_8_SMBUS;		
-			typedef CRC_Base<uint8_t,	0xA7,		false,		true,	true,	0x00,		0x00> CRC_8_BLUETOOTH;	// Bluetooth Header Error Correction
-			typedef CRC_Base<uint8_t,	0x2F,		false,		false,	false,	0xFF,		0xFF> CRC_8_AUTOSAR;
-			typedef CRC_Base<uint8_t,	0x1D,		false,		false,	false,	0x00,		0x00> CRC_8_GSM_A;
-			typedef CRC_Base<uint8_t,	0x49,		false,		false,	false,	0x00,		0xFF> CRC_8_GSM_B;
-			typedef CRC_Base<uint8_t,	0x1D,		false,		false,	false,	0xFF,		0x00> CRC_8_HITAG;		// Used In RFID Applications
-			typedef CRC_Base<uint8_t,	0x1D,		false,		false,	false,	0xC7,		0x00> CRC_8_MIFARE_MAD; // NPX Semi-Conductors
-			typedef CRC_Base<uint8_t,	0x9B,		false,		false,	false,	0x00,		0x00> CRC_8_LTE;
-			typedef CRC_Base<uint8_t,	0x31,		false,		false,	false,	0xFF,		0x00> CRC_8_NRSC_5;
-			typedef CRC_Base<uint8_t,	0x2F,		false,		false,	false,	0x00,		0x00> CRC_8_OPENSAFETY;
-			typedef CRC_Base<uint8_t,	0x1D,		false,		false,	false,	0xFF,		0xFF> CRC_8_SAE_J1850;
+			typedef CRC_Base<uint8_t,	0x3,		false,	false,	0x0,		0x7,	3> CRC_3_GSM;
+			typedef CRC_Base<uint8_t,	0x3,		true,	true,	0x7,		0x0,	3> CRC_3_ROHC;
 
-			typedef CRC_Base<uint16_t,	0x233,		false,		false,	false,	0x000,		0x000,	10> CRC_10_ATM;
-			typedef CRC_Base<uint16_t,	0x3D9,		false,		false,	false,	0x3FF,		0x000,	10> CRC_10_CDMA2000;
-			typedef CRC_Base<uint16_t,	0x175,		false,		false,	false,	0x000,		0x3FF,	10> CRC_10_GSM;
+			typedef CRC_Base<uint8_t,	0x3,		true,	true,	0x0,		0x0,	4> CRC_4_G_704;
+			typedef CRC_Base<uint8_t,	0x3,		false,	false,	0xF,		0xF,	4> CRC_4_INTERLAKEN;
 
-			typedef CRC_Base<uint16_t,	0x385,		false,		false,	false,	0x01A,		0x000,	11> CRC_11_FLEXRAY;
-			typedef CRC_Base<uint16_t,	0x307,		false,		false,	false,	0x000,		0x000,	11> CRC_11_UMTS;
+			typedef CRC_Base<uint8_t,	0x09,		false,	false,	0x09,		0x00,	5> CRC_5_EPC_C1G2;
+			typedef CRC_Base<uint8_t,	0x15,		true,	true,	0x00,		0x00,	5> CRC_5_G_704;
+			typedef CRC_Base<uint8_t,	0x05,		true,	true,	0x1F,		0x1F,	5> CRC_5_USB;
+
+			typedef CRC_Base<uint8_t,	0x27,		false,	false,	0x3F,		0x00,	6> CRC_6_CDMA2000_A;
+			typedef CRC_Base<uint8_t,	0x07,		false,	false,	0x3F,		0x00,	6> CRC_6_CDMA2000_B;
+			typedef CRC_Base<uint8_t,	0x19,		true,	true,	0x00,		0x00,	6> CRC_6_DARC;
+			typedef CRC_Base<uint8_t,	0x03,		true,	true,	0x00,		0x00,	6> CRC_6_G_704;
+			typedef CRC_Base<uint8_t,	0x2F,		false,	false,	0x00,		0x3F,	6> CRC_6_GSM;
+
+			typedef CRC_Base<uint8_t,	0x09,		false,	false,	0x00,		0x00,	7> CRC_7_MMC;
+			typedef CRC_Base<uint8_t,	0x4F,		true,	true,	0x7F,		0x00,	7> CRC_7_ROHC;
+			typedef CRC_Base<uint8_t,	0x45,		false,	false,	0x00,		0x00,	7> CRC_7_UMTS;
+
+			typedef CRC_Base<uint8_t,	0x9B,		false,	false,	0xFF,		0x00> CRC_8_CDMA2000;
+			typedef CRC_Base<uint8_t,	0x9B,		true,	true,	0x00,		0x00> CRC_8_WCDMA;		// Mobile Networks
+			typedef CRC_Base<uint8_t,	0xD5,		false,	false,	0x00,		0x00> CRC_8_DBV_S2;		// Digital Video Broadcasting - Satellite - Second Generation (DVB-S2)
+			typedef CRC_Base<uint8_t,	0x31,		true,	true,	0x00,		0x00> CRC_8_MAXIM;		// 1-Wire Bus
+			typedef CRC_Base<uint8_t,	0x39,		true,	true,	0x00,		0x00> CRC_8_DARC;		// Data Channel Radio
+			typedef CRC_Base<uint8_t,	0x1D,		false,	false,	0xFD,		0x00> CRC_8_I_CODE;		// Philips Semiconductors(SL2 ICS11)
+			typedef CRC_Base<uint8_t,	0x1D,		true,	true,	0xFF,		0x00> CRC_8_EBU;		// AKA CRC-8/AES Or CRC-8/TECH-3250
+			typedef CRC_Base<uint8_t,	0x07,		true,	true,	0xFF,		0x00> CRC_8_ROHC;
+			typedef CRC_Base<uint8_t,	0x07,		false,	false,	0x00,		0x55> CRC_8_ITU;		// AKA CRC-8/I-432-1, Used As The Asynchronous Transfer Mode Header Error Control Sequence
+			typedef CRC_Base<uint8_t,	0x07,		false,	false,	0x00,		0x00> CRC_8_SMBUS;		
+			typedef CRC_Base<uint8_t,	0xA7,		true,	true,	0x00,		0x00> CRC_8_BLUETOOTH;	// Bluetooth Header Error Correction
+			typedef CRC_Base<uint8_t,	0x2F,		false,	false,	0xFF,		0xFF> CRC_8_AUTOSAR;
+			typedef CRC_Base<uint8_t,	0x1D,		false,	false,	0x00,		0x00> CRC_8_GSM_A;
+			typedef CRC_Base<uint8_t,	0x49,		false,	false,	0x00,		0xFF> CRC_8_GSM_B;
+			typedef CRC_Base<uint8_t,	0x1D,		false,	false,	0xFF,		0x00> CRC_8_HITAG;		// Used In RFID Applications
+			typedef CRC_Base<uint8_t,	0x1D,		false,	false,	0xC7,		0x00> CRC_8_MIFARE_MAD; // NPX Semi-Conductors
+			typedef CRC_Base<uint8_t,	0x9B,		false,	false,	0x00,		0x00> CRC_8_LTE;
+			typedef CRC_Base<uint8_t,	0x31,		false,	false,	0xFF,		0x00> CRC_8_NRSC_5;
+			typedef CRC_Base<uint8_t,	0x2F,		false,	false,	0x00,		0x00> CRC_8_OPENSAFETY;
+			typedef CRC_Base<uint8_t,	0x1D,		false,	false,	0xFF,		0xFF> CRC_8_SAE_J1850;
+
+			typedef CRC_Base<uint16_t,	0x233,		false,	false,	0x000,		0x000,	10> CRC_10_ATM;
+			typedef CRC_Base<uint16_t,	0x3D9,		false,	false,	0x3FF,		0x000,	10> CRC_10_CDMA2000;
+			typedef CRC_Base<uint16_t,	0x175,		false,	false,	0x000,		0x3FF,	10> CRC_10_GSM;
+
+			typedef CRC_Base<uint16_t,	0x385,		false,	false,	0x01A,		0x000,	11> CRC_11_FLEXRAY;
+			typedef CRC_Base<uint16_t,	0x307,		false,	false,	0x000,		0x000,	11> CRC_11_UMTS;
 			
-			typedef CRC_Base<uint16_t,	0xF13,		false,		false,	false,	0xFFF,		0x000,	12> CRC_12_CDMA2000;
-			typedef CRC_Base<uint16_t,	0x80F,		false,		false,	false,	0x000,		0x000,	12> CRC_12_DECT;
-			typedef CRC_Base<uint16_t,	0xD31,		false,		false,	false,	0x000,		0xFFF,	12> CRC_12_GSM;
-			typedef CRC_Base<uint16_t,	0x80F,		false,		false,	true,	0x000,		0x000,	12> CRC_12_UMTS;
+			typedef CRC_Base<uint16_t,	0xF13,		false,	false,	0xFFF,		0x000,	12> CRC_12_CDMA2000;
+			typedef CRC_Base<uint16_t,	0x80F,		false,	false,	0x000,		0x000,	12> CRC_12_DECT;
+			typedef CRC_Base<uint16_t,	0xD31,		false,	false,	0x000,		0xFFF,	12> CRC_12_GSM;
+			typedef CRC_Base<uint16_t,	0x80F,		false,	true,	0x000,		0x000,	12> CRC_12_UMTS;
 
-			typedef CRC_Base<uint16_t,	0x1CF5,		false,		false,	false,	0x0000,		0x0000,	13> CRC_13_BBC;
+			typedef CRC_Base<uint16_t,	0x1CF5,		false,	false,	0x0000,		0x0000,	13> CRC_13_BBC;
 			
-			typedef CRC_Base<uint16_t,	0x0805,		false,		true,	true,	0x0000,		0x0000,	14> CRC_14_DARC;
-			typedef CRC_Base<uint16_t,	0x202D,		false,		false,	false,	0x0000,		0x3FFF,	14> CRC_14_GSM;
+			typedef CRC_Base<uint16_t,	0x0805,		true,	true,	0x0000,		0x0000,	14> CRC_14_DARC;
+			typedef CRC_Base<uint16_t,	0x202D,		false,	false,	0x0000,		0x3FFF,	14> CRC_14_GSM;
 
-			typedef CRC_Base<uint16_t,	0x4599,		false,		false,	false,	0x0000,		0x0000,	15> CRC_15_CAN;
-			typedef CRC_Base<uint16_t,	0x6815,		false,		false,	false,	0x0000,		0x0001,	15> CRC_15_MPT1327;
+			typedef CRC_Base<uint16_t,	0x4599,		false,	false,	0x0000,		0x0000,	15> CRC_15_CAN;
+			typedef CRC_Base<uint16_t,	0x6815,		false,	false,	0x0000,		0x0001,	15> CRC_15_MPT1327;
 
-			typedef CRC_Base<uint16_t,	0x8005,		false,		true,	true,	0x0000,		0x0000> CRC_16_ARC;
-			typedef CRC_Base<uint16_t,	0xC867,		false,		false,	false,	0xFFFF,		0x0000> CRC_16_CDMA2000;
-			typedef CRC_Base<uint16_t,	0x8005,		false,		false,	false,	0xFFFF,		0x0000> CRC_16_CMS;
-			typedef CRC_Base<uint16_t,	0x8005,		false,		false,	false,	0x800D,		0x0000> CRC_16_DDS_110;
-			typedef CRC_Base<uint16_t,	0x0589,		false,		false,	false,	0x0000,		0x0001> CRC_16_DECT_R;
-			typedef CRC_Base<uint16_t,	0x0589,		false,		false,	false,	0x0000,		0x0000> CRC_16_DECT_X;
-			typedef CRC_Base<uint16_t,	0x3D65,		false,		true,	true,	0x0000,		0xFFFF> CRC_16_DNP;
-			typedef CRC_Base<uint16_t,	0x3D65,		false,		false,	false,	0x0000,		0xFFFF> CRC_16_EN_13757;
-			typedef CRC_Base<uint16_t,	0x1021,		false,		false,	false,	0xFFFF,		0xFFFF> CRC_16_GENIBUS;
-			typedef CRC_Base<uint16_t,	0x1021,		false,		false,	false,	0x0000,		0xFFFF> CRC_16_GSM;
-			typedef CRC_Base<uint16_t,	0x1021,		false,		false,	false,	0xFFFF,		0x0000> CRC_16_IBM_3740;
-			typedef CRC_Base<uint16_t,	0x1021,		false,		true,	true,	0xFFFF,		0xFFFF> CRC_16_IBM_SDLC;
-			typedef CRC_Base<uint16_t,	0x1021,		false,		true,	true,	0x6363,		0x0000> CRC_16_ISO_IEC_14443_3_A;
-			typedef CRC_Base<uint16_t,	0x1021,		false,		true,	true,	0x0000,		0x0000> CRC_16_KERMIT;
-			typedef CRC_Base<uint16_t,	0x6F63,		false,		false,	false,	0x0000,		0x0000> CRC_16_LJ1200;
-			typedef CRC_Base<uint16_t,	0x5935,		false,		false,	false,	0xFFFF,		0x0000> CRC_16_M17;
-			typedef CRC_Base<uint16_t,	0x8005,		false,		true,	true,	0x0000,		0xFFFF> CRC_16_MAXIM_DOW;
-			typedef CRC_Base<uint16_t,	0x1021,		false,		true,	true,	0xFFFF,		0x0000> CRC_16_MCRF4XX;
-			typedef CRC_Base<uint16_t,	0x8005,		false,		true,	true,	0xFFFF,		0x0000> CRC_16_MODBUS;
-			typedef CRC_Base<uint16_t,	0x080B,		false,		true,	true,	0xFFFF,		0x0000> CRC_16_NRSC_5;
-			typedef CRC_Base<uint16_t,	0x5935,		false,		false,	false,	0x0000,		0x0000> CRC_16_OPENSAFETY_A;
-			typedef CRC_Base<uint16_t,	0x755B,		false,		false,	false,	0x0000,		0x0000> CRC_16_OPENSAFETY_B;
-			typedef CRC_Base<uint16_t,	0x1DCF,		false,		false,	false,	0xFFFF,		0xFFFF> CRC_16_PROFIBUS;
-			typedef CRC_Base<uint16_t,	0x1021,		false,		true,	true,	0x554D,		0x0000> CRC_16_RIELLO;
-			typedef CRC_Base<uint16_t,	0x1021,		false,		false,	false,	0x1D0F,		0x0000> CRC_16_SPI_FUJITSU;
-			typedef CRC_Base<uint16_t,	0x8BB7,		false,		false,	false,	0x0000,		0x0000> CRC_16_T10_DIF;
-			typedef CRC_Base<uint16_t,	0xA097,		false,		false,	false,	0x0000,		0x0000> CRC_16_TELEDISK;
-			typedef CRC_Base<uint16_t,	0x1021,		false,		true,	true,	0x3791,		0x0000> CRC_16_TMS37157;
-			typedef CRC_Base<uint16_t,	0x8005,		false,		false,	false,	0x0000,		0x0000> CRC_16_UMTS;
-			typedef CRC_Base<uint16_t,	0x8005,		false,		true,	true,	0xFFFF,		0xFFFF> CRC_16_USB;
-			typedef CRC_Base<uint16_t,	0x1021,		false,		false,	false,	0x0000,		0x0000> CRC_16_XMODEM;
+			typedef CRC_Base<uint16_t,	0x8005,		true,	true,	0x0000,		0x0000> CRC_16_ARC;
+			typedef CRC_Base<uint16_t,	0xC867,		false,	false,	0xFFFF,		0x0000> CRC_16_CDMA2000;
+			typedef CRC_Base<uint16_t,	0x8005,		false,	false,	0xFFFF,		0x0000> CRC_16_CMS;
+			typedef CRC_Base<uint16_t,	0x8005,		false,	false,	0x800D,		0x0000> CRC_16_DDS_110;
+			typedef CRC_Base<uint16_t,	0x0589,		false,	false,	0x0000,		0x0001> CRC_16_DECT_R;
+			typedef CRC_Base<uint16_t,	0x0589,		false,	false,	0x0000,		0x0000> CRC_16_DECT_X;
+			typedef CRC_Base<uint16_t,	0x3D65,		true,	true,	0x0000,		0xFFFF> CRC_16_DNP;
+			typedef CRC_Base<uint16_t,	0x3D65,		false,	false,	0x0000,		0xFFFF> CRC_16_EN_13757;
+			typedef CRC_Base<uint16_t,	0x1021,		false,	false,	0xFFFF,		0xFFFF> CRC_16_GENIBUS;
+			typedef CRC_Base<uint16_t,	0x1021,		false,	false,	0x0000,		0xFFFF> CRC_16_GSM;
+			typedef CRC_Base<uint16_t,	0x1021,		false,	false,	0xFFFF,		0x0000> CRC_16_IBM_3740;
+			typedef CRC_Base<uint16_t,	0x1021,		true,	true,	0xFFFF,		0xFFFF> CRC_16_IBM_SDLC;
+			typedef CRC_Base<uint16_t,	0x1021,		true,	true,	0x6363,		0x0000> CRC_16_ISO_IEC_14443_3_A;
+			typedef CRC_Base<uint16_t,	0x1021,		true,	true,	0x0000,		0x0000> CRC_16_KERMIT;
+			typedef CRC_Base<uint16_t,	0x6F63,		false,	false,	0x0000,		0x0000> CRC_16_LJ1200;
+			typedef CRC_Base<uint16_t,	0x5935,		false,	false,	0xFFFF,		0x0000> CRC_16_M17;
+			typedef CRC_Base<uint16_t,	0x8005,		true,	true,	0x0000,		0xFFFF> CRC_16_MAXIM_DOW;
+			typedef CRC_Base<uint16_t,	0x1021,		true,	true,	0xFFFF,		0x0000> CRC_16_MCRF4XX;
+			typedef CRC_Base<uint16_t,	0x8005,		true,	true,	0xFFFF,		0x0000> CRC_16_MODBUS;
+			typedef CRC_Base<uint16_t,	0x080B,		true,	true,	0xFFFF,		0x0000> CRC_16_NRSC_5;
+			typedef CRC_Base<uint16_t,	0x5935,		false,	false,	0x0000,		0x0000> CRC_16_OPENSAFETY_A;
+			typedef CRC_Base<uint16_t,	0x755B,		false,	false,	0x0000,		0x0000> CRC_16_OPENSAFETY_B;
+			typedef CRC_Base<uint16_t,	0x1DCF,		false,	false,	0xFFFF,		0xFFFF> CRC_16_PROFIBUS;
+			typedef CRC_Base<uint16_t,	0x1021,		true,	true,	0x554D,		0x0000> CRC_16_RIELLO;
+			typedef CRC_Base<uint16_t,	0x1021,		false,	false,	0x1D0F,		0x0000> CRC_16_SPI_FUJITSU;
+			typedef CRC_Base<uint16_t,	0x8BB7,		false,	false,	0x0000,		0x0000> CRC_16_T10_DIF;
+			typedef CRC_Base<uint16_t,	0xA097,		false,	false,	0x0000,		0x0000> CRC_16_TELEDISK;
+			typedef CRC_Base<uint16_t,	0x1021,		true,	true,	0x3791,		0x0000> CRC_16_TMS37157;
+			typedef CRC_Base<uint16_t,	0x8005,		false,	false,	0x0000,		0x0000> CRC_16_UMTS;
+			typedef CRC_Base<uint16_t,	0x8005,		true,	true,	0xFFFF,		0xFFFF> CRC_16_USB;
+			typedef CRC_Base<uint16_t,	0x1021,		false,	false,	0x0000,		0x0000> CRC_16_XMODEM;
 
-			typedef CRC_Base<uint32_t,	0x04C11DB7, false,		true,	true,	0xFFFFFFFF, 0xFFFFFFFF> CRC_32;
+			typedef CRC_Base<uint32_t,	0x04C11DB7, true,	true,	0xFFFFFFFF, 0xFFFFFFFF> CRC_32;
 		}
 	}
 }

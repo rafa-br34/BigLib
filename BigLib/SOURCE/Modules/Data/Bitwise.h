@@ -30,6 +30,7 @@ namespace BigLib {
 		template<typename Type, const size_t Size=SIZEOF_BITS(Type)>
 		CONST_EXPRESSION FORCE_INLINE Type BinaryReflect(Type X) {
 			Type Result = 0;
+			// TODO: Alot Of Room For Optimization.
 			
 #if APPROACH__BINARYREFLECT == 1 || APPROACH__BINARYREFLECT == 2
 			for (size_t i = 0; i < Size; i++)
