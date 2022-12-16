@@ -33,22 +33,17 @@ namespace BigLib {
 					if CONST_EXPRESSION(Width < 8) Poly = (Polynomial << (8 - Width)); else Poly = Polynomial;
 
 
-					for (TableType Dividend = 0; Dividend < TableLen; Dividend++) {
+					for (TableType B = 0; B < TableLen; B++) {
 						// Only Mirror The First 8 Bits Here, Otherwise The Left Shift Will Remove Our Bits.
-						Type Remainder = (ReflectIn ? Bitwise::BinaryReflect<Type, 8>((Type)Dividend) : (Type)Dividend);
+						Type Remainder = (ReflectIn ? Bitwise::BinaryReflect<Type, 8>((Type)B) : (Type)B);
 						
-						if CONST_EXPRESSION(Width > 8)
-							Remainder <<= (Width - 8);
+						if CONST_EXPRESSION(Width > 8) Remainder <<= (Width - 8);
 
-						for (size_t i = 0; i < 8; i++) {					
-							//if CONST_EXPRESSION(Width < 8 && ReflectIn)
-							//	Remainder = Remainder & 1		? ((Remainder >> 1) ^ Poly) : (Remainder >> 1);
-							//else
+						for (size_t i = 0; i < 8; i++)
 							Remainder = Remainder & MSBMask ? ((Remainder << 1) ^ Poly) : (Remainder << 1);
 							
-						}
 						// Reflecting The Table Item Will Have The Same Effect Of ReflectIn.
-						this->LookupTable[Dividend] = (ReflectIn ? Bitwise::BinaryReflect<Type, Width < 8 ? 8 : Width>(Remainder) : Remainder);
+						this->LookupTable[B] = (ReflectIn ? Bitwise::BinaryReflect<Type, Width < 8 ? 8 : Width>(Remainder) : Remainder);
 					}
 				}
 
@@ -88,7 +83,6 @@ namespace BigLib {
 
 				CONST_EXPRESSION FORCE_INLINE Type GetCRC() {
 					Type CRCOut;
-					
 					if CONST_EXPRESSION(Width < 8 && !ReflectIn)
 						CRCOut = (this->CRC >> (8 - Width));
 					else
@@ -96,10 +90,10 @@ namespace BigLib {
 					
 					CRCOut ^= XOROut;
 
-					//if CONST_EXPRESSION(ReflectOut && !ReflectIn)
-					//	return Bitwise::BinaryReflect<Type, Width>(CRCOut);
-					//else
-					return CRCOut;
+					if CONST_EXPRESSION(ReflectOut && !ReflectIn)
+						return Bitwise::BinaryReflect<Type, Width>(CRCOut);
+					else
+						return CRCOut;
 				}
 
 				CONST_EXPRESSION FORCE_INLINE Type& UpdateCRC(Type Data) {
