@@ -1,7 +1,6 @@
 #pragma once
 #include "../../../Includes.h"
 
-/*
 static char AsciiDict[] =
 "abcdefghijklmnopqrstuvwxyz"
 "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -43,4 +42,3 @@ namespace BigLib {
 		}
 	}
 }
-*/

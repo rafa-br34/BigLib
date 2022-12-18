@@ -63,7 +63,7 @@ void TestList() {
 		List.PushBack(i * 10);
 
 	for (size_t i = 0; i < List.Size(); i++) {
-		std::cout << i + 1 << " : " << (size_t)List[i] << '\n';
+		std::cout << i << " : " << (size_t)List[i] << '\n';
 	}
 }
 
@@ -201,6 +201,17 @@ void _TEST_CRC(BigLib::Crypts::CRC::CRC_Base<Type, Polynomial, ReflectIn, Reflec
 		0xFEE8, // 16 UMTS
 		0xB4C8, // 16 USB
 		0x31C3, // 16 XMODEM
+
+		0x04F03, // 17 CAN-FD
+		0x0ED841, // 21 CAN-FD
+		0xC25A56, // 24 BLE
+		0x7979BD, // 24 FLEXRAY A
+		0x1F23B8, // 24 FLEXRAY B
+		0xB4F3E6, // 24 INTERLAKEN
+		0xCDE703, // 24 LTE-A
+		0x23EF52, // 24 LTE-B
+		0x21CF02, // 24 OPENPGP
+		0x200FA5, // 24 OS-9
 	};
 	const char* AlgoNames[] = {
 		"3 GSM",
@@ -284,6 +295,17 @@ void _TEST_CRC(BigLib::Crypts::CRC::CRC_Base<Type, Polynomial, ReflectIn, Reflec
 		"16 UMTS",
 		"16 USB",
 		"16 XMODEM",
+
+		"17 CAN-FD",
+		"21 CAN-FD",
+		"24 BLE",
+		"24 FLEXRAY A",
+		"24 FLEXRAY B",
+		"24 INTERLAKEN",
+		"24 LTE-A",
+		"24 LTE-B",
+		"24 OPENPGP",
+		"24 OS-9",
 	};
 
 	
@@ -303,7 +325,10 @@ void _TEST_CRC(BigLib::Crypts::CRC::CRC_Base<Type, Polynomial, ReflectIn, Reflec
 	delete[] CRCClass;
 }
 
-void TEST_CRCs() {
+float TEST_CRCs() {
+	std::cout << "Begining CRC Test\n";
+	_TEST_CRC_I = 0;
+	_TEST_CRC_PASS = 0;
 	// Not Optimal But Will Do The Job.
 	_TEST_CRC(new BigLib::Crypts::CRC::CRC_3_GSM());
 	_TEST_CRC(new BigLib::Crypts::CRC::CRC_3_ROHC());
@@ -394,23 +419,59 @@ void TEST_CRCs() {
 	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_USB());
 	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_XMODEM());
 
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_17_CAN_FD());
 
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_21_CAN_FD());
+
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_24_BLE());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_24_FLEXRAY_A());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_24_FLEXRAY_B());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_24_INTERLAKEN());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_24_LTE_A());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_24_LTE_B());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_24_OPENPGP());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_24_OS_9());
 
 	if (_TEST_CRC_PASS != _TEST_CRC_I)
 		std::cout << _TEST_CRC_PASS << " Out Of " << _TEST_CRC_I << " CRCs Passed" << std::endl;
 	else
 		std::cout << "All " << _TEST_CRC_PASS << " CRCs Passed" << std::endl;
+
+	std::cout << "CRC Test Finished\n";
+	return ((float)_TEST_CRC_PASS / (float)_TEST_CRC_I) * 100.f;
 }
 
 
+void LIB_TEST() {
+	float Stability[] = {
+		TEST_CRCs()
+	};
+	size_t TestCount = sizeof(Stability) / sizeof(float);
+
+	size_t Fails = 0;
+	size_t Unsuccessful = 0;
+	for (size_t i = 0; i < TestCount; i++) {
+		if (Stability[i] == 0.f) Fails++; else if (Stability[i] != 100.f) Unsuccessful++;
+	}
+
+	std::cout << TestCount << " Tests Where Ran";
+	if (Fails != 0)
+		std::cout << " " << Fails << " Tests Failed";
+	if (Unsuccessful != 0)
+		std::cout << " " << Unsuccessful << " Tests Where Unsuccessful.";
+	
+	std::cout << "\nLibrary Stability: " << BigLib::Math::Average(Stability, TestCount) << "%\n";
+}
+
 
 int main() {
+	LIB_TEST();
 	//TestThreadPool();
-	//TestList();
+	TestList();
 	//TestPRNGs();
 	//return 0;
 	//std::cout << (size_t)BigLib::Bitwise::BinaryReflect<uint8_t>(0xF1) << '\n';
-	TEST_CRCs();
+
 	/*
 	{
 		BigLib::Crypts::CRC::CRC_Base<uint8_t, 0x03, false, false, 0xF, 0xF, 4> CRCTest = {};

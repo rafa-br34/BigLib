@@ -216,6 +216,19 @@ namespace BigLib {
 			typedef CRC_Base<uint16_t,	0x8005,		true,	true,	0xFFFF,		0xFFFF> CRC_16_USB;
 			typedef CRC_Base<uint16_t,	0x1021,		false,	false,	0x0000,		0x0000> CRC_16_XMODEM;
 
+			typedef CRC_Base<uint32_t,	0x1685B,	false,	false,	0x00000,	0x00000,	17> CRC_17_CAN_FD;
+
+			typedef CRC_Base<uint32_t,	0x102899,	false,	false,	0x000000,	0x000000,	21> CRC_21_CAN_FD;
+
+			typedef CRC_Base<uint32_t,	0x00065B,	true,	true,	0x555555,	0x000000,	24> CRC_24_BLE;
+			typedef CRC_Base<uint32_t,	0x5D6DCB,	false,	false,	0xFEDCBA,	0x000000,	24> CRC_24_FLEXRAY_A;
+			typedef CRC_Base<uint32_t,	0x5D6DCB,	false,	false,	0xABCDEF,	0x000000,	24> CRC_24_FLEXRAY_B;
+			typedef CRC_Base<uint32_t,	0x328B63,	false,	false,	0xFFFFFF,	0xFFFFFF,	24> CRC_24_INTERLAKEN;
+			typedef CRC_Base<uint32_t,	0x864CFB,	false,	false,	0x000000,	0x000000,	24> CRC_24_LTE_A;
+			typedef CRC_Base<uint32_t,	0x800063,	false,	false,	0x000000,	0x000000,	24> CRC_24_LTE_B;
+			typedef CRC_Base<uint32_t,	0x864CFB,	false,	false,	0xB704CE,	0x000000,	24> CRC_24_OPENPGP;
+			typedef CRC_Base<uint32_t,	0x800063,	false,	false,	0xFFFFFF,	0xFFFFFF,	24> CRC_24_OS_9;
+
 			typedef CRC_Base<uint32_t,	0x04C11DB7, true,	true,	0xFFFFFFFF, 0xFFFFFFFF> CRC_32;
 		}
 	}
