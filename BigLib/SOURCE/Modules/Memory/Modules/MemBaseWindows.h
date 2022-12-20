@@ -12,132 +12,110 @@
 #define RET_FAILEX(Statement, Extras, Return) if (Statement) { Extras; return Return; }
 
 namespace BigLib {
-	namespace Software {
-		namespace Memory {
-			HANDLE DefaultProcess = GetCurrentProcess();
+	namespace Memory {
+		extern HANDLE DefaultProcess;
 
-			class MemoryProtection {
-			public:
-				uintptr_t	Address = 0;
-				size_t		Size = 0;
+		class MemoryProtection {
+		public:
+			uintptr_t	Address = 0;
+			size_t		Size = 0;
 
-				MemoryProtection()
-					: Address()
-					, Size()
-				{}
+			MemoryProtection()
+				: Address()
+				, Size()
+			{}
 
-				MemoryProtection(void* InitialAddress, size_t InitialSize)
-					: Address((uintptr_t)InitialAddress)
-					, Size(InitialSize)
-				{}
+			MemoryProtection(void* InitialAddress, size_t InitialSize)
+				: Address((uintptr_t)InitialAddress)
+				, Size(InitialSize)
+			{}
 
-				MemoryProtection(uintptr_t InitialAddress, size_t InitialSize)
-					: Address(InitialAddress)
-					, Size(InitialSize)
-				{}
-
-				
-
-				INLINE bool SetProtection(DWORD NewProtection, HANDLE Process = DefaultProcess) {
-					return VirtualProtectEx(Process, (LPVOID)this->Address, this->Size, NewProtection, &this->LastProtection);
-				}
-
-				INLINE bool OldProtection(HANDLE Process = DefaultProcess) {
-					return VirtualProtectEx(Process, (LPVOID)this->Address, this->Size, this->LastProtection, &this->LastProtection);
-				}
-
-			private:
-				DWORD LastProtection = 0;
-			};
+			MemoryProtection(uintptr_t InitialAddress, size_t InitialSize)
+				: Address(InitialAddress)
+				, Size(InitialSize)
+			{}
 
 
-			bool PatchAddress(void* Address, uint8_t* Data, size_t Size, bool OverwriteProtection) {
-				Memory::MemoryProtection Protect(Address, Size);
 
-				if (OverwriteProtection)
-					RET_FAIL(!Protect.SetProtection(PAGE_EXECUTE_READWRITE), false);
-
-				RET_FAILEX(
-					!WriteProcessMemory(DefaultProcess, Address, Data, Size, nullptr),
-					Protect.OldProtection(),
-					false
-				);
-				
-				if (OverwriteProtection)
-					RET_FAIL(!Protect.OldProtection(), false);
-
-				return true;
+			INLINE bool SetProtection(DWORD NewProtection, HANDLE Process = DefaultProcess) {
+				return VirtualProtectEx(Process, (LPVOID)this->Address, this->Size, NewProtection, &this->LastProtection);
 			}
 
-			bool ReadAddress(void* Address, uint8_t* Buffer, size_t Size, bool OverwriteProtection) {
-				Memory::MemoryProtection Protect(Address, Size);
-
-				if (OverwriteProtection)
-					RET_FAIL(!Protect.SetProtection(PAGE_EXECUTE_READWRITE), false);
-
-				RET_FAILEX(
-					!ReadProcessMemory(DefaultProcess, Address, Buffer, Size, nullptr),
-					Protect.OldProtection(),
-					false
-				);
-
-				if (OverwriteProtection)
-					RET_FAIL(!Protect.OldProtection(), false);
-
-				return true;
+			INLINE bool OldProtection(HANDLE Process = DefaultProcess) {
+				return VirtualProtectEx(Process, (LPVOID)this->Address, this->Size, this->LastProtection, &this->LastProtection);
 			}
 
-			uint8_t* ReadAddress(void* Address, size_t Size, bool OverwriteProtection) {
-				Memory::MemoryProtection Protect(Address, Size);
-
-				if (OverwriteProtection)
-					RET_FAIL(!Protect.SetProtection(PAGE_EXECUTE_READWRITE), nullptr);
-
-				uint8_t* NewMemory = ALLOCATE(uint8_t, Size);
-				RET_FAILEX(
-					!ReadProcessMemory(DefaultProcess, Address, NewMemory, Size, nullptr),
-					FREE(NewMemory);  Protect.OldProtection(),
-					nullptr
-				);
-
-				if (OverwriteProtection)
-					RET_FAILEX(!Protect.OldProtection(), FREE(NewMemory), nullptr);
-
-				return NewMemory;
-			}
-
-			template <typename Class>
-			Class ReadValue(void* Address, bool OverwriteProtection) {
-				Class Return = {};
-				ReadAddress(Address, &Return, sizeof(Return), OverwriteProtection);
-				return Return;
-			}
-
-			NO_INLINE bool IsAddressReadable(void* Address, size_t Size) {
-				MEMORY_BASIC_INFORMATION MemBasicInfo = {};
-				SIZE_T ReadedBytes = VirtualQuery(
-					(LPCVOID)Address,
-					&MemBasicInfo,
-					sizeof(MemBasicInfo)
-				);
+		private:
+			DWORD LastProtection = 0;
+		};
 
 
-				RET_FAIL(
-					(ReadedBytes == 0 || MemBasicInfo.State != MEM_COMMIT || MemBasicInfo.Protect == PAGE_NOACCESS || MemBasicInfo.Protect & PAGE_GUARD || MemBasicInfo.Protect == 0),
-					false
-				);
+		INLINE bool PatchAddress(void* Address, uint8_t* Data, size_t Size, bool OverwriteProtection) {
+			Memory::MemoryProtection Protect(Address, Size);
 
-				auto ReadEnd = OFFSET(Address, Size);
-				auto PageEnd = OFFSET(MemBasicInfo.BaseAddress, MemBasicInfo.RegionSize);
+			if (OverwriteProtection)
+				RET_FAIL(!Protect.SetProtection(PAGE_EXECUTE_READWRITE), false);
 
-				// Use Recursion To Check Next Page If Needed
-				if (ReadEnd > PageEnd)
-					return IsAddressReadable(PageEnd, (size_t)ReadEnd);
+			RET_FAILEX(
+				!WriteProcessMemory(DefaultProcess, Address, Data, Size, nullptr),
+				Protect.OldProtection(),
+				false
+			);
 
-				return true;
-			}
+			if (OverwriteProtection)
+				RET_FAIL(!Protect.OldProtection(), false);
+
+			return true;
 		}
+
+		INLINE bool ReadAddress(void* Address, uint8_t* Buffer, size_t Size, bool OverwriteProtection) {
+			Memory::MemoryProtection Protect(Address, Size);
+
+			if (OverwriteProtection)
+				RET_FAIL(!Protect.SetProtection(PAGE_EXECUTE_READWRITE), false);
+
+			RET_FAILEX(
+				!ReadProcessMemory(DefaultProcess, Address, Buffer, Size, nullptr),
+				Protect.OldProtection(),
+				false
+			);
+
+			if (OverwriteProtection)
+				RET_FAIL(!Protect.OldProtection(), false);
+
+			return true;
+		}
+
+		INLINE uint8_t* ReadAddress(void* Address, size_t Size, bool OverwriteProtection) {
+			Memory::MemoryProtection Protect(Address, Size);
+
+			if (OverwriteProtection)
+				RET_FAIL(!Protect.SetProtection(PAGE_EXECUTE_READWRITE), nullptr);
+
+			uint8_t* NewMemory = ALLOCATE(uint8_t, Size);
+			RET_FAILEX(
+				!ReadProcessMemory(DefaultProcess, Address, NewMemory, Size, nullptr),
+				FREE(NewMemory);  Protect.OldProtection(),
+				nullptr
+			);
+
+			if (OverwriteProtection)
+				RET_FAILEX(!Protect.OldProtection(), FREE(NewMemory), nullptr);
+
+			return NewMemory;
+		}
+
+		template <typename Class>
+		INLINE Class ReadValue(void* Address, bool OverwriteProtection) {
+			Class Return = {};
+			ReadAddress(Address, &Return, sizeof(Return), OverwriteProtection);
+			return Return;
+		}
+
+
+		NO_INLINE bool IsAddressReadable(void* Address, size_t Size);
 	}
+
 }
 
 

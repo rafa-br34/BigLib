@@ -1,10 +1,10 @@
 #include <iostream>
 #include <iomanip>
-#include "BigLib.h"
-
+#include "../SOURCE/BigLib.h"
+#include "Example.h"
 
 template<typename Type>
-void PrintList(Type* List, size_t ListSize, size_t Separate=8, size_t Padding=(sizeof(Type) * 2)) {
+void PrintList(Type* List, size_t ListSize, size_t Separate = 8, size_t Padding = (sizeof(Type) * 2)) {
 	for (size_t i = 0; i < ListSize; i++) {
 		if (i % Separate == 0)
 			std::cout << '\n';
@@ -31,7 +31,7 @@ void TestThreadPool() {
 			while (Tsk.Type > 0) {
 				Tsk.Type--;
 			}
-			std::cout << "Done";
+		std::cout << "Done";
 			});
 	}
 
@@ -44,7 +44,7 @@ void TestThreadPool() {
 		ThreadPool.TaskList.PushTask(Tsk);
 	}
 
-	
+
 
 	while (ThreadPool.TaskList.TaskCount() > 0) {
 		Sleep(1);
@@ -57,7 +57,7 @@ void TestList() {
 
 	for (uint8_t i = 1; i <= 10; i++)
 		List.PushFront(i * 10);
-	
+
 	//List.Move(0, 10, 1, true);
 	for (uint8_t i = 1; i <= 10; i++)
 		List.PushBack(i * 10);
@@ -117,7 +117,7 @@ template<
 void _TEST_CRC(BigLib::Crypts::CRC::CRC_Base<Type, Polynomial, ReflectIn, ReflectOut, Initial, XOROut, Width, TableLen>* CRCClass) {
 	const char* Data = "123456789";
 	size_t DataLen = 9;
-	
+
 
 	uint64_t Results[] = {
 		0x4, // 3 GSM
@@ -308,7 +308,7 @@ void _TEST_CRC(BigLib::Crypts::CRC::CRC_Base<Type, Polynomial, ReflectIn, Reflec
 		"24 OS-9",
 	};
 
-	
+
 	CRCClass->UpdateCRC(Data, DataLen);
 	auto CRC = (uint64_t)CRCClass->GetCRC();
 	if (CRC != Results[_TEST_CRC_I]) {
@@ -319,7 +319,7 @@ void _TEST_CRC(BigLib::Crypts::CRC::CRC_Base<Type, Polynomial, ReflectIn, Reflec
 		std::cout << AlgoNames[_TEST_CRC_I] << " Passed" << std::endl;
 		_TEST_CRC_PASS++;
 	}
-		
+
 	_TEST_CRC_I++;
 
 	delete[] CRCClass;
@@ -345,7 +345,7 @@ float TEST_CRCs() {
 	_TEST_CRC(new BigLib::Crypts::CRC::CRC_7_MMC());
 	_TEST_CRC(new BigLib::Crypts::CRC::CRC_7_ROHC());
 	_TEST_CRC(new BigLib::Crypts::CRC::CRC_7_UMTS());
-	
+
 	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_CDMA2000());
 	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_WCDMA());
 	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_DBV_S2());
@@ -383,7 +383,7 @@ float TEST_CRCs() {
 
 	_TEST_CRC(new BigLib::Crypts::CRC::CRC_14_DARC());
 	_TEST_CRC(new BigLib::Crypts::CRC::CRC_14_GSM());
-	
+
 	_TEST_CRC(new BigLib::Crypts::CRC::CRC_15_CAN());
 	_TEST_CRC(new BigLib::Crypts::CRC::CRC_15_MPT1327());
 
@@ -459,11 +459,12 @@ void LIB_TEST() {
 		std::cout << " " << Fails << " Tests Failed";
 	if (Unsuccessful != 0)
 		std::cout << " " << Unsuccessful << " Tests Where Unsuccessful.";
-	
+
 	std::cout << "\nLibrary Stability: " << BigLib::Math::Average(Stability, TestCount) << "%\n";
 }
 
 
+#if EXAMPLE_SELECTOR == 0
 int main() {
 	LIB_TEST();
 	//TestThreadPool();
@@ -479,15 +480,15 @@ int main() {
 		auto CRC = (uint64_t)CRCTest.GetCRC();
 		std::cout << std::hex << CRC << '\n';
 		std::cout << std::hex << (size_t)(CRCTest.GetLookupTable()[0x80]) << '\n';
-		
+
 	}
 	*/
-	
+
 
 	//BigLib::Random::ACORN Gen = {};
 	//Gen.Seed(1);
 	//for (size_t i = 0; i < 100; i++) {
 	//	std::cout << Gen.Next() << std::endl;
 	//}
-	
 }
+#endif

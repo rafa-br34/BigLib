@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EXAMPLES\Example.h" />
     <ClInclude Include="SOURCE\BigLib.h" />
     <ClInclude Include="SOURCE\Configs.h" />
     <ClInclude Include="SOURCE\Configs\Macros.h" />
@@ -54,13 +55,15 @@
     <ClInclude Include="SOURCE\Modules\Types\Types.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="EXAMPLES\PRNGCompress.cpp" />
     <ClCompile Include="SOURCE\Modules\Code\Modules\CodePath.cpp" />
     <ClCompile Include="SOURCE\Modules\Logging\Console.cpp" />
+    <ClCompile Include="SOURCE\Modules\Memory\Modules\MemBaseWindows.cpp" />
     <ClCompile Include="SOURCE\Modules\Networking\Modules\Request.cpp" />
     <ClCompile Include="SOURCE\Modules\Profiling\Profiler.cpp" />
     <ClCompile Include="SOURCE\Modules\ReversingEngineering\AnalyserTarget\AnalyserTarget.cpp" />
     <ClCompile Include="SOURCE\Modules\ReversingEngineering\Executables\Executables.cpp" />
-    <ClCompile Include="SOURCE\Test.cpp" />
+    <ClCompile Include="EXAMPLES\LibTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ABOUT\MODULES.md" />

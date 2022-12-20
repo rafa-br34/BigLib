@@ -114,6 +114,9 @@
     <ClInclude Include="SOURCE\Modules\Security\Modules\CRCs.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
+    <ClInclude Include="EXAMPLES\Example.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SOURCE\Modules\Logging\Console.cpp">
@@ -131,10 +134,16 @@
     <ClCompile Include="SOURCE\Modules\ReversingEngineering\Executables\Executables.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
-    <ClCompile Include="SOURCE\Test.cpp">
+    <ClCompile Include="SOURCE\Modules\Code\Modules\CodePath.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
-    <ClCompile Include="SOURCE\Modules\Code\Modules\CodePath.cpp">
+    <ClCompile Include="EXAMPLES\LibTest.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="EXAMPLES\PRNGCompress.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\Modules\Memory\Modules\MemBaseWindows.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
   </ItemGroup>

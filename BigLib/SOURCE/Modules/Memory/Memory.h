@@ -1,7 +1,5 @@
 #pragma once
 #include "../../Includes.h"
-
-
 #include "../Data/BaseMemory.h"
 
 #ifdef TARGET_WINDOWS
