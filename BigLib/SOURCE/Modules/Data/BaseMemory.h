@@ -31,6 +31,13 @@ namespace BigLib {
 			}
 		}
 
+		MEM_INLINE bool MemoryCompare(void* C1, void* C2, size_t Size) {
+			for (size_t i = 0; i < Size; i++)
+				if (((uint8_t*)C1)[i] != ((uint8_t*)C2)[i])
+					return false;
+			return true;
+		}
+
 		MEM_INLINE void MemoryFill(void* Target, uint8_t Source, size_t Size) {
 			//typedef uint32_t MDT; // Mask DataType
 			//MDT Mask = (Source << 24) | (Source << 16) | (Source << 8) | Source;

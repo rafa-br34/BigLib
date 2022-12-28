@@ -15,7 +15,7 @@
 #include <tuple>
 #endif
 
-#ifdef TARGET_WINDOWS
+#if BIGLIB_TARGET == BIGLIB_TARGETS_WINDOWS
 #include <Windows.h>
 #include <Psapi.h>
 #include <TlHelp32.h>
@@ -23,5 +23,5 @@
 
 #include <intrin.h>
 #include <eh.h>
-#endif // TARGET_WINDOWS
+#endif // BIGLIB_TARGET
 

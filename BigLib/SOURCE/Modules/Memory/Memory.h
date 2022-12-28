@@ -2,6 +2,6 @@
 #include "../../Includes.h"
 #include "../Data/BaseMemory.h"
 
-#ifdef TARGET_WINDOWS
+#if BIGLIB_TARGET == BIGLIB_TARGETS_WINDOWS
 #include "Modules/MemBaseWindows.h"
-#endif // TARGET_WINDOWS
+#endif // BIGLIB_TARGET

@@ -1,6 +1,8 @@
 #pragma once
 
 
+#define BIGLIB_PRINT_PREPROCESSED_DATA
+
 #define STRINGFY(Item) MAKE_STRING(Item)
 #define MAKE_STRING(Item) #Item
 

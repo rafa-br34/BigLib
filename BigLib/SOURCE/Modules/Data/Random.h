@@ -18,6 +18,10 @@ namespace BigLib {
 			// Must Not Be Zero
 			uint32_t State = 1;
 
+			CONST_EXPRESSION FORCE_INLINE void Seed(uint32_t Seed) {
+				this->State = Seed;
+			};
+
 			CONST_EXPRESSION _INLINE_RANDOM_H_ uint32_t Next() {
 				uint32_t X = this->State;
 				X ^= X << 13;
@@ -32,6 +36,10 @@ namespace BigLib {
 			// Must Not Be Zero
 			uint64_t State = 1;
 
+			CONST_EXPRESSION FORCE_INLINE void Seed(uint64_t Seed) {
+				this->State = Seed;
+			};
+
 			CONST_EXPRESSION _INLINE_RANDOM_H_ uint64_t Next() {
 				uint64_t X = this->State;
 				X ^= X << 13;
@@ -44,7 +52,16 @@ namespace BigLib {
 		// XorShift128
 		struct XorShift128 {
 			// Must Not Be All-Zero
-			uint32_t State[4];
+			uint32_t State[4] = { 1, 1, 1, 1 };
+
+			CONST_EXPRESSION FORCE_INLINE void Seed(uint32_t Seed) {
+				this->State[0] = Seed;
+			};
+
+			CONST_EXPRESSION FORCE_INLINE void Seed(uint64_t Seed) {
+				this->State[0] = (uint32_t)Seed;
+				this->State[1] = (uint32_t)(Seed >> 32);
+			};
 
 			CONST_EXPRESSION _INLINE_RANDOM_H_ uint64_t Next() {
 				uint32_t* S = this->State;
@@ -75,6 +92,15 @@ namespace BigLib {
 			uint32_t State[5] = { 1, 1, 1, 1, 0 };
 			uint32_t Counter;
 
+			CONST_EXPRESSION FORCE_INLINE void Seed(uint32_t Seed) {
+				this->State[0] = Seed;
+			};
+
+			CONST_EXPRESSION FORCE_INLINE void Seed(uint64_t Seed) {
+				this->State[0] = (uint32_t)Seed;
+				this->State[1] = (uint32_t)(Seed >> 32);
+			};
+
 			CONST_EXPRESSION _INLINE_RANDOM_H_ uint32_t Next() {
 				auto X = this->State;
 
@@ -102,11 +128,16 @@ namespace BigLib {
 			// Must Not Be Zero
 			uint64_t State;
 
+			CONST_EXPRESSION FORCE_INLINE void Seed(uint64_t Seed) {
+				this->State = Seed;
+			};
+
 			CONST_EXPRESSION _INLINE_RANDOM_H_ uint64_t Next() {
 				uint64_t X = this->State;
 				X ^= X >> 12;
 				X ^= X << 25;
 				X ^= X >> 27;
+				this->State = X;
 				return X * UI64(0x2545F4914F6CDD1D);
 			}
 
@@ -130,6 +161,15 @@ namespace BigLib {
 			// Must Not Be All-Zero
 			uint64_t State[2]{ 1, 1 };
 
+			CONST_EXPRESSION FORCE_INLINE void Seed(uint64_t Seed) {
+				this->State[0] = Seed;
+			};
+
+			CONST_EXPRESSION FORCE_INLINE void Seed(uint64_t Seed0, uint64_t Seed1) {
+				this->State[0] = Seed0;
+				this->State[1] = Seed1;
+			};
+
 			CONST_EXPRESSION _INLINE_RANDOM_H_ uint64_t Next() {
 				uint64_t T = this->State[0];
 				uint64_t S = this->State[1];
@@ -144,7 +184,7 @@ namespace BigLib {
 				return T + S;
 			}
 		};
-
+		typedef XorShift128P<23, 18, 5> T_XorShift128P;
 
 		/*
 		* XoShiro Generators
@@ -154,7 +194,11 @@ namespace BigLib {
 		// XoShiro256**
 		struct XoShiro256SS {
 			// Must Not Be All-Zero
-			uint64_t State[4];
+			uint64_t State[4] = { 1, 1, 1, 1 };
+
+			CONST_EXPRESSION FORCE_INLINE void Seed(uint64_t Seed) {
+				this->State[0] = Seed;
+			};
 
 			CONST_EXPRESSION _INLINE_RANDOM_H_ uint64_t Next() {
 				uint64_t* S = this->State;
@@ -177,7 +221,11 @@ namespace BigLib {
 		// About 15% Faster Than XoShiro256** But The Low 3 Bits Have Low Linear Complexity
 		struct XoShiro256P {
 			// Must Not Be All-Zero
-			uint64_t State[4];
+			uint64_t State[4] = { 1, 1, 1, 1 };
+
+			CONST_EXPRESSION FORCE_INLINE void Seed(uint64_t Seed) {
+				this->State[0] = Seed;
+			};
 
 			CONST_EXPRESSION _INLINE_RANDOM_H_ uint64_t Next() {
 				uint64_t* S = this->State;
@@ -204,6 +252,10 @@ namespace BigLib {
 		struct SplitMix64 {
 			uint64_t State;
 
+			CONST_EXPRESSION FORCE_INLINE void Seed(uint64_t Seed) {
+				this->State = Seed;
+			};
+
 			CONST_EXPRESSION _INLINE_RANDOM_H_ uint64_t Next() {
 				uint64_t Result = (this->State += 0x9E3779B97f4A7C15);
 
@@ -219,6 +271,15 @@ namespace BigLib {
 		struct PCG32 {
 			uint64_t State = 0x4D595DF4D0F33173;
 			
+			CONST_EXPRESSION _INLINE_RANDOM_H_ void Seed(uint64_t Seed) {
+				this->State = Seed + Increment;
+				(void)this->Next();
+			}
+
+			CONST_EXPRESSION _INLINE_RANDOM_H_ void Seed(uint32_t Seed) {
+				this->Seed((uint64_t)Seed);
+			}
+
 			CONST_EXPRESSION _INLINE_RANDOM_H_ uint32_t Next() {
 				uint64_t X = this->State;
 				unsigned Count = (unsigned)(X >> 59);		// 59 = 64 - 5
@@ -228,16 +289,25 @@ namespace BigLib {
 				return Bitwise::RotateRight((uint32_t)(X >> 27), Count);	// 27 = 32 - 5
 			}
 
-			CONST_EXPRESSION _INLINE_RANDOM_H_ void PCGInit(uint64_t Seed) {
-				this->State = Seed + Increment;
-				(void)this->Next();
-			}
+			
 		};
+		// Template For PCG32
+		typedef PCG32<6364136223846793005u, 1442695040888963407u> T_PCG32;
+
 
 		template<const uint64_t Multiplier=6364136223846793005u, const uint64_t Increment=1442695040888963407u>
 		struct PCG32Fast {
 			// Must Be Odd
 			uint64_t State = 0xCAFEF00DD15EA5E5u;
+
+			CONST_EXPRESSION _INLINE_RANDOM_H_ void Seed(uint64_t Seed) {
+				this->State = 2 * Seed + 1;
+				(void)this->Next();
+			}
+
+			CONST_EXPRESSION _INLINE_RANDOM_H_ void Seed(uint32_t Seed) {
+				this->Seed((uint64_t)Seed);
+			}
 
 			CONST_EXPRESSION _INLINE_RANDOM_H_ uint32_t Next() {
 				uint64_t X = this->State;
@@ -248,11 +318,11 @@ namespace BigLib {
 				return (uint32_t)(X >> (22 + Count));	// 22 = 32 - 3 - 7
 			}
 
-			CONST_EXPRESSION _INLINE_RANDOM_H_ void PCGInit(uint64_t Seed) {
-				this->State = 2 * Seed + 1;
-				(void)this->Next();
-			}
+			
 		};
+		// Template For PCG32Fast
+		typedef PCG32Fast<6364136223846793005u, 1442695040888963407u> T_PCG32Fast;
+
 
 		template<typename Type=long double, const size_t K=150, const long double S=2.0L>
 		struct ACORN {

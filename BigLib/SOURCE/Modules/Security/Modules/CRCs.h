@@ -53,18 +53,15 @@ namespace BigLib {
 					else
 						// (this->CRC << 8) Becomes Zero If Width <= 8 
 						// If Width Is Less Than Or Equal To 8 It Should Be Removed.
-						this->CRC = this->LookupTable[(Data ^ this->CRC) & 0xFF];
-						
-					if CONST_EXPRESSION(Width >= 8)
-						this->CRC &= this->LimiterMask;
+						this->CRC = this->LookupTable[Data ^ this->CRC];
 				}
 
 				CONST_EXPRESSION FORCE_INLINE void InversedUpdateCRC(Type Data) {
 					if CONST_EXPRESSION(Width > 8)
-						this->CRC = this->LookupTable[((this->CRC ^ Data) & 0xFF)] ^ (this->CRC >> 8);
+						this->CRC = this->LookupTable[((this->CRC ^ Data) & 0xFF)] ^ ((this->CRC >> 8) & this->LimiterMask);
 					else
 						// (this->CRC >> 8) Becomes Zero When Width Is Lower Or Equal To 8 
-						this->CRC = this->LookupTable[(this->CRC ^ Data)];
+						this->CRC = this->LookupTable[Data ^ this->CRC];
 				}
 
 			public:
@@ -102,6 +99,9 @@ namespace BigLib {
 						InversedUpdateCRC(Data); 
 					else
 						NormalUpdateCRC(Data);
+
+					if CONST_EXPRESSION(Width >= 8)
+						this->CRC &= this->LimiterMask;
 
 					return this->CRC;
 				}
@@ -220,7 +220,7 @@ namespace BigLib {
 
 			typedef CRC_Base<uint32_t,	0x102899,	false,	false,	0x000000,	0x000000,	21> CRC_21_CAN_FD;
 
-			typedef CRC_Base<uint32_t,	0x00065B,	true,	true,	0x555555,	0x000000,	24> CRC_24_BLE;
+			typedef CRC_Base<uint32_t,	0x00065B,	true,	true,	0x555555,	0x000000,	24> CRC_24_BLE; //0x00065B
 			typedef CRC_Base<uint32_t,	0x5D6DCB,	false,	false,	0xFEDCBA,	0x000000,	24> CRC_24_FLEXRAY_A;
 			typedef CRC_Base<uint32_t,	0x5D6DCB,	false,	false,	0xABCDEF,	0x000000,	24> CRC_24_FLEXRAY_B;
 			typedef CRC_Base<uint32_t,	0x328B63,	false,	false,	0xFFFFFF,	0xFFFFFF,	24> CRC_24_INTERLAKEN;
