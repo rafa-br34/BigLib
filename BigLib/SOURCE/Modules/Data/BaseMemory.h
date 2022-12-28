@@ -18,12 +18,12 @@
 namespace BigLib {
 	namespace Memory {
 		MEM_INLINE void MemorySet(void* Target, void* Source, size_t Size) {
-			const size_t ExtraBytes = Size % sizeof(BIGGEST_DATATYPE);
-
 			// Set Memory Using Largest Type Possible
 			for (size_t i = 0; i < Size / sizeof(BIGGEST_DATATYPE); i++) {
 				((BIGGEST_DATATYPE*)Target)[i] = ((BIGGEST_DATATYPE*)Source)[i];
 			}
+
+			const size_t ExtraBytes = Size % sizeof(BIGGEST_DATATYPE);
 			// Set Remaining
 			for (size_t i = 0; i < ExtraBytes; i++) {
 				size_t TrueIndex = (Size - ExtraBytes) + i;
@@ -38,13 +38,20 @@ namespace BigLib {
 			return true;
 		}
 
-		MEM_INLINE void MemoryFill(void* Target, uint8_t Source, size_t Size) {
-			//typedef uint32_t MDT; // Mask DataType
-			//MDT Mask = (Source << 24) | (Source << 16) | (Source << 8) | Source;
+		MEM_INLINE void MemoryFill(void* Target, uint8_t Data, size_t Size) {
+			typedef uint32_t MDT; // Mask DataType
+			const MDT Mask = (Data << 24) | (Data << 16) | (Data << 8) | Data;
 
 
+			// Set Memory Using Largest Type Possible
+			for (size_t i = 0; i < Size / sizeof(MDT); i++) {
+				((MDT*)Target)[i] = Mask;
+			}
+
+			const size_t ExtraBytes = Size % sizeof(MDT);
+			// Set Remaining
 			for (size_t i = 0; i < Size; i++) {
-				((uint8_t*)Target)[i] = Source;
+				((uint8_t*)Target)[i] = Data;
 			}
 		}
 

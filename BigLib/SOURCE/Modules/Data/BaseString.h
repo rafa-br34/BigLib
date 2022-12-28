@@ -27,7 +27,7 @@ namespace BigLib {
 			size_t MissedCharsLiteral = 0;
 
 			for (size_t i = 0; i < StringSize; i++) {				
-				if ((uint8_t)From[i] > uint8_t(0xFF)) {
+				if (From[i] > wchar_t(0xFF)) {
 					Output[i] = Missing;
 					MissedCharsLiteral++;
 				}
@@ -43,9 +43,7 @@ namespace BigLib {
 
 		// Convert C String To Wide String
 		FORCE_INLINE CONST_EXPRESSION void StringConvert(const char* From, wchar_t* Output) {
-			size_t StringSize = StringLength(From);
-
-			for (size_t i = 0; i < StringSize; i++)
+			for (size_t i = 0; i < StringLength(From); i++)
 				Output[i] = (wchar_t)From[i];
 		}
 
