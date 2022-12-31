@@ -11,7 +11,7 @@
 #include "Modules/Memory/Memory.h"
 
 // Code
-#include "Modules/Code/Code.h"
+#include "Modules/VMs/Code.h"
 
 // Data
 #include "Modules/Data/Bitwise.h"

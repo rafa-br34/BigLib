@@ -5,7 +5,7 @@
 #define BIGLIB_TARGETS_LINUX		1 // Linux
 #define BIGLIB_TARGETS_MACOS		2 // MacOS
 #define BIGLIB_TARGETS_ANDROID		3 // Android
-#define BIGLIB_TARGETS_USER_DEFINED 4 // User Defined, Use This For "Low-Level" Use Cases(Kernels, UEFI, BIOS, Etc).
+#define BIGLIB_TARGETS_USER_DEFINED 4 // User Defined IO, Use This For "Low-Level" Use Cases(Kernels, UEFI, BIOS, Etc).
 
 // Desired Target
 #define BIGLIB_TARGET BIGLIB_TARGETS_WINDOWS

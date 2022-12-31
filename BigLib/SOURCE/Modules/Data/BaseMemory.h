@@ -31,9 +31,9 @@ namespace BigLib {
 			}
 		}
 
-		MEM_INLINE bool MemoryCompare(void* C1, void* C2, size_t Size) {
+		MEM_INLINE bool MemoryCompare(void* D1, void* D2, size_t Size) {
 			for (size_t i = 0; i < Size; i++)
-				if (((uint8_t*)C1)[i] != ((uint8_t*)C2)[i])
+				if (((uint8_t*)D1)[i] != ((uint8_t*)D2)[i])
 					return false;
 			return true;
 		}

@@ -32,19 +32,16 @@
     <ClInclude Include="SOURCE\Modules\MachineLearning\MachineLearning.h" />
     <ClInclude Include="SOURCE\Modules\MachineLearning\NeuralNetwork.h" />
     <ClInclude Include="SOURCE\Modules\Data\BaseString.h" />
-    <ClInclude Include="SOURCE\Modules\Code\Code.h" />
+    <ClInclude Include="SOURCE\Modules\VMs\Code.h" />
     <ClInclude Include="SOURCE\Modules\Logging\Console.h" />
     <ClInclude Include="SOURCE\Modules\Data\Math.h" />
     <ClInclude Include="SOURCE\Modules\MultiThreading\ThreadPool\ThreadPool.h" />
     <ClInclude Include="SOURCE\Modules\MultiThreading\ThreadSafeQueue\ThreadSafeQueue.h" />
     <ClInclude Include="SOURCE\Modules\Networking\Network.h" />
     <ClInclude Include="SOURCE\Modules\Profiling\Profiler.h" />
-    <ClInclude Include="SOURCE\Modules\ReversingEngineering\AnalyserTarget\AnalyserTarget.h" />
-    <ClInclude Include="SOURCE\Modules\ReversingEngineering\Executables\Executables.h" />
     <ClInclude Include="SOURCE\Modules\Memory\Memory.h" />
     <ClInclude Include="SOURCE\Modules\Data\BaseMemory.h" />
     <ClInclude Include="SOURCE\Modules\Memory\Modules\MemBaseWindows.h" />
-    <ClInclude Include="SOURCE\Modules\ReversingEngineering\Utilities.h" />
     <ClInclude Include="SOURCE\Modules\Security\Crypts.h" />
     <ClInclude Include="SOURCE\Modules\Security\Modules\CRCs.h" />
     <ClInclude Include="SOURCE\Modules\Types\Modules\Color24.h" />
@@ -53,16 +50,13 @@
     <ClInclude Include="SOURCE\Modules\Types\Modules\Vector2.h" />
     <ClInclude Include="SOURCE\Modules\Types\Modules\Vector3.h" />
     <ClInclude Include="SOURCE\Modules\Types\Types.h" />
+    <ClInclude Include="SOURCE\Modules\VMs\Modules\RootLogic\RootLogic.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="EXAMPLES\PRNGCompress.cpp" />
-    <ClCompile Include="SOURCE\Modules\Code\Modules\CodePath.cpp" />
     <ClCompile Include="SOURCE\Modules\Logging\Console.cpp" />
     <ClCompile Include="SOURCE\Modules\Memory\Modules\MemBaseWindows.cpp" />
     <ClCompile Include="SOURCE\Modules\Networking\Modules\Request.cpp" />
     <ClCompile Include="SOURCE\Modules\Profiling\Profiler.cpp" />
-    <ClCompile Include="SOURCE\Modules\ReversingEngineering\AnalyserTarget\AnalyserTarget.cpp" />
-    <ClCompile Include="SOURCE\Modules\ReversingEngineering\Executables\Executables.cpp" />
     <ClCompile Include="EXAMPLES\LibTest.cpp" />
   </ItemGroup>
   <ItemGroup>

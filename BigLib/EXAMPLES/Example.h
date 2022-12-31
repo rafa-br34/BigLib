@@ -3,5 +3,4 @@
 
 // Examples:
 // 0: LibTest.cpp
-// 1: PRNGCompress.cpp
-#define EXAMPLE_SELECTOR 1
+#define EXAMPLE_SELECTOR 0
