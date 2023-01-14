@@ -111,6 +111,9 @@
     <ClInclude Include="SOURCE\Modules\VMs\Modules\RootLogic\RootLogic.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
+    <ClInclude Include="SOURCE\Modules\VMs\Modules\System300s\System300s.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SOURCE\Modules\Logging\Console.cpp">

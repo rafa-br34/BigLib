@@ -383,7 +383,7 @@ namespace BigLib {
 			Type MT[N - 1];
 			Type Index = N + 1;
 			const Type LowerMask = (Type)((UI64(1) << R) - 1);
-			const Type UpperMask = LOWEST_BITS(~LowerMask, W);
+			const Type UpperMask = GET_LOW_BITS(~LowerMask, W);
 
 			// NOTE: Keep The FORCE_INLINE On This Function Since It's Only Used Once
 			CONST_EXPRESSION FORCE_INLINE void Twist() {
@@ -403,7 +403,7 @@ namespace BigLib {
 				this->Index = N;
 				this->MT[0] = Seed;
 				for (size_t i = 1; i < (N - 1); i++)
-					this->MT[i] = LOWEST_BITS((F * (this->MT[i-1] ^ (this->MT[i-1] >> (W - 2))) + i), W);
+					this->MT[i] = GET_LOW_BITS((F * (this->MT[i-1] ^ (this->MT[i-1] >> (W - 2))) + i), W);
 			}
 
 			CONST_EXPRESSION _INLINE_RANDOM_H_ Type Next() {
@@ -420,7 +420,7 @@ namespace BigLib {
 
 				this->Index++;
 
-				return LOWEST_BITS(Y, W);
+				return GET_LOW_BITS(Y, W);
 			}
 		};
 

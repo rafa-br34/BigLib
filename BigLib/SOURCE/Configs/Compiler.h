@@ -48,6 +48,9 @@
 #endif
 #endif
 
+
+#define BIGGEST_DT_LITERAL UI64
+
 /*
 * 
 * Architecture

@@ -51,6 +51,7 @@
     <ClInclude Include="SOURCE\Modules\Types\Modules\Vector3.h" />
     <ClInclude Include="SOURCE\Modules\Types\Types.h" />
     <ClInclude Include="SOURCE\Modules\VMs\Modules\RootLogic\RootLogic.h" />
+    <ClInclude Include="SOURCE\Modules\VMs\Modules\System300s\System300s.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SOURCE\Modules\Logging\Console.cpp" />

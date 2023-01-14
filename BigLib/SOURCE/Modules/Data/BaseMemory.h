@@ -23,8 +23,8 @@ namespace BigLib {
 				((BIGGEST_DATATYPE*)Target)[i] = ((BIGGEST_DATATYPE*)Source)[i];
 			}
 
+			// Set Remaining Bytes
 			const size_t ExtraBytes = Size % sizeof(BIGGEST_DATATYPE);
-			// Set Remaining
 			for (size_t i = 0; i < ExtraBytes; i++) {
 				size_t TrueIndex = (Size - ExtraBytes) + i;
 				((uint8_t*)Target)[TrueIndex] = ((uint8_t*)Source)[TrueIndex];
@@ -32,9 +32,19 @@ namespace BigLib {
 		}
 
 		MEM_INLINE bool MemoryCompare(void* D1, void* D2, size_t Size) {
-			for (size_t i = 0; i < Size; i++)
-				if (((uint8_t*)D1)[i] != ((uint8_t*)D2)[i])
+			// Check Memory Using Largest Type Possible
+			for (size_t i = 0; i < Size / sizeof(BIGGEST_DATATYPE); i++) {
+				if (((BIGGEST_DATATYPE*)D1)[i] != ((BIGGEST_DATATYPE*)D2)[i])
 					return false;
+			}
+
+			// Check Remaining Bytes
+			const size_t ExtraBytes = Size % sizeof(BIGGEST_DATATYPE);
+			for (size_t i = 0; i < ExtraBytes; i++) {
+				size_t TrueIndex = (Size - ExtraBytes) + i;
+				if (((uint8_t*)D1)[TrueIndex] != ((uint8_t*)D2)[TrueIndex])
+					return false;
+			}
 			return true;
 		}
 
@@ -48,10 +58,10 @@ namespace BigLib {
 				((MDT*)Target)[i] = Mask;
 			}
 
+			// Set Remaining Bytes
 			const size_t ExtraBytes = Size % sizeof(MDT);
-			// Set Remaining
-			for (size_t i = 0; i < Size; i++) {
-				((uint8_t*)Target)[i] = Data;
+			for (size_t i = 0; i < ExtraBytes; i++) {
+				((uint8_t*)Target)[(Size - ExtraBytes) + i] = Data;
 			}
 		}
 
