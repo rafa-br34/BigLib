@@ -6,7 +6,7 @@ namespace BigLib {
 	namespace VMs {
 		namespace System300s {
 
-			enum OpcodeFormats {
+			enum OpcodeFormat {
 				_AVAILABILITY_SYSTEM360,
 				OPF_I,		// OP<8>	I<8>														Size: 2
 				OPF_RR,		// OP<8>	(R1<4> R2<4>)<8>											Size: 2
@@ -206,6 +206,13 @@ namespace BigLib {
 				// TODO: Add Others
 			};
 
+			enum ILCs : uint8_t {
+				ILC_1B = 0,
+				ILC_2B,
+				ILC_4B,
+				ILC_6B,
+			};
+
 			enum Architectures {
 				SYSTEM_360,
 				SYSTEM_370,
@@ -214,7 +221,7 @@ namespace BigLib {
 			};
 
 			struct System300s {
-				Architectures Architecture;
+				Architectures Architecture = SYSTEM_360;
 
 				// 128-Bits On The Z/System 
 				uint64_t	PSW[2];
@@ -230,7 +237,7 @@ namespace BigLib {
 				void* Memory = nullptr;
 
 
-				uint8_t RunInstruction(uint32_t MemoryOffset) {
+				uint8_t RunInstruction(uint64_t MemoryOffset) {
 					#define INSTRUCTION_RR(Byte) uint8_t R0 = Byte >> 4, R1 = Byte & 0x0F;
 
 
@@ -240,14 +247,41 @@ namespace BigLib {
 					switch (*Instruction++) {
 						VMCASE(Opcodes::SPM) {
 							INSTRUCTION_RR(*Instruction++);
-							this->PS_SET_PM((uint8_t)R64[R0] & 0x0F);
+							this->PS_SET_PM((uint8_t)this->R64[R0] & 0x0F);
 							return 2;
 						}
 						
 						VMCASE(Opcodes::BALR) {
 							INSTRUCTION_RR(*Instruction++);
-							auto AM = this->GetCurrentAddressingMode();
+							auto AM = this->GET_CURRENT_ADDRESSING_MODE();
+							const bool Is64BitMachine = (this->Architecture == Architectures::SYSTEM_Z);
 
+
+							if (AM == AddressingMode::AM_24) {
+								uint8_t Data = (ILCs::ILC_2B | (this->PS_GET_CC() << 2) | (this->PS_GET_PM() << 4));
+								if (Is64BitMachine) {
+									// Remove 40 Bits To Get 24-Bits
+									this->R64[R0] = (uint64_t)((uint32_t)((MemoryOffset + 2) << 40) | (uint32_t)Data) << 31;
+									if (this->R64[R1] != 0)
+										this->PS_SET_IADDRESS(this->R64[R1] >> 32)
+
+								}
+								else {
+									// Remove 40 Bits To Get 24-Bits
+									this->R64[R0] = (uint64_t)((uint32_t)((MemoryOffset + 2) << 40) | (uint32_t)Data);
+								}
+							}
+							else if (AM == AddressingMode::AM_31) {
+								if (Is64BitMachine) {
+									this->R64[R0] = ((MemoryOffset + 2) << 32) | BIT(31);
+								}
+								else {
+									this->R64[R0] = (((MemoryOffset + 2) << 1) | BIT(0));
+								}
+							}
+							if (AM == AddressingMode::AM_64) {
+								this->R64[R0] = (MemoryOffset + 2);
+							}
 
 							return 2;
 						}
@@ -586,7 +620,7 @@ namespace BigLib {
 					enum PS64 : uint64_t {
 						// 0 24-31 8
 						PS64_A = BIT(32),
-						// InstructionAddress 33-63
+						// InstructionAddress 33-63 31
 					};
 
 					// 128-Bit Program Status Values
@@ -596,28 +630,28 @@ namespace BigLib {
 						PS128_EA = BIT(31),
 						PS128_BA = BIT(32),
 						// 0 33-63 31
-						// InstructionAddress 64-127
+						// InstructionAddress 64-127 64
 					};
 					
 
 					enum AddressingMode {
 						// 24-Bit Addressing Mode(EA = 0, BA = 0 Or A = 0)
 						AM_24,
-						// 32-Bit Addressing Mode(EA = 1, BA = 0 Or A = 1)
-						AM_32,
+						// 31-Bit Addressing Mode(EA = 1, BA = 0 Or A = 1)
+						AM_31,
 						// 64-Bit Addressing Mode(EA = 1, BA = 1)
 						AM_64,
 						// Specification Exception(EA = 1, BA = 0)
 						AM_SPECIFICATION_EXCEPTION,
 					};
 
-					FORCE_INLINE AddressingMode GetCurrentAddressingMode() {
+					FORCE_INLINE AddressingMode GET_CURRENT_ADDRESSING_MODE() {
 						if (this->PSW[0] & PS_TYPE) {
 							// 64-Bit Program State
 							if (!(this->PSW[0] & PS64_A))
 								return AddressingMode::AM_24;
 							else
-								return AddressingMode::AM_32;
+								return AddressingMode::AM_31;
 						}
 						else {
 							// 128-Bit Program State
@@ -625,13 +659,42 @@ namespace BigLib {
 								return AddressingMode::AM_24;
 
 							else if (!(this->PSW[0] & PS128_EA) && (this->PSW[0] & PS128_BA))
-								return AddressingMode::AM_32;
+								return AddressingMode::AM_31;
 
 							else if ((this->PSW[0] & PS128_EA) && (this->PSW[0] & PS128_BA))
 								return AddressingMode::AM_64;
 
 							else if ((this->PSW[0] & PS128_EA) && !(this->PSW[0] & PS128_BA))
 								return AddressingMode::AM_SPECIFICATION_EXCEPTION;
+						}
+					}
+
+					FORCE_INLINE void PS_SET_CC(uint8_t ConditionCode) {
+						this->PSW[0] = SET_BITS(this->PSW[0], 18, 19, ConditionCode & 0x03);
+					}
+					FORCE_INLINE uint8_t PS_GET_CC() {
+						return GET_BITS(this->PSW[0], 18, 19);
+					}
+
+					FORCE_INLINE uint64_t PS_GET_IADDRESS() {
+						if (this->PSW[0] & PS_TYPE) {
+							// 64-Bit Program State 31-Bits Instruction Address
+							return (this->PSW[0] & UI64(0x7FFFFFFF00000000)) >> UI64(32);
+						}
+						else {
+							// 128-Bit Program State 64-Bits Instruction Address
+							return this->PSW[1];
+						}
+					}
+
+					FORCE_INLINE void PS_SET_IADDRESS(uint64_t Address) {
+						if (this->PSW[0] & PS_TYPE) {
+							// 64-Bit Program State 31-Bits Instruction Address
+							this->PSW[0] = SET_BITS(this->PSW[0], 33, 64, Address & 0x7FFFFFFF);
+						}
+						else {
+							// 128-Bit Program State 64-Bits Instruction Address
+							this->PSW[1] = Address;
 						}
 					}
 
