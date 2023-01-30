@@ -30,5 +30,3 @@
 
 // Machine Learning
 #include "Modules/MachineLearning/NeuralNetwork.h"
-
-

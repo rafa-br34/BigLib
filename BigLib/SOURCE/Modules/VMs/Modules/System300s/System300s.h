@@ -261,31 +261,31 @@ namespace BigLib {
 								uint8_t Data = (ILCs::ILC_2B | (this->PS_GET_CC() << 2) | (this->PS_GET_PM() << 4));
 								if (Is64BitMachine) {
 									this->R64[R0] = (uint64_t)((uint32_t)((MemoryOffset + 2) << 8) | (uint32_t)Data) << 31;
-									if (this->R64[R1] != 0)
+									if (R1 != 0)
 										this->PS_SET_IADDRESS(this->R64[R1] >> 39);
 
 								}
 								else {
 									this->R64[R0] = (uint64_t)((uint32_t)((MemoryOffset + 2) << 8) | (uint32_t)Data);
-									if (this->R64[R1] != 0)
+									if (R1 != 0)
 										this->PS_SET_IADDRESS(this->R64[R1] >> 8);
 								}
 							}
 							else if (AM == AddressingMode::AM_31) {
 								if (Is64BitMachine) {
 									this->R64[R0] = ((MemoryOffset + 2) << 32) | BIT(31);
-									if (this->R64[R1] != 0)
+									if (R1 != 0)
 										this->PS_SET_IADDRESS(this->R64[R1] >> 32);
 								}
 								else {
 									this->R64[R0] = (((MemoryOffset + 2) << 1) | BIT(0));
-									if (this->R64[R1] != 0)
+									if (R1 != 0)
 										this->PS_SET_IADDRESS(this->R64[R1] >> 1);
 								}
 							}
 							else if (AM == AddressingMode::AM_64) {
 								this->R64[R0] = (MemoryOffset + 2);
-								if (this->R64[R1] != 0)
+								if (R1 != 0)
 									this->PS_SET_IADDRESS(this->R64[R1]);
 							}
 							else if (AM == AddressingMode::AM_SPECIFICATION_EXCEPTION) {
@@ -294,8 +294,16 @@ namespace BigLib {
 
 							return 2;
 						}
-						VMCASE(Opcodes::BCTR)
-							break;
+						VMCASE(Opcodes::BCTR) {
+							INSTRUCTION_RR(*Instruction++);
+							this->R64[R0]--;
+
+							if (this->R64[R0] == 0 || R1 == 0) {
+								return 2;
+							}
+
+							this->PS_SET_IADDRESS(this->R64[R1]);
+						}
 						VMCASE(Opcodes::BCR)
 							break; // Note
 					
