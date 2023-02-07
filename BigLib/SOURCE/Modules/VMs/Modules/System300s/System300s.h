@@ -8,19 +8,19 @@ namespace BigLib {
 
 			enum OpcodeFormat {
 				_AVAILABILITY_SYSTEM360,
-				OPF_I,		// OP<8>	I<8>														Size: 2
-				OPF_RR,		// OP<8>	(R1<4> R2<4>)<8>											Size: 2
-				OPF_RS1,	// OP<8>	(R1<4> R3<4>)<8>	(B2<4> D2<12>)<16>						Size: 4
-				OPF_RS2,	// OP<8>	(R1<4> M3<4>)<8>	(B2<4> D2<12>)<16>						Size: 4
-				OPF_RX,		// OP<8>	(R1<4> X2<4>)<8>	(B2<4> D2<12>)<16>						Size: 4
-				OPF_SI,		// OP<8>	I2<8>				(B1<4> D1<12>)<16>						Size: 4
-				OPF_SS_A,	// OP<8>	L<8>				(B1<4> D1<12>)<16> (B2<4> D2<12>)<16>	Size: 6
-				OPF_SS_B,	// OP<8>	(L1<4> L2<4>)		(B1<4> D1<12>)<16> (B2<4> D2<12>)<16>	Size: 6
-				OPF_SS_C,	// OP<8>	(R1<4> R3<4>)		(B1<4> D1<12>)<16> (B2<4> D2<12>)<16>	Size: 6
+				OPF_I,					// OP<8>		I<8>															Size: 2
+				OPF_RR,					// OP<8>		(R1<4> R2<4>)<8>												Size: 2
+				OPF_RS1,					// OP<8>		(R1<4> R3<4>)<8>		(B2<4> D2<12>)<16>						Size: 4
+				OPF_RS2,					// OP<8>		(R1<4> M3<4>)<8>		(B2<4> D2<12>)<16>						Size: 4
+				OPF_RX,					// OP<8>		(R1<4> X2<4>)<8>		(B2<4> D2<12>)<16>						Size: 4
+				OPF_SI,					// OP<8>		I2<8>				(B1<4> D1<12>)<16>						Size: 4
+				OPF_SS_A,				// OP<8>		L<8>					(B1<4> D1<12>)<16> (B2<4> D2<12>)<16>		Size: 6
+				OPF_SS_B,				// OP<8>		(L1<4> L2<4>)			(B1<4> D1<12>)<16> (B2<4> D2<12>)<16>		Size: 6
+				OPF_SS_C,				// OP<8>		(R1<4> R3<4>)			(B1<4> D1<12>)<16> (B2<4> D2<12>)<16>		Size: 6
 				_AVAILABILITY_SYSTEM370,
-				OPF_RRE,	// OP<16>	(?<8> R1<4> R2<4>)<16>										Size: 4
-				OPF_S,		// OP<16>	(B2<4> D2<12>)<16>											Size: 4
-				OPF_SSE,	// OP<16>	(B1<4> D1<12>)<16>	(B2<4> D2<12>)<16>						Size: 6
+				OPF_RRE,					// OP<16>	(?<8> R1<4> R2<4>)<16>											Size: 4
+				OPF_S,					// OP<16>	(B2<4> D2<12>)<16>											Size: 4
+				OPF_SSE,					// OP<16>	(B1<4> D1<12>)<16>	(B2<4> D2<12>)<16>						Size: 6
 				
 				// TODO: Maybe Add System/390 And System/Z?
 			};
@@ -30,22 +30,22 @@ namespace BigLib {
 				SPM = 0x04,		// <RR>		Set Program Mask
 				BALR,			// <RR>		Branch And Link Register
 				BCTR,			// <RR>		Branch On Count Register
-				BCR,			// <RR>		Branch On Condition Register, NOTE: BCR Has 2 Sub-Opcodes 
+				BCR,				// <RR>		Branch On Condition Register, NOTE: BCR Has 2 Sub-Opcodes 
 				/*
-				NOPR = 0x070,	// <RR>		No Operation Register
+				NOPR = 0x070,		// <RR>		No Operation Register
 				BR = 0x07F,		// <RR>		Branch Register (Unconditional)
 				*/
 				SSK = 0x08,		// <RR>		Set Storage Key
-				ISK,			// <RR>		Set Storage Key
-				SVC,			// <I>		Supervisor Call
+				ISK,				// <RR>		Set Storage Key
+				SVC,				// <I>		Supervisor Call
 				BASR,			// <RR>		Branch And Save Register
 				
 				LPR = 0x10,		// <RR>		Load Positive Register
-				LNR,			// <RR>		Load Negative Register
-				LTR,			// <RR>		Load And Test Register
-				LCR,			// <RR>		Load and Complement Register
+				LNR,				// <RR>		Load Negative Register
+				LTR,				// <RR>		Load And Test Register
+				LCR,				// <RR>		Load and Complement Register
 				NR,				// <RR>		And Register
-				CLR,			// <RR>		Compare Logical Register
+				CLR,				// <RR>		Compare Logical Register
 				OR,				// <RR>		Or Register
 				XR,				// <RR>		Exclusive-Or Register
 				LR,				// <RR>		Load Register
@@ -54,65 +54,65 @@ namespace BigLib {
 				SB,				// <RR>		Subtract Register
 				MR,				// <RR>		Multiply Register
 				DR,				// <RR>		Divide Register
-				ALR,			// <RR>		Add Logical Register
-				SLR,			// <RR>		Subtract Logical Register
+				ALR,				// <RR>		Add Logical Register
+				SLR,				// <RR>		Subtract Logical Register
 				LPDR,			// <RR>		Load Positive(Long)				
 				LNDR,			// <RR>		Load Negative
 				LTDR,			// <RR>		Load And Test
 				LCDR,			// <RR>		Load Complement(Long)
-				HDR,			// <RR>		Halve
+				HDR,				// <RR>		Halve
 				LRDR,			// <RR>		Load Rounded
-				MXR,			// <RR>		Multiply
+				MXR,				// <RR>		Multiply
 				MXDR,			// <RR>		Multiply
-				LDR,			// <RR>		Load
-				CDR,			// <RR>		Compare Double Register
-				ADR,			// <RR>		Add Double Register
-				SDR,			// <RR>		Subtract Double Register
-				MDR,			// <RR>		Multiply Double Register
-				DDR,			// <RR>		Divide Double Register
-				AWR,			// <RR>		Add Unnormalized
-				SWR,			// <RR>		Subtract Unnormalized
+				LDR,				// <RR>		Load
+				CDR,				// <RR>		Compare Double Register
+				ADR,				// <RR>		Add Double Register
+				SDR,				// <RR>		Subtract Double Register
+				MDR,				// <RR>		Multiply Double Register
+				DDR,				// <RR>		Divide Double Register
+				AWR,				// <RR>		Add Unnormalized
+				SWR,				// <RR>		Subtract Unnormalized
 				LPER,			// <RR>		Load Positive(Short)
 				LNER,			// <RR>		Load Negative
 				LTER,			// <RR>		Load And Test
 				LCER,			// <RR>		Load Complement(Short)
-				HER,			// <RR>		Halve
+				HER,				// <RR>		Halve
 				LRER,			// <RR>		Load Rounded 
-				AXR,			// <RR>		Add Normalized
-				SXR,			// <RR>		Subtract Normalized
-				LER,			// <RR>		Load
-				CER,			// <RR>		Compare
-				AER,			// <RR>		Add Normalized
-				SER,			// <RR>		Subtract Normalized
-				MER,			// <RR>		Multiply Normalized
-				DER,			// <RR>		Divide Normalized
-				AUR,			// <RR>		Add Unnormalized
-				SUR,			// <RR>		Subtract Unnormalized
-				STH,			// <RX>		Store Halfword
+				AXR,				// <RR>		Add Normalized
+				SXR,				// <RR>		Subtract Normalized
+				LER,				// <RR>		Load
+				CER,				// <RR>		Compare
+				AER,				// <RR>		Add Normalized
+				SER,				// <RR>		Subtract Normalized
+				MER,				// <RR>		Multiply Normalized
+				DER,				// <RR>		Divide Normalized
+				AUR,				// <RR>		Add Unnormalized
+				SUR,				// <RR>		Subtract Unnormalized
+				STH,				// <RX>		Store Halfword
 				LA,				// <RX>		Load Address
-				STC,			// <RX>		Store Character
+				STC,				// <RX>		Store Character
 				IC,				// <RX>		Insert Character
 				EX,				// <RX>		Execute
-				BAL,			// <RX>		Branch And Link
-				BCT,			// <RX>		Branch On Count
+				BAL,				// <RX>		Branch And Link
+				BCT,				// <RX>		Branch On Count
 				
 				BC,				// <RX>		Branch On Condition, NOTE: BC Has 16 Sub-Opcodes
 				/*
-				NOP = 0x470,	// <RX>		No Operation
+				NOP = 0x470,		// <RX>		No Operation
 				BO,				// <RX>		Branch On Overflow/Ones
 				BH,				// <RX>		Branch (A High)
 				BP,				// <RX>		Branch On Plus
 				BL,				// <RX>		Branch (A Low)
 				BM,				// <RX>		Branch On Minus/Mixed
-				BNE,			// <RX>		Branch Not Equal
-				BNZ,			// <RX>		Branch Not Zero
+				BNE,				// <RX>		Branch Not Equal
+				BNZ,				// <RX>		Branch Not Zero
 				BE,				// <RX>		Branch (A Equal B)
 				BZ,				// <RX>		Branch On Zero
-				BNL,			// <RX>		Branch (A Not Low)
-				BNM,			// <RX>		Branch Not Minus
-				BNH,			// <RX>		Branch Not High
-				BNP,			// <RX>		Branch Not Plus
-				BNO,			// <RX>		Branch Not Ones
+				BNL,				// <RX>		Branch (A Not Low)
+				BNM,				// <RX>		Branch Not Minus
+				BNH,				// <RX>		Branch Not High
+				BNP,				// <RX>		Branch Not Plus
+				BNO,				// <RX>		Branch Not Ones
 				B,				// <RX>		Branch (Unconditional)
 				*/
 				LH = 0x48,		// <RX>		Load Halfword
@@ -120,9 +120,9 @@ namespace BigLib {
 				AH,				// <RX>		Add Halfword
 				SH,				// <RX>		Subtract Halfword
 				MH,				// <RX>		Multiply Halfword
-				BAS,			// <RX>		Branch And Save
-				CVD,			// <RX>		Convert to Decimal
-				CVB,			// <RX>		Convert to Binary
+				BAS,				// <RX>		Branch And Save
+				CVD,				// <RX>		Convert to Decimal
+				CVB,				// <RX>		Convert to Binary
 				ST,				// <RX>		Store
 				N,				// <RX>		And
 				CL,				// <RX>		Compare Logical
@@ -136,8 +136,8 @@ namespace BigLib {
 				D,				// <RX>		Divide
 				AL,				// <RX>		Add Logical
 				SL,				// <RX>		Subtract Logical
-				STD,			// <RX>		Store Double
-				MXD,			// <RX>		Multiply Double
+				STD,				// <RX>		Store Double
+				MXD,				// <RX>		Multiply Double
 				LD,				// <RX>		Load Double
 				CD,				// <RX>		Compare Double
 				AD,				// <RX>		Add Double Normalized
@@ -146,7 +146,7 @@ namespace BigLib {
 				DD,				// <RX>		Divide Double
 				AW,				// <RX>		Add Unnormalized Word
 				SW,				// <RX>		Subtract Unnormalized Word
-				STE,			// <RX>		Store Short
+				STE,				// <RX>		Store Short
 				LE,				// <RX>		Load Short
 				CE,				// <RX>		Compare Short
 				AE,				// <RX>		Add Normalized Short
@@ -155,49 +155,49 @@ namespace BigLib {
 				DE,				// <RX>		Divide Short
 				AU,				// <RX>		Add Unnormalized Short
 				SU,				// <RX>		Subtract Unnormalized Short
-				SSE,			// <SI>		Set System Mask
+				SSE,				// <SI>		Set System Mask
 				LPSW,			// <S>		Load Program Status Word 
 				DIAGNOSE,		// <RX>		Diagnose
-				WRD,			// <RX>		Write Direct
-				RDD,			// <RX>		Read Direct
-				BXH,			// <RS>		Branch On Index High
+				WRD,				// <RX>		Write Direct
+				RDD,				// <RX>		Read Direct
+				BXH,				// <RS>		Branch On Index High
 				BXLE,			// <RS>		Branch On Index Low Or Equal 
-				SRL,			// <RS>		Shift Right Single Logical 
-				SLL,			// <RS>		Shift Left Logical
-				SRA,			// <RS>		Shift Right Arithmetic
-				SLA,			// <RS>		Shift Left Arithmetic
+				SRL,				// <RS>		Shift Right Single Logical 
+				SLL,				// <RS>		Shift Left Logical
+				SRA,				// <RS>		Shift Right Arithmetic
+				SLA,				// <RS>		Shift Left Arithmetic
 				SRDL,			// <RS>		Shift Right Double Logical
 				SLDL,			// <RS>		Shift Left Double Logical
 				SRDA,			// <RS>		Shift Right Double Arithmetic
 				SLDA,			// <RS>		Shift Left Double Arithmetic
-				STM,			// <RS>		Store Multiple
+				STM,				// <RS>		Store Multiple
 				TM,				// <SI>		Test Under Mask
-				MVI,			// <SI>		Move Immediate
+				MVI,				// <SI>		Move Immediate
 				TS,				// <SI>		Test And Set
 				NI,				// <SI>		And Immediate 
-				CLI,			// <SI>		Compare Logical Immediate
+				CLI,				// <SI>		Compare Logical Immediate
 				OI,				// <SI>		Or Immediate
 				XI,				// <SI>		Exclusive-Or Immediate 
 				LM,				// <RS>		Load Multiple
-				SIO,			// <SI>		Start I/O
-				TIO,			// <SI>		Test I/O
-				HIO,			// <SI>		Halt I/O 
-				TCH,			// <SI>		Test Channel
-				MVN,			// <SS-A>	Move Numeric
-				MVC,			// <SS-A>	Move Character 
+				SIO,				// <SI>		Start I/O
+				TIO,				// <SI>		Test I/O
+				HIO,				// <SI>		Halt I/O 
+				TCH,				// <SI>		Test Channel
+				MVN,				// <SS-A>	Move Numeric
+				MVC,				// <SS-A>	Move Character 
 				NC,				// <SS-A>	And Character
-				CLC,			// <SS-A>	Compare Logical Character
+				CLC,				// <SS-A>	Compare Logical Character
 				OC,				// <SS-A>	Or Character
 				XC,				// <SS-A>	Exclusive-Or Character 
 				TR,				// <SS-A>	Translate
-				TRT,			// <SS-A>	Translate And Test
+				TRT,				// <SS-A>	Translate And Test
 				ED,				// <SS-A>	Edit
 				EDMK,			// <SS-A>	Edit And Mark
-				SRP,			// <SS-C>	Shift And Round Packed
-				MVO,			// <SS-B>	Move With Offset 
+				SRP,				// <SS-C>	Shift And Round Packed
+				MVO,				// <SS-B>	Move With Offset 
 				PACK,			// <SS-B>	Pack
 				UNPK,			// <SS-B>	Unpack
-				ZAP,			// <SS-B>	Zero And Add Packed
+				ZAP,				// <SS-B>	Zero And Add Packed
 				CP,				// <SS-B>	Compare Packed
 				AP,				// <SS-B>	Add Packed
 				SP,				// <SS-B>	Subtract Packed
@@ -226,7 +226,7 @@ namespace BigLib {
 				// 128-Bits On The Z/System 
 				uint64_t	PSW[2];
 				// 4 Double Registers On The 360 Enumerated: 0, 2, 4, 6. 370/S 390/S Z/System All Have 16 Registers
-				double		DREGISTERS[16];
+				double DREGISTERS[16];
 				// 16 Privileged 32-Bit Control Registers, Used To Control Various Operations Of The Computer (Not Available In The 360)
 				uint32_t	CR32[16];
 
@@ -304,10 +304,22 @@ namespace BigLib {
 
 							this->PS_SET_IADDRESS(this->R64[R1]);
 						}
-						VMCASE(Opcodes::BCR)
-							break; // Note
-					
-							break;
+						VMCASE(Opcodes::BCR) {
+							INSTRUCTION_RR(*Instruction++);
+							
+							if (R0 == 0x0) // Acts As NOPR
+								return 2;
+							else if (R0 == 0xF) { // Acts As BR
+								this->PS_SET_IADDRESS(this->R64[R1]);
+								return 2;
+							}
+							
+							uint8_t ConditionCode = PS_GET_CC();
+
+							if (R0 == ConditionCode)
+								this->PS_SET_IADDRESS(this->R64[R1]);
+							return 2;
+						}
 						VMCASE(Opcodes::SSK)
 							break;
 						VMCASE(Opcodes::ISK)
@@ -662,6 +674,7 @@ namespace BigLib {
 						AM_SPECIFICATION_EXCEPTION,
 					};
 
+					// Gets Current Addressing Mode As A "AddressingMode" Macro
 					FORCE_INLINE AddressingMode GET_CURRENT_ADDRESSING_MODE() {
 						if (this->PSW[0] & PS_TYPE) {
 							// 64-Bit Program State
@@ -686,13 +699,16 @@ namespace BigLib {
 						}
 					}
 
+					// Sets Condition Code
 					FORCE_INLINE void PS_SET_CC(uint8_t ConditionCode) {
 						this->PSW[0] = SET_BITS(this->PSW[0], 18, 19, ConditionCode & 0x03);
 					}
+					// Gets Condition Code
 					FORCE_INLINE uint8_t PS_GET_CC() {
 						return GET_BITS(this->PSW[0], 18, 19);
 					}
 
+					// Gets Instruction Address
 					FORCE_INLINE uint64_t PS_GET_IADDRESS() {
 						if (this->PSW[0] & PS_TYPE) {
 							// 64-Bit Program State 31-Bits Instruction Address
@@ -704,6 +720,7 @@ namespace BigLib {
 						}
 					}
 
+					// Sets Instruction Address
 					FORCE_INLINE void PS_SET_IADDRESS(uint64_t Address) {
 						if (this->PSW[0] & PS_TYPE) {
 							// 64-Bit Program State 31-Bits Instruction Address
@@ -715,9 +732,11 @@ namespace BigLib {
 						}
 					}
 
+					// Sets Program Mask
 					FORCE_INLINE void PS_SET_PM(uint8_t ProgramMask) {
 						this->PSW[0] = SET_BITS(this->PSW[0], 20, 23, ProgramMask & 0x0F);
 					}
+					// Gets Program Mask
 					FORCE_INLINE uint8_t PS_GET_PM() {
 						return GET_BITS(this->PSW[0], 20, 23);
 					}
