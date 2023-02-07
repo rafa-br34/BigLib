@@ -42,6 +42,7 @@ namespace BigLib {
 							Remainder <<= (Width - 8);
 
 						for (size_t B = 0; B < 8; B++)
+							//Remainder = (Remainder & 1) ? ((Remainder >> 1) ^ Poly) : (Remainder >> 1);
 							Remainder = (Remainder & MaxBitMask) ? ((Remainder << 1) ^ Poly) : (Remainder << 1);
 							
 						// Reflecting The Table Item Will Have The Same Effect Of ReflectIn.
@@ -51,7 +52,7 @@ namespace BigLib {
 
 				CONST_EXPRESSION FORCE_INLINE void NormalUpdateCRC(Type Data) {
 					if CONST_EXPRESSION(Width > 8)
-						this->CRC = this->LookupTable[(Data ^ (this->CRC >> (Width - 8))) & 0xFF] ^ (this->CRC << 8);
+						this->CRC = (this->LookupTable[(Data ^ (this->CRC >> (Width - 8))) & 0xFF] ^ (this->CRC << 8)) & this->LimiterMask;
 					else
 						// (this->CRC << 8) Becomes Zero If Width <= 8 
 						// If Width Is Less Than Or Equal To 8 It Should Be Removed.
@@ -60,16 +61,16 @@ namespace BigLib {
 
 				CONST_EXPRESSION FORCE_INLINE void InversedUpdateCRC(Type Data) {
 					if CONST_EXPRESSION(Width > 8)
-						this->CRC = this->LookupTable[(this->CRC ^ Data) & 0xFF] ^ ((this->CRC >> 8) & this->LimiterMask);
+						this->CRC = (this->LookupTable[(this->CRC ^ Data) & 0xFF] ^ (this->CRC >> 8)) & this->LimiterMask;
 					else
 						// (this->CRC >> 8) Becomes Zero When Width Is Lower Or Equal To 8 
-						this->CRC = this->LookupTable[(Data ^ this->CRC) & 0xFF];
+						this->CRC = this->LookupTable[(this->CRC ^ Data) & 0xFF];
 				}
 
 			public:
 				CRCEngine() {
 					this->GenerateLookupTable();
-					this->ResetCRC()
+					this->ResetCRC();
 				}
 
 				Type CRC = Initial;
@@ -77,7 +78,7 @@ namespace BigLib {
 				CONST_EXPRESSION FORCE_INLINE void ResetCRC() {
 					this->CRC = Initial;
 
-					if CONST_EXPRESSION(Width < 8)
+					if CONST_EXPRESSION(Width < 8 && !ReflectOut)
 						this->CRC <<= (8 - Width);
 				}
 
@@ -90,9 +91,9 @@ namespace BigLib {
 					CRCOut ^= XOROut;
 
 					if CONST_EXPRESSION(ReflectOut && !ReflectIn)
-						return Bitwise::BinaryReflect<Type, Width>(CRCOut);
+						return Bitwise::BinaryReflect<Type, Width>(CRCOut) & this->LimiterMask;
 					else
-						return CRCOut;
+						return CRCOut & this->LimiterMask;
 				}
 
 				CONST_EXPRESSION FORCE_INLINE Type& UpdateCRC(Type Data) {
@@ -129,7 +130,7 @@ namespace BigLib {
 			typedef CRCEngine<uint8_t,		0x3,			true,	true,	0x7,			0x0,		3> CRC_3_ROHC;
 
 			typedef CRCEngine<uint8_t,		0x3,			true,	true,	0x0,			0x0,		4> CRC_4_G_704;
-			typedef CRCEngine<uint8_t,		0x3,			false,	false,	0x0,			0xF,		4> CRC_4_INTERLAKEN;
+			typedef CRCEngine<uint8_t,		0x3,			false,	false,	0xF,			0xF,		4> CRC_4_INTERLAKEN;
 
 			typedef CRCEngine<uint8_t,		0x09,		false,	false,	0x09,		0x00,	5> CRC_5_EPC_C1G2;
 			typedef CRCEngine<uint8_t,		0x15,		true,	true,	0x00,		0x00,	5> CRC_5_G_704;

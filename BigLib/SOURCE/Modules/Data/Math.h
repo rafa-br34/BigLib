@@ -1,7 +1,7 @@
 #pragma once
 #include "../../Includes.h"
 
-
+#define PIXEL_INDEX_FROM_XY(X, Y, DataSize, Width) ((DataSize) * (Width) * (Y) + (DataSize) * (X))
 
 namespace BigLib {
 	namespace Math {
