@@ -143,15 +143,15 @@ void _TEST_CRC(BigLib::Crypts::CRC::CRCEngine<Type, Polynomial, ReflectIn, Refle
 		0xDA, // 8 CDMA2000
 		0x25, // 8 WCDMA
 		0xBC, // 8 DVB-S2
-		0xA1, // 8 MAXIM
+		0xA1, // 8 MAXIM-DOW
 		0x15, // 8 DARC
 		0x7E, // 8 ICODE
-		0x97, // 8 EBU
+		0x97, // 8 TECH-3250
 		0xD0, // 8 ROHC
-		0xA1, // 8 ITU
+		0xA1, // 8 I-432-1
 		0xF4, // 8 SMBUS
-		0x26, // 8 Bluetooth
-		0xDF, // 8 Autosar
+		0x26, // 8 BLUETOOTH
+		0xDF, // 8 AUTOSAR
 		0x37, // 8 GSM-A
 		0x94, // 8 GSM-B
 		0xB4, // 8 HITAG
@@ -214,7 +214,9 @@ void _TEST_CRC(BigLib::Crypts::CRC::CRCEngine<Type, Polynomial, ReflectIn, Refle
 		0x31C3, // 16 XMODEM
 
 		0x04F03, // 17 CAN-FD
+
 		0x0ED841, // 21 CAN-FD
+
 		0xC25A56, // 24 BLE
 		0x7979BD, // 24 FLEXRAY A
 		0x1F23B8, // 24 FLEXRAY B
@@ -242,6 +244,13 @@ void _TEST_CRC(BigLib::Crypts::CRC::CRCEngine<Type, Polynomial, ReflectIn, Refle
 		0xBD0BE338, // 32 XFER
 
 		0xD4164FC646, // 40 GSM
+
+		0x6C40DF5F0B497347, // 64 ECMA-182
+		0xB90956C775A41001, // 64 GO-ISO
+		0x75D4B74F024ECEEA, // 64 MS
+		0xE9C6D914C4B8D9CA, // 64 REDIS
+		0x62EC59E3F1A4F00A, // 64 WE
+		0x995DC9BBDF1939FA, // 64 XZ
 	};
 	const char* AlgoNames[] = {
 		"3 GSM",
@@ -267,12 +276,12 @@ void _TEST_CRC(BigLib::Crypts::CRC::CRCEngine<Type, Polynomial, ReflectIn, Refle
 		"8 CDMA2000",
 		"8 WCDMA",
 		"8 DVB-S2",
-		"8 MAXIM",
+		"8 MAXIM-DOW",
 		"8 DARC",
 		"8 ICODE",
-		"8 EBU",
+		"8 TECH-3250",
 		"8 ROHC",
-		"8 ITU",
+		"8 I-432-1",
 		"8 SMBUS",
 		"8 BLUETOOTH",
 		"8 AUTOSAR",
@@ -351,6 +360,7 @@ void _TEST_CRC(BigLib::Crypts::CRC::CRCEngine<Type, Polynomial, ReflectIn, Refle
 		"24 OS-9",
 
 		"30 CDMA",
+
 		"31 PHILIPS",
 		
 		"32 AIXM",
@@ -366,7 +376,14 @@ void _TEST_CRC(BigLib::Crypts::CRC::CRCEngine<Type, Polynomial, ReflectIn, Refle
 		"32 MPEG-2",
 		"32 XFER",
 
-		"40 GSM"
+		"40 GSM",
+
+		"64 ECMA-182",
+		"64 GO-ISO",
+		"64 MS",
+		"64 REDIS",
+		"64 WE",
+		"64 XZ"
 	};
 
 
@@ -393,6 +410,7 @@ float TEST_CRCs() {
 	// Not Optimal But Will Do The Job.
 	_TEST_CRC(new BigLib::Crypts::CRC::CRC_3_GSM());
 	_TEST_CRC(new BigLib::Crypts::CRC::CRC_3_ROHC());
+
 	_TEST_CRC(new BigLib::Crypts::CRC::CRC_4_G_704());
 
 	_TEST_CRC(new BigLib::Crypts::CRC::CRC_4_INTERLAKEN());
@@ -413,13 +431,13 @@ float TEST_CRCs() {
 
 	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_CDMA2000());
 	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_WCDMA());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_DBV_S2());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_MAXIM());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_DVB_S2());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_MAXIM_DOW());
 	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_DARC());
 	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_I_CODE());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_EBU());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_TECH_3250());
 	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_ROHC());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_ITU());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_I_432_1());
 	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_SMBUS());
 	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_BLUETOOTH());
 	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_AUTOSAR());
@@ -515,6 +533,13 @@ float TEST_CRCs() {
 	_TEST_CRC(new BigLib::Crypts::CRC::CRC_32_XFER());
 
 	_TEST_CRC(new BigLib::Crypts::CRC::CRC_40_GSM());
+
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_64_ECMA_182());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_64_GO_ISO());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_64_MS());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_64_REDIS());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_64_WE());
+	_TEST_CRC(new BigLib::Crypts::CRC::CRC_64_XZ());
 
 	if (_TEST_CRC_PASS != _TEST_CRC_I)
 		std::cout << _TEST_CRC_PASS << " Out Of " << _TEST_CRC_I << " CRCs Passed" << std::endl;
