@@ -71,7 +71,7 @@ jobs:
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./builtdocs
+        publish_dir: /
         publish_branch: documentation
 
     - name: Pushing Changes
