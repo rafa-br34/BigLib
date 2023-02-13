@@ -52,7 +52,7 @@ jobs:
     - name: Building Documentation
       continue-on-error: true
       run: |
-        mkdocs build --config-file mkdocs.yml
+        mkdocs build --config-file Documentation/mkdocs.yml
 
     - name: Running Main Python Script
       continue-on-error: true
