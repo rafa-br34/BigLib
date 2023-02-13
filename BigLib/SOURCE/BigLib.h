@@ -1,10 +1,8 @@
 #pragma once
 #include "Configs.h"
 
-#define BIGLIB_VERSION_COMMITS 50
-
 #ifdef BIGLIB_PRINT_PREPROCESSED_DATA
-#pragma message("-- BIGLIB COMPILATION INFO --\nBigLib Version " STRINGFY(BIGLIB_VERSION_COMMITS) "\nArchitecture " ARCH_CURRENT_NAME "(ID: " STRINGFY(ARCH_CURRENT_ID) ")" "\n-- BIGLIB COMPILATION INFO --")
+#pragma message("-- BIGLIB COMPILATION INFO --\nArchitecture " ARCH_CURRENT_NAME "(ID: " STRINGFY(ARCH_CURRENT_ID) ")" "\n-- BIGLIB COMPILATION INFO --")
 #endif
 
 // Memory

@@ -546,7 +546,7 @@ float TEST_CRCs() {
 	else
 		std::cout << "All " << _TEST_CRC_PASS << " CRCs Passed" << std::endl;
 
-	std::cout << "CRC Test Finished\n";
+	std::cout << "CRC Test Finished\n\n";
 	return ((float)_TEST_CRC_PASS / (float)_TEST_CRC_I) * 100.f;
 }
 

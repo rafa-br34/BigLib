@@ -1,0 +1,50 @@
+
+site_name: BigLib Documentation
+repo_name: "BigLib"
+repo_url: "https://github.com/rafa-br34/BigLib"
+
+
+
+theme:
+  name: "material"
+  custom_dir: docs/custom_theme/
+  palette:
+    scheme: slate
+  font:
+    text: "Ubuntu"
+    code: "Ubuntu Mono"
+
+extra_css:
+  - stylesheets/extra.css
+
+markdown_extensions:
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      use_pygments: true
+  - pymdownx.superfences
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.snippets
+  - abbr
+
+
+nav:
+    - Home: "index.md"
+    - About:
+        - "License": "license.md"
+        - "Release Notes": "release-notes.md"
+
+    - Modules:
+      - Data:
+        - CRC:
+          - About: "Modules/Data/CRC/About.md"
+          - CRCEngine: "Modules/Data/CRC/CRCEngine.md"
+          - Default CRCs: "Modules/Data/CRC/Default_CRCs.md"
+
+      
+

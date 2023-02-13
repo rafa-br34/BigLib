@@ -32,6 +32,9 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install requests
+        pip install mkdocs
+        pip install mkdocs-material
+        pip install Pygments
         sudo apt install cloc
 
     - name: Pre-Configuring Git
@@ -42,19 +45,34 @@ jobs:
 
     - name: Upgrading Packages
       continue-on-error: true
+      # Thanks To https://stackoverflow.com/questions/2720014/how-to-upgrade-all-python-packages-with-pip
       run: |
-        pip3 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip3 install -U 
+        pip --disable-pip-version-check list --outdated --format=json | python -c "import json, sys; print('\n'.join([x['name'] for x in json.load(sys.stdin)]))"
+
+    - name: Building Documentation
+      continue-on-error: true
+      run: |
+        mkdocs build --config-file mkdocs.yml
 
     - name: Running Main Python Script
-      #continue-on-error: true
+      continue-on-error: true
       run: |
         python .github/workflows/Main.py
 
     - name: Cleaning PYCACHE
+      continue-on-error: true
       run: |
         cd .github/workflows/
         sudo find . | grep -E "(/__pycache__$|\.pyc$|\.pyo$)" | xargs rm -rf
         cd ../..
+
+    - name: Deploying Documentation
+      continue-on-error: true
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./builtdocs
+        publish_branch: documentation
 
     - name: Pushing Changes
       continue-on-error: true
