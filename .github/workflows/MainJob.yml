@@ -73,6 +73,11 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: Documentation/site
         publish_branch: documentation
+    
+    - name: Sites Cleanup
+      continue-on-error: true
+      run: |
+        rm -r Documentation/site
 
     - name: Pushing Changes
       continue-on-error: true
