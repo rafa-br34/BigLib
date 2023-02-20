@@ -8,8 +8,6 @@ repo_url: "https://github.com/rafa-br34/BigLib"
 theme:
   name: "material"
   custom_dir: docs/custom_theme/
-  palette:
-    scheme: slate
   font:
     text: "Ubuntu"
     code: "Ubuntu Mono"
