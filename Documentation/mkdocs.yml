@@ -14,8 +14,8 @@ theme:
     text: "Ubuntu"
     code: "Ubuntu Mono"
 
-extra_css:
-  - stylesheets/extra.css
+#extra_css:
+#  - stylesheets/extra.css
 
 markdown_extensions:
   - pymdownx.superfences:
