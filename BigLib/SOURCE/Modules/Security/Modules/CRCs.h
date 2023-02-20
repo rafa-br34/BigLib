@@ -73,10 +73,13 @@ namespace BigLib {
 					this->ResetCRC();
 				}
 
-				Type CRC = Initial;
+				Type CRC;
 
 				CONST_EXPRESSION FORCE_INLINE void ResetCRC() {
-					this->CRC = Initial;
+					if CONST_EXPRESSION(ReflectIn)
+						this->CRC = Bitwise::BinaryReflect<Type, Width>(Initial);
+					else
+						this->CRC = Initial;
 
 					if CONST_EXPRESSION(Width < 8 && !ReflectOut)
 						this->CRC <<= (8 - Width);
@@ -102,10 +105,7 @@ namespace BigLib {
 						InversedUpdateCRC(Data); 
 					else
 						NormalUpdateCRC(Data);
-
-					if CONST_EXPRESSION(Width >= 8)
-						this->CRC &= this->LimiterMask;
-
+					
 					return this->CRC;
 				}
 
@@ -199,7 +199,7 @@ namespace BigLib {
 			typedef CRCEngine<uint16_t,	0x1021,				false,	false,	0x0000,				0xFFFF> CRC_16_GSM;
 			typedef CRCEngine<uint16_t,	0x1021,				false,	false,	0xFFFF,				0x0000> CRC_16_IBM_3740; // AKA CRC-16/AUTOSAR, CRC-16/CCITT-FALSE
 			typedef CRCEngine<uint16_t,	0x1021,				true,	true,	0xFFFF,				0xFFFF> CRC_16_IBM_SDLC; // AKA CRC-16/ISO-HDLC, CRC-16/ISO-IEC-14443-3-B, CRC-16/X-25, CRC-B, X-25
-			typedef CRCEngine<uint16_t,	0x1021,				true,	true,	0x6363,				0x0000> CRC_16_ISO_IEC_14443_3_A; // AKA CRC-A
+			typedef CRCEngine<uint16_t,	0x1021,				true,	true,	0xC6C6,				0x0000> CRC_16_ISO_IEC_14443_3_A; // AKA CRC-A
 			typedef CRCEngine<uint16_t,	0x1021,				true,	true,	0x0000,				0x0000> CRC_16_KERMIT; // AKA CRC-16/BLUETOOTH, CRC-16/CCITT, CRC-16/CCITT-TRUE, CRC-16/V-41-LSB, CRC-CCITT
 			typedef CRCEngine<uint16_t,	0x6F63,				false,	false,	0x0000,				0x0000> CRC_16_LJ1200;
 			typedef CRCEngine<uint16_t,	0x5935,				false,	false,	0xFFFF,				0x0000> CRC_16_M17;
@@ -210,11 +210,11 @@ namespace BigLib {
 			typedef CRCEngine<uint16_t,	0x5935,				false,	false,	0x0000,				0x0000> CRC_16_OPENSAFETY_A;
 			typedef CRCEngine<uint16_t,	0x755B,				false,	false,	0x0000,				0x0000> CRC_16_OPENSAFETY_B;
 			typedef CRCEngine<uint16_t,	0x1DCF,				false,	false,	0xFFFF,				0xFFFF> CRC_16_PROFIBUS; // AKA CRC-16/IEC-61158-2
-			typedef CRCEngine<uint16_t,	0x1021,				true,	true,	0x554D,				0x0000> CRC_16_RIELLO;
+			typedef CRCEngine<uint16_t,	0x1021,				true,	true,	0xB2AA,				0x0000> CRC_16_RIELLO;
 			typedef CRCEngine<uint16_t,	0x1021,				false,	false,	0x1D0F,				0x0000> CRC_16_SPI_FUJITSU; // AKA CRC-16/AUG-CCITT
 			typedef CRCEngine<uint16_t,	0x8BB7,				false,	false,	0x0000,				0x0000> CRC_16_T10_DIF;
 			typedef CRCEngine<uint16_t,	0xA097,				false,	false,	0x0000,				0x0000> CRC_16_TELEDISK;
-			typedef CRCEngine<uint16_t,	0x1021,				true,	true,	0x3791,				0x0000> CRC_16_TMS37157;
+			typedef CRCEngine<uint16_t,	0x1021,				true,	true,	0x89EC,				0x0000> CRC_16_TMS37157;
 			typedef CRCEngine<uint16_t,	0x8005,				false,	false,	0x0000,				0x0000> CRC_16_UMTS; // AKA CRC-16/BUYPASS, CRC-16/VERIFONE
 			typedef CRCEngine<uint16_t,	0x8005,				true,	true,	0xFFFF,				0xFFFF> CRC_16_USB;
 			typedef CRCEngine<uint16_t,	0x1021,				false,	false,	0x0000,				0x0000> CRC_16_XMODEM; // AKA CRC-16/ACORN, CRC-16/LTE, CRC-16/V-41-MSB, XMODEM, ZMODEM
