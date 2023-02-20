@@ -1,5 +1,5 @@
 BigLib multipurpose and multifunction code library  
-Copyright (C) 2023  rafa_br34
+Copyright (C) 2023 rafa_br34
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

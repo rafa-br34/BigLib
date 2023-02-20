@@ -41,10 +41,12 @@ nav:
 
     - Modules:
       - Data:
-        - CRC:
-          - About: "Modules/Data/CRC/About.md"
-          - CRCEngine: "Modules/Data/CRC/CRCEngine.md"
-          - Default CRCs: "Modules/Data/CRC/Default_CRCs.md"
+        - Data Integrity:
+          - CRC:
+            - About: "Modules/Data/DataIntegrity/CRC/About.md"
+            - CRCEngine: "Modules/Data/DataIntegrity/CRC/CRCEngine.md"
+            - Predefined CRCs: "Modules/Data/DataIntegrity/CRC/Predefined_CRCs.md"
+          #- MD5
 
       
 
