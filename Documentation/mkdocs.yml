@@ -1,5 +1,6 @@
 
 site_name: BigLib Documentation
+site_url: "https://rafa-br34.github.io/BigLib/"
 repo_name: "BigLib"
 repo_url: "https://github.com/rafa-br34/BigLib"
 
@@ -12,8 +13,8 @@ theme:
     text: "Ubuntu"
     code: "Ubuntu Mono"
 
-#extra_css:
-#  - stylesheets/extra.css
+extra_css:
+  - stylesheets/extra.css
 
 markdown_extensions:
   - pymdownx.superfences:
