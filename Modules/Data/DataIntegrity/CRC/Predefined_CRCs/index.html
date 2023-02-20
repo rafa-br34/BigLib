@@ -1,0 +1,1618 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../CRCEngine/">
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.13">
+    
+    
+      
+        <title>Predefined CRCs - BigLib Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.ffa9267a.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.a0c5b2b5.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:300,300i,400,400i,700,700i%7CUbuntu+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Ubuntu";--md-code-font:"Ubuntu Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#predefined-crcs" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../.." title="BigLib Documentation" class="md-header__button md-logo" aria-label="BigLib Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            BigLib Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Predefined CRCs
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/rafa-br34/BigLib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    BigLib
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="BigLib Documentation" class="md-nav__button md-logo" aria-label="BigLib Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    BigLib Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/rafa-br34/BigLib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    BigLib
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          About
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          About
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../license/" class="md-nav__link">
+        License
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../release-notes/" class="md-nav__link">
+        Release Notes
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          Modules
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Modules
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+          Data
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_3_1">
+          <span class="md-nav__icon md-icon"></span>
+          Data
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1_1" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_1_1" id="__nav_3_1_1_label" tabindex="0">
+          Data Integrity
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_1_1_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_3_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          Data Integrity
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1_1_1" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_1_1_1" id="__nav_3_1_1_1_label" tabindex="0">
+          CRC
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_3_1_1_1_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_3_1_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          CRC
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../About/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CRCEngine/" class="md-nav__link">
+        CRCEngine
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Predefined CRCs
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Predefined CRCs
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#predefined-crcs" class="md-nav__link">
+    Predefined CRCs
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#predefined-crcs" class="md-nav__link">
+    Predefined CRCs
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+  <h1>Predefined CRCs</h1>
+
+<h2 id="predefined-crcs">Predefined CRCs</h2>
+<p>This page contains a list of all predefined CRCs implemented.</p>
+<table>
+<thead>
+<tr>
+<th>Width</th>
+<th>Polynomial</th>
+<th>Ref In/Out</th>
+<th>Initial</th>
+<th>XOROut</th>
+<th>Name In Library</th>
+<th>Aliases</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3</td>
+<td>0x3</td>
+<td>00</td>
+<td>0x0</td>
+<td>0x7</td>
+<td>CRC_3_GSM</td>
+<td>CRC-3/GSM</td>
+</tr>
+<tr>
+<td>3</td>
+<td>0x3</td>
+<td>11</td>
+<td>0x0</td>
+<td>0x7</td>
+<td>CRC_3_ROHC</td>
+<td>CRC-3/ROHC</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0x3</td>
+<td>11</td>
+<td>0x0</td>
+<td>0x0</td>
+<td>CRC_4_G_704</td>
+<td>CRC-4/G-704<br> CRC-4/ITU</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0x3</td>
+<td>00</td>
+<td>0xF</td>
+<td>0xF</td>
+<td>CRC_4_INTERLAKEN</td>
+<td>CRC-4/INTERLAKEN</td>
+</tr>
+<tr>
+<td>5</td>
+<td>0x09</td>
+<td>00</td>
+<td>0x09</td>
+<td>0x00</td>
+<td>CRC_5_EPC_C1G2</td>
+<td>CRC-5/EPC-C1G2<br> CRC-5/EPC</td>
+</tr>
+<tr>
+<td>5</td>
+<td>0x15</td>
+<td>11</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>CRC_5_G_704</td>
+<td>CRC-5/G-704<br> CRC-5/ITU</td>
+</tr>
+<tr>
+<td>5</td>
+<td>0x05</td>
+<td>11</td>
+<td>0x1F</td>
+<td>0x1F</td>
+<td>CRC_5_USB</td>
+<td>CRC-5/USB</td>
+</tr>
+<tr>
+<td>6</td>
+<td>0x27</td>
+<td>00</td>
+<td>0x3F</td>
+<td>0x00</td>
+<td>CRC_6_CDMA2000_A</td>
+<td>CRC-6/CDMA2000-A</td>
+</tr>
+<tr>
+<td>6</td>
+<td>0x07</td>
+<td>00</td>
+<td>0x3F</td>
+<td>0x00</td>
+<td>CRC_6_CDMA2000_B</td>
+<td>CRC-6/CDMA2000-B</td>
+</tr>
+<tr>
+<td>6</td>
+<td>0x19</td>
+<td>11</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>CRC_6_DARC</td>
+<td>CRC-6/DARC</td>
+</tr>
+<tr>
+<td>6</td>
+<td>0x03</td>
+<td>11</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>CRC_6_G_704</td>
+<td>CRC-6/G-704<br> CRC-6/ITU</td>
+</tr>
+<tr>
+<td>6</td>
+<td>0x2F</td>
+<td>00</td>
+<td>0x00</td>
+<td>0x3F</td>
+<td>CRC_6_GSM</td>
+<td>CRC-6/GSM</td>
+</tr>
+<tr>
+<td>7</td>
+<td>0x09</td>
+<td>00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>CRC_7_MMC</td>
+<td>CRC-7/MMC<br> CRC-7</td>
+</tr>
+<tr>
+<td>7</td>
+<td>0x4F</td>
+<td>11</td>
+<td>0x7F</td>
+<td>0x00</td>
+<td>CRC_7_ROHC</td>
+<td>CRC-7/ROHC</td>
+</tr>
+<tr>
+<td>7</td>
+<td>0x45</td>
+<td>00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>CRC_7_UMTS</td>
+<td>CRC-7/UMTS</td>
+</tr>
+<tr>
+<td>8</td>
+<td>0x2F</td>
+<td>00</td>
+<td>0xFF</td>
+<td>0xFF</td>
+<td>CRC_8_AUTOSAR</td>
+<td>CRC-8/AUTOSAR</td>
+</tr>
+<tr>
+<td>8</td>
+<td>0xA7</td>
+<td>11</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>CRC_8_BLUETOOTH</td>
+<td>CRC-8/BLUETOOTH</td>
+</tr>
+<tr>
+<td>8</td>
+<td>0x9B</td>
+<td>00</td>
+<td>0xFF</td>
+<td>0x00</td>
+<td>CRC_8_CDMA2000</td>
+<td>CRC-8/CDMA2000</td>
+</tr>
+<tr>
+<td>8</td>
+<td>0x39</td>
+<td>11</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>CRC_8_DARC</td>
+<td>CRC-8/DARC</td>
+</tr>
+<tr>
+<td>8</td>
+<td>0xD5</td>
+<td>00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>CRC_8_DVB_S2</td>
+<td>CRC-8/DVB-S2</td>
+</tr>
+<tr>
+<td>8</td>
+<td>0x1D</td>
+<td>00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>CRC_8_GSM_A</td>
+<td>CRC-8/GSM-A</td>
+</tr>
+<tr>
+<td>8</td>
+<td>0x49</td>
+<td>00</td>
+<td>0x00</td>
+<td>0xFF</td>
+<td>CRC_8_GSM_B</td>
+<td>CRC_8/GSM-B</td>
+</tr>
+<tr>
+<td>8</td>
+<td>0x1D</td>
+<td>00</td>
+<td>0xFF</td>
+<td>0x00</td>
+<td>CRC_8_HITAG</td>
+<td>CRC-8/HITAG</td>
+</tr>
+<tr>
+<td>8</td>
+<td>0x07</td>
+<td>00</td>
+<td>0x00</td>
+<td>0x55</td>
+<td>CRC_8_I_432_1</td>
+<td>CRC-8/I-432-1<br> CRC-8/ITU</td>
+</tr>
+<tr>
+<td>8</td>
+<td>0x1D</td>
+<td>00</td>
+<td>0xFD</td>
+<td>0x00</td>
+<td>CRC_8_I_CODE</td>
+<td>CRC-8/I-CODE</td>
+</tr>
+<tr>
+<td>8</td>
+<td>0x9B</td>
+<td>00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>CRC_8_LTE</td>
+<td>CRC-8/LTE</td>
+</tr>
+<tr>
+<td>8</td>
+<td>0x31</td>
+<td>11</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>CRC_8_MAXIM_DOW</td>
+<td>CRC-8/MAXIM-DOW<br> CRC-8/MAXIM<br> DOW-CRC</td>
+</tr>
+<tr>
+<td>8</td>
+<td>0x1D</td>
+<td>00</td>
+<td>0xC7</td>
+<td>0x00</td>
+<td>CRC_8_MIFARE_MAD</td>
+<td>CRC-8/MIFARE-MAD</td>
+</tr>
+<tr>
+<td>8</td>
+<td>0x31</td>
+<td>00</td>
+<td>0xFF</td>
+<td>0x00</td>
+<td>CRC_8_NRSC_5</td>
+<td>CRC-8/NRSC-5</td>
+</tr>
+<tr>
+<td>8</td>
+<td>0x2F</td>
+<td>00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>CRC_8_OPENSAFETY</td>
+<td>CRC-8/OPENSAFETY</td>
+</tr>
+<tr>
+<td>8</td>
+<td>0x07</td>
+<td>11</td>
+<td>0xFF</td>
+<td>0x00</td>
+<td>CRC_8_ROHC</td>
+<td>CRC-8/ROHC</td>
+</tr>
+<tr>
+<td>8</td>
+<td>0x1D</td>
+<td>00</td>
+<td>0xFF</td>
+<td>0xFF</td>
+<td>CRC_8_SAE_J1850</td>
+<td>CRC-8/SAE-J1850</td>
+</tr>
+<tr>
+<td>8</td>
+<td>0x07</td>
+<td>00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>CRC_8_SMBUS</td>
+<td>CRC-8/SMBUS<br> CRC-8</td>
+</tr>
+<tr>
+<td>8</td>
+<td>0x1D</td>
+<td>11</td>
+<td>0xFF</td>
+<td>0x00</td>
+<td>CRC_8_TECH_3250</td>
+<td>CRC-8/TECH-3250<br> CRC-8/AES<br> CRC-8/EBU</td>
+</tr>
+<tr>
+<td>8</td>
+<td>0x9B</td>
+<td>11</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>CRC_8_WCDMA</td>
+<td>CRC-8/WCDMA</td>
+</tr>
+<tr>
+<td>10</td>
+<td>0x233</td>
+<td>00</td>
+<td>0x000</td>
+<td>0x000</td>
+<td>CRC_10_ATM</td>
+<td>CRC-10/ATM<br> CRC-10<br> CRC-10/I-610</td>
+</tr>
+<tr>
+<td>10</td>
+<td>0x3D9</td>
+<td>00</td>
+<td>0x3FF</td>
+<td>0x000</td>
+<td>CRC_10_CDMA2000</td>
+<td>CRC-10/CDMA2000</td>
+</tr>
+<tr>
+<td>10</td>
+<td>0x175</td>
+<td>00</td>
+<td>0x000</td>
+<td>0x3FF</td>
+<td>CRC_10_GSM</td>
+<td>CRC-10/GSM</td>
+</tr>
+<tr>
+<td>11</td>
+<td>0x385</td>
+<td>00</td>
+<td>0x01A</td>
+<td>0x000</td>
+<td>CRC_11_FLEXRAY</td>
+<td>CRC-11/FLEXRAY<br> CRC-11</td>
+</tr>
+<tr>
+<td>11</td>
+<td>0x307</td>
+<td>00</td>
+<td>0x000</td>
+<td>0x000</td>
+<td>CRC_11_UMTS</td>
+<td>CRC-11/UMTS</td>
+</tr>
+<tr>
+<td>12</td>
+<td>0xF13</td>
+<td>00</td>
+<td>0xFFF</td>
+<td>0x000</td>
+<td>CRC_12_CDMA2000</td>
+<td>CRC-12/CDMA2000</td>
+</tr>
+<tr>
+<td>12</td>
+<td>0x80F</td>
+<td>00</td>
+<td>0x000</td>
+<td>0x000</td>
+<td>CRC_12_DECT</td>
+<td>CRC-12/DECT<br> X-CRC-12</td>
+</tr>
+<tr>
+<td>12</td>
+<td>0xD31</td>
+<td>00</td>
+<td>0x000</td>
+<td>0xFFF</td>
+<td>CRC_12_GSM</td>
+<td>CRC-12/GSM</td>
+</tr>
+<tr>
+<td>12</td>
+<td>0x80F</td>
+<td>01</td>
+<td>0x000</td>
+<td>0x000</td>
+<td>CRC_12_UMTS</td>
+<td>CRC-12/UMTS<br> CRC-12/3GPP</td>
+</tr>
+<tr>
+<td>13</td>
+<td>0x1CF5</td>
+<td>00</td>
+<td>0x0000</td>
+<td>0x0000</td>
+<td>CRC_13_BBC</td>
+<td>CRC-13/BBC</td>
+</tr>
+<tr>
+<td>14</td>
+<td>0x0805</td>
+<td>11</td>
+<td>0x0000</td>
+<td>0x0000</td>
+<td>CRC_14_DARC</td>
+<td>CRC-14/DARC</td>
+</tr>
+<tr>
+<td>14</td>
+<td>0x202D</td>
+<td>00</td>
+<td>0x0000</td>
+<td>0x3FFF</td>
+<td>CRC_14_GSM</td>
+<td>CRC-14/GSM</td>
+</tr>
+<tr>
+<td>15</td>
+<td>0x4599</td>
+<td>00</td>
+<td>0x0000</td>
+<td>0x0000</td>
+<td>CRC_15_CAN</td>
+<td>CRC-15/CAN</td>
+</tr>
+<tr>
+<td>15</td>
+<td>0x6815</td>
+<td>00</td>
+<td>0x0000</td>
+<td>0x0001</td>
+<td>CRC_15_MPT1327</td>
+<td>CRC-15/MPT1327</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0x8005</td>
+<td>11</td>
+<td>0x0000</td>
+<td>0x0000</td>
+<td>CRC_16_ARC</td>
+<td>CRC-16/ARC<br> CRC-16<br> CRC-16/LHA<br> CRC-IBM</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0xC867</td>
+<td>00</td>
+<td>0xFFFF</td>
+<td>0x0000</td>
+<td>CRC_16_CDMA2000</td>
+<td>CRC-16/CDMA2000</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0x8005</td>
+<td>00</td>
+<td>0xFFFF</td>
+<td>0x0000</td>
+<td>CRC_16_CMS</td>
+<td>CRC-16/CMS</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0x8005</td>
+<td>00</td>
+<td>0x800D</td>
+<td>0x0000</td>
+<td>CRC_16_DDS_110</td>
+<td>CRC-16/DDS-110</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0x0589</td>
+<td>00</td>
+<td>0x0000</td>
+<td>0x0001</td>
+<td>CRC_16_DECT_R</td>
+<td>CRC-16/DECT-R</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0x0589</td>
+<td>00</td>
+<td>0x0000</td>
+<td>0x0000</td>
+<td>CRC_16_DECT_X</td>
+<td>CRC-16/DECT-X</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0x3D65</td>
+<td>11</td>
+<td>0x0000</td>
+<td>0xFFFF</td>
+<td>CRC_16_DNP</td>
+<td>CRC-16/DNP</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0x3D65</td>
+<td>00</td>
+<td>0x0000</td>
+<td>0xFFFF</td>
+<td>CRC_16_EN_13757</td>
+<td>CRC-16/EN-13757</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0x1021</td>
+<td>00</td>
+<td>0xFFFF</td>
+<td>0xFFFF</td>
+<td>CRC_16_GENIBUS</td>
+<td>CRC-16/GENIBUS<br> CRC-16/DARC<br> CRC-16/EPC<br> CRC-16/EPC-C1G2<br> CRC-16/I-CODE</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0x1021</td>
+<td>00</td>
+<td>0x0000</td>
+<td>0xFFFF</td>
+<td>CRC_16_GSM</td>
+<td>CRC-16/GSM</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0x1021</td>
+<td>00</td>
+<td>0xFFFF</td>
+<td>0x0000</td>
+<td>CRC_16_IBM_3740</td>
+<td>CRC-16/IBM-3740<br> CRC-16/AUTOSAR<br> CRC-16/CCITT-FALSE</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0x1021</td>
+<td>11</td>
+<td>0xFFFF</td>
+<td>0xFFFF</td>
+<td>CRC_16_IBM_SDLC</td>
+<td>CRC-16/ISO-HDLC<br> CRC-16/ISO-IEC-14443-3-B<br> CRC-16/X-25<br> CRC-B<br> X-25</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0x1021</td>
+<td>11</td>
+<td>0xC6C6</td>
+<td>0x0000</td>
+<td>CRC_16_ISO_IEC_14443_3_A</td>
+<td>CRC-16/ISO-IEC-14443-3-A<br> CRC-A</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0x1021</td>
+<td>11</td>
+<td>0x0000</td>
+<td>0x0000</td>
+<td>CRC_16_KERMIT</td>
+<td>CRC-16/KERMIT<br> CRC-16/BLUETOOTH<br> CRC-16/CCITT<br> CRC-16/CCITT-TRUE<br> CRC-16/V-41-LSB<br> CRC-CCITT</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0x6F63</td>
+<td>00</td>
+<td>0x0000</td>
+<td>0x0000</td>
+<td>CRC_16_LJ1200</td>
+<td>CRC-16/LJ1200</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0x5935</td>
+<td>00</td>
+<td>0xFFFF</td>
+<td>0x0000</td>
+<td>CRC_16_M17</td>
+<td>CRC-16/M17</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0x8005</td>
+<td>11</td>
+<td>0x0000</td>
+<td>0xFFFF</td>
+<td>CRC_16_MAXIM_DOW</td>
+<td>CRC-16/MAXIM-DOW<br>  CRC-16/MAXIM</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0x1021</td>
+<td>11</td>
+<td>0xFFFF</td>
+<td>0x0000</td>
+<td>CRC_16_MCRF4XX</td>
+<td>CRC-16/MCRF4XX</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0x8005</td>
+<td>11</td>
+<td>0xFFFF</td>
+<td>0x0000</td>
+<td>CRC_16_MODBUS</td>
+<td>CRC-16/MODBUS</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0x080B</td>
+<td>11</td>
+<td>0xFFFF</td>
+<td>0x0000</td>
+<td>CRC_16_NRSC_5</td>
+<td>CRC-16/NRSC-5</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0x5935</td>
+<td>00</td>
+<td>0x0000</td>
+<td>0x0000</td>
+<td>CRC_16_OPENSAFETY_A</td>
+<td>CRC-16/OPENSAFETY-A</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0x755B</td>
+<td>00</td>
+<td>0x0000</td>
+<td>0x0000</td>
+<td>CRC_16_OPENSAFETY_B</td>
+<td>CRC-16/OPENSAFETY-B</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0x1DCF</td>
+<td>00</td>
+<td>0xFFFF</td>
+<td>0xFFFF</td>
+<td>CRC_16_PROFIBUS</td>
+<td>CRC-16/PROFIBUS<br> CRC-16/IEC-61158-2</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0x1021</td>
+<td>11</td>
+<td>0xB2AA</td>
+<td>0x0000</td>
+<td>CRC_16_RIELLO</td>
+<td>CRC_16_RIELLO</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0x1021</td>
+<td>00</td>
+<td>0x1D0F</td>
+<td>0x0000</td>
+<td>CRC_16_SPI_FUJITSU</td>
+<td>CRC-16/SPI-FUJITSU<br> CRC-16/AUG-CCITT</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0x8BB7</td>
+<td>00</td>
+<td>0x0000</td>
+<td>0x0000</td>
+<td>CRC_16_T10_DIF</td>
+<td>CRC-16/T10-DIF</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0xA097</td>
+<td>00</td>
+<td>0x0000</td>
+<td>0x0000</td>
+<td>CRC_16_TELEDISK</td>
+<td>CRC-16/TELEDISK</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0x1021</td>
+<td>11</td>
+<td>0x89EC</td>
+<td>0x0000</td>
+<td>CRC_16_TMS37157</td>
+<td>CRC-16/TMS37157</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0x8005</td>
+<td>00</td>
+<td>0x0000</td>
+<td>0x0000</td>
+<td>CRC_16_UMTS</td>
+<td>CRC-16/UMTS<br> CRC-16/BUYPASS<br> CRC-16/VERIFONE</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0x8005</td>
+<td>11</td>
+<td>0xFFFF</td>
+<td>0xFFFF</td>
+<td>CRC_16_USB</td>
+<td>CRC-16/USB</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0x1021</td>
+<td>00</td>
+<td>0x0000</td>
+<td>0x0000</td>
+<td>CRC_16_XMODEM</td>
+<td>CRC-16/XMODEM<br> CRC-16/ACORN<br> CRC-16/LTE<br> CRC-16/V-41-MSB<br> XMODEM<br> ZMODEM</td>
+</tr>
+<tr>
+<td>17</td>
+<td>0x1685B</td>
+<td>00</td>
+<td>0x00000</td>
+<td>0x00000</td>
+<td>CRC_17_CAN_FD</td>
+<td>CRC-17/CAN-FD</td>
+</tr>
+<tr>
+<td>21</td>
+<td>0x102899</td>
+<td>00</td>
+<td>0x000000</td>
+<td>0x000000</td>
+<td>CRC_21_CAN_FD</td>
+<td>CRC-21/CAN-FD</td>
+</tr>
+<tr>
+<td>24</td>
+<td>0x00065B</td>
+<td>11</td>
+<td>0x555555</td>
+<td>0x000000</td>
+<td>CRC_24_BLE</td>
+<td>CRC-24/BLE</td>
+</tr>
+<tr>
+<td>24</td>
+<td>0x5D6DCB</td>
+<td>00</td>
+<td>0xFEDCBA</td>
+<td>0x000000</td>
+<td>CRC_24_FLEXRAY_A</td>
+<td>CRC-24/FLEXRAY-A</td>
+</tr>
+<tr>
+<td>24</td>
+<td>0x5D6DCB</td>
+<td>00</td>
+<td>0xABCDEF</td>
+<td>0x000000</td>
+<td>CRC_24_FLEXRAY_B</td>
+<td>CRC-24/FLEXRAY-B</td>
+</tr>
+<tr>
+<td>24</td>
+<td>0x328B63</td>
+<td>00</td>
+<td>0xFFFFFF</td>
+<td>0xFFFFFF</td>
+<td>CRC_24_INTERLAKEN</td>
+<td>CRC-24/INTERLAKEN</td>
+</tr>
+<tr>
+<td>24</td>
+<td>0x864CFB</td>
+<td>00</td>
+<td>0x000000</td>
+<td>0x000000</td>
+<td>CRC_24_LTE_A</td>
+<td>CRC-24/LTE-A</td>
+</tr>
+<tr>
+<td>24</td>
+<td>0x800063</td>
+<td>00</td>
+<td>0x000000</td>
+<td>0x000000</td>
+<td>CRC_24_LTE_B</td>
+<td>CRC-24/LTE-B</td>
+</tr>
+<tr>
+<td>24</td>
+<td>0x864CFB</td>
+<td>00</td>
+<td>0xB704CE</td>
+<td>0x000000</td>
+<td>CRC_24_OPENPGP</td>
+<td>CRC-24/OPENPGP<br> CRC-24</td>
+</tr>
+<tr>
+<td>24</td>
+<td>0x800063</td>
+<td>00</td>
+<td>0xFFFFFF</td>
+<td>0xFFFFFF</td>
+<td>CRC_24_OS_9</td>
+<td>CRC-24/OS-9</td>
+</tr>
+<tr>
+<td>30</td>
+<td>0x2030B9C7</td>
+<td>00</td>
+<td>0x3FFFFFFF</td>
+<td>0x3FFFFFFF</td>
+<td>CRC_30_CDMA</td>
+<td>CRC-30/CDMA</td>
+</tr>
+<tr>
+<td>31</td>
+<td>0x04C11DB7</td>
+<td>00</td>
+<td>0x7FFFFFFF</td>
+<td>0x7FFFFFFF</td>
+<td>CRC_31_PHILIPS</td>
+<td>CRC-31/PHILIPS</td>
+</tr>
+<tr>
+<td>32</td>
+<td>0x814141AB</td>
+<td>00</td>
+<td>0x00000000</td>
+<td>0x00000000</td>
+<td>CRC_32_AIXM</td>
+<td>CRC-32/AIXM<br> CRC-32Q</td>
+</tr>
+<tr>
+<td>32</td>
+<td>0xF4ACFB13</td>
+<td>11</td>
+<td>0xFFFFFFFF</td>
+<td>0xFFFFFFFF</td>
+<td>CRC_32_AUTOSAR</td>
+<td>CRC-32/AUTOSAR</td>
+</tr>
+<tr>
+<td>32</td>
+<td>0xA833982B</td>
+<td>11</td>
+<td>0xFFFFFFFF</td>
+<td>0xFFFFFFFF</td>
+<td>CRC_32_BASE91_D</td>
+<td>CRC-32/BASE91-D<br> CRC-32D</td>
+</tr>
+<tr>
+<td>32</td>
+<td>0x04C11DB7</td>
+<td>00</td>
+<td>0xFFFFFFFF</td>
+<td>0xFFFFFFFF</td>
+<td>CRC_32_BZIP2</td>
+<td>CRC-32/BZIP2<br> CRC-32/AAL5<br> CRC-32/DECT-B<br> B-CRC-32</td>
+</tr>
+<tr>
+<td>32</td>
+<td>0x8001801B</td>
+<td>11</td>
+<td>0x00000000</td>
+<td>0x00000000</td>
+<td>CRC_32_CD_ROM_EDC</td>
+<td>CRC-32/CD-ROM-EDC</td>
+</tr>
+<tr>
+<td>32</td>
+<td>0x04C11DB7</td>
+<td>00</td>
+<td>0x00000000</td>
+<td>0xFFFFFFFF</td>
+<td>CRC_32_CKSUM</td>
+<td>CRC-32/CKSUM<br> CRC-32/POSIX</td>
+</tr>
+<tr>
+<td>32</td>
+<td>0x1EDC6F41</td>
+<td>11</td>
+<td>0xFFFFFFFF</td>
+<td>0xFFFFFFFF</td>
+<td>CRC_32_ISCSI</td>
+<td>CRC-32/ISCSI<br> CRC-32/BASE91-C<br> CRC-32/CASTAGNOLI<br> CRC-32/INTERLAKEN<br> CRC-32C</td>
+</tr>
+<tr>
+<td>32</td>
+<td>0x04C11DB7</td>
+<td>11</td>
+<td>0xFFFFFFFF</td>
+<td>0xFFFFFFFF</td>
+<td>CRC_32_ISO_HDLC</td>
+<td>CRC-32/ISO-HDLC<br> CRC-32<br> CRC-32/ADCCP<br> CRC-32/V-42<br> CRC-32/XZ<br> PKZIP</td>
+</tr>
+<tr>
+<td>32</td>
+<td>0x04C11DB7</td>
+<td>11</td>
+<td>0xFFFFFFFF</td>
+<td>0x00000000</td>
+<td>CRC_32_JAMCRC</td>
+<td>CRC-32/JAMCRC</td>
+</tr>
+<tr>
+<td>32</td>
+<td>0x741B8CD7</td>
+<td>11</td>
+<td>0xFFFFFFFF</td>
+<td>0x00000000</td>
+<td>CRC_32_MEF</td>
+<td>CRC-32/MEF</td>
+</tr>
+<tr>
+<td>32</td>
+<td>0x04C11DB7</td>
+<td>00</td>
+<td>0xFFFFFFFF</td>
+<td>0x00000000</td>
+<td>CRC_32_MPEG_2</td>
+<td>CRC-32/MPEG-2</td>
+</tr>
+<tr>
+<td>32</td>
+<td>0x000000AF</td>
+<td>00</td>
+<td>0x00000000</td>
+<td>0x00000000</td>
+<td>CRC_32_XFER</td>
+<td>CRC-32/XFER</td>
+</tr>
+<tr>
+<td>40</td>
+<td>0x0004820009</td>
+<td>00</td>
+<td>0x0000000000</td>
+<td>0xFFFFFFFFFF</td>
+<td>CRC_40_GSM</td>
+<td>CRC-40/GSM</td>
+</tr>
+<tr>
+<td>64</td>
+<td>0x42F0E1EBA9EA3693</td>
+<td>00</td>
+<td>0x0000000000000000</td>
+<td>0x0000000000000000</td>
+<td>CRC_64_ECMA_182</td>
+<td>CRC-64/ECMA-182<br> CRC-64</td>
+</tr>
+<tr>
+<td>64</td>
+<td>0x000000000000001B</td>
+<td>11</td>
+<td>0xFFFFFFFFFFFFFFFF</td>
+<td>0xFFFFFFFFFFFFFFFF</td>
+<td>CRC_64_GO_ISO</td>
+<td>CRC-64/GO-ISO</td>
+</tr>
+<tr>
+<td>64</td>
+<td>0x259C84CBA6426349</td>
+<td>11</td>
+<td>0xFFFFFFFFFFFFFFFF</td>
+<td>0x0000000000000000</td>
+<td>CRC_64_MS</td>
+<td>CRC-64/MS</td>
+</tr>
+<tr>
+<td>64</td>
+<td>0xAD93D23594C935A9</td>
+<td>11</td>
+<td>0x0000000000000000</td>
+<td>0x0000000000000000</td>
+<td>CRC_64_REDIS</td>
+<td>CRC-64/REDIS</td>
+</tr>
+<tr>
+<td>64</td>
+<td>0x42F0E1EBA9EA3693</td>
+<td>00</td>
+<td>0xFFFFFFFFFFFFFFFF</td>
+<td>0xFFFFFFFFFFFFFFFF</td>
+<td>CRC_64_WE</td>
+<td>CRC-64/WE</td>
+</tr>
+<tr>
+<td>64</td>
+<td>0x42F0E1EBA9EA3693</td>
+<td>11</td>
+<td>0xFFFFFFFFFFFFFFFF</td>
+<td>0xFFFFFFFFFFFFFFFF</td>
+<td>CRC_64_XZ</td>
+<td>CRC-64/XZ</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../../../../..", "features": [], "search": "../../../../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.2a6f1dda.min.js"></script>
+      
+    
+  </body>
+</html>

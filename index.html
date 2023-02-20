@@ -265,6 +265,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#what-makes-biglib-useful" class="md-nav__link">
+    What makes BigLib useful?
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -413,12 +420,39 @@
       
       
         <label class="md-nav__link" for="__nav_3_1_1" id="__nav_3_1_1_label" tabindex="0">
-          CRC
+          Data Integrity
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_1_1_label" aria-expanded="false">
         <label class="md-nav__title" for="__nav_3_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          Data Integrity
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1_1_1" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_1_1_1" id="__nav_3_1_1_1_label" tabindex="0">
+          CRC
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_3_1_1_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3_1_1_1">
           <span class="md-nav__icon md-icon"></span>
           CRC
         </label>
@@ -430,7 +464,7 @@
   
   
     <li class="md-nav__item">
-      <a href="Modules/Data/CRC/About/" class="md-nav__link">
+      <a href="Modules/Data/DataIntegrity/CRC/About/" class="md-nav__link">
         About
       </a>
     </li>
@@ -444,7 +478,7 @@
   
   
     <li class="md-nav__item">
-      <a href="Modules/Data/CRC/CRCEngine/" class="md-nav__link">
+      <a href="Modules/Data/DataIntegrity/CRC/CRCEngine/" class="md-nav__link">
         CRCEngine
       </a>
     </li>
@@ -458,9 +492,16 @@
   
   
     <li class="md-nav__item">
-      <a href="Modules/Data/CRC/Default_CRCs/" class="md-nav__link">
-        Default CRCs
+      <a href="Modules/Data/DataIntegrity/CRC/Predefined_CRCs/" class="md-nav__link">
+        Predefined CRCs
       </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -534,6 +575,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#what-makes-biglib-useful" class="md-nav__link">
+    What makes BigLib useful?
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -562,7 +610,9 @@
 <p>BigLib is a multi-purpose, feature-rich, and multi-architecture-focused C++ library in its early alpha stages. </p>
 <h2 id="question-and-answers">Question and Answers</h2>
 <h3 id="how-many-architecturesplatforms-will-biglib-support">How many architectures/platforms will BigLib support?</h3>
-<p>Currently, the goal is to get every algorithm working using the standard library the less as possible. Once the base library is done, the phase of making it easily usable for multiple architectures will start. The plans are for the library to support any architecture with an available C++ compiler.</p>
+<p>Currently, the goal is to get every algorithm working using the standard library the less as possible. Once the base library is done, the phase of making it easily usable for multiple architectures will start. The plans are for the library to support any architecture with an available C++ compiler and IO.</p>
+<h3 id="what-makes-biglib-useful">What makes BigLib useful?</h3>
+<p>Hashes/Checksums: BigLib contains algorithms for data integrity checking such as CRCs(With over than 100 predefined CRCs) for now. in the near future MD2-6 and SHA1-512 will be added.</p>
 
 
 
