@@ -114,7 +114,7 @@ template<
 	const size_t Width = SIZEOF_BITS(Type),
 	const size_t TableLen = 256
 >
-void _TEST_CRC(BigLib::Crypts::CRC::CRCEngine<Type, Polynomial, ReflectIn, ReflectOut, Initial, XOROut, Width, TableLen>* CRCClass) {
+void _TEST_CRC(BigLib::DataIntegrity::CRC::CRCEngine<Type, Polynomial, ReflectIn, ReflectOut, Initial, XOROut, Width, TableLen>* CRCClass) {
 	const char* Data = "123456789";
 	size_t DataLen = 9;
 
@@ -408,138 +408,138 @@ float TEST_CRCs() {
 	_TEST_CRC_I = 0;
 	_TEST_CRC_PASS = 0;
 	// Not Optimal But Will Do The Job.
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_3_GSM());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_3_ROHC());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_3_GSM());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_3_ROHC());
 
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_4_G_704());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_4_G_704());
 
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_4_INTERLAKEN());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_4_INTERLAKEN());
 
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_5_EPC_C1G2());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_5_G_704());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_5_USB());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_5_EPC_C1G2());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_5_G_704());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_5_USB());
 
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_6_CDMA2000_A());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_6_CDMA2000_B());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_6_DARC());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_6_G_704());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_6_GSM());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_6_CDMA2000_A());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_6_CDMA2000_B());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_6_DARC());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_6_G_704());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_6_GSM());
 
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_7_MMC());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_7_ROHC());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_7_UMTS());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_7_MMC());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_7_ROHC());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_7_UMTS());
 
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_CDMA2000());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_WCDMA());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_DVB_S2());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_MAXIM_DOW());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_DARC());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_I_CODE());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_TECH_3250());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_ROHC());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_I_432_1());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_SMBUS());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_BLUETOOTH());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_AUTOSAR());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_GSM_A());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_GSM_B());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_HITAG());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_MIFARE_MAD());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_LTE());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_NRSC_5());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_OPENSAFETY());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_8_SAE_J1850());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_8_CDMA2000());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_8_WCDMA());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_8_DVB_S2());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_8_MAXIM_DOW());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_8_DARC());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_8_I_CODE());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_8_TECH_3250());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_8_ROHC());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_8_I_432_1());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_8_SMBUS());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_8_BLUETOOTH());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_8_AUTOSAR());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_8_GSM_A());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_8_GSM_B());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_8_HITAG());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_8_MIFARE_MAD());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_8_LTE());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_8_NRSC_5());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_8_OPENSAFETY());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_8_SAE_J1850());
 
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_10_ATM());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_10_CDMA2000());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_10_GSM());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_10_ATM());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_10_CDMA2000());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_10_GSM());
 
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_11_FLEXRAY());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_11_UMTS());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_11_FLEXRAY());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_11_UMTS());
 
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_12_CDMA2000());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_12_DECT());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_12_GSM());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_12_UMTS());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_12_CDMA2000());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_12_DECT());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_12_GSM());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_12_UMTS());
 
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_13_BBC());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_13_BBC());
 
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_14_DARC());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_14_GSM());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_14_DARC());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_14_GSM());
 
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_15_CAN());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_15_MPT1327());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_15_CAN());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_15_MPT1327());
 
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_ARC());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_CDMA2000());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_CMS());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_DDS_110());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_DECT_R());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_DECT_X());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_DNP());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_EN_13757());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_GENIBUS());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_GSM());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_IBM_3740());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_IBM_SDLC());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_ISO_IEC_14443_3_A());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_KERMIT());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_LJ1200());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_M17());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_MAXIM_DOW());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_MCRF4XX());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_MODBUS());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_NRSC_5());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_OPENSAFETY_A());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_OPENSAFETY_B());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_PROFIBUS());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_RIELLO());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_SPI_FUJITSU());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_T10_DIF());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_TELEDISK());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_TMS37157());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_UMTS());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_USB());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_16_XMODEM());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_16_ARC());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_16_CDMA2000());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_16_CMS());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_16_DDS_110());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_16_DECT_R());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_16_DECT_X());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_16_DNP());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_16_EN_13757());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_16_GENIBUS());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_16_GSM());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_16_IBM_3740());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_16_IBM_SDLC());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_16_ISO_IEC_14443_3_A());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_16_KERMIT());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_16_LJ1200());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_16_M17());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_16_MAXIM_DOW());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_16_MCRF4XX());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_16_MODBUS());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_16_NRSC_5());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_16_OPENSAFETY_A());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_16_OPENSAFETY_B());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_16_PROFIBUS());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_16_RIELLO());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_16_SPI_FUJITSU());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_16_T10_DIF());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_16_TELEDISK());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_16_TMS37157());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_16_UMTS());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_16_USB());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_16_XMODEM());
 
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_17_CAN_FD());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_17_CAN_FD());
 
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_21_CAN_FD());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_21_CAN_FD());
 
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_24_BLE());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_24_FLEXRAY_A());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_24_FLEXRAY_B());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_24_INTERLAKEN());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_24_LTE_A());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_24_LTE_B());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_24_OPENPGP());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_24_OS_9());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_24_BLE());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_24_FLEXRAY_A());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_24_FLEXRAY_B());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_24_INTERLAKEN());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_24_LTE_A());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_24_LTE_B());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_24_OPENPGP());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_24_OS_9());
 
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_30_CDMA());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_30_CDMA());
 
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_31_PHILIPS());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_31_PHILIPS());
 
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_32_AIXM());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_32_AUTOSAR());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_32_BASE91_D());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_32_BZIP2());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_32_CD_ROM_EDC());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_32_CKSUM());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_32_ISCSI());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_32_ISO_HDLC());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_32_JAMCRC());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_32_MEF());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_32_MPEG_2());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_32_XFER());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_32_AIXM());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_32_AUTOSAR());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_32_BASE91_D());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_32_BZIP2());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_32_CD_ROM_EDC());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_32_CKSUM());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_32_ISCSI());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_32_ISO_HDLC());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_32_JAMCRC());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_32_MEF());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_32_MPEG_2());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_32_XFER());
 
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_40_GSM());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_40_GSM());
 
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_64_ECMA_182());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_64_GO_ISO());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_64_MS());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_64_REDIS());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_64_WE());
-	_TEST_CRC(new BigLib::Crypts::CRC::CRC_64_XZ());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_64_ECMA_182());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_64_GO_ISO());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_64_MS());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_64_REDIS());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_64_WE());
+	_TEST_CRC(new BigLib::DataIntegrity::CRC::CRC_64_XZ());
 
 	if (_TEST_CRC_PASS != _TEST_CRC_I)
 		std::cout << _TEST_CRC_PASS << " Out Of " << _TEST_CRC_I << " CRCs Passed" << std::endl;
@@ -585,7 +585,7 @@ int main() {
 
 	/*
 	{
-		BigLib::Crypts::CRC::CRC_Base<uint8_t, 0x03, false, false, 0xF, 0xF, 4> CRCTest = {};
+		BigLib::DataIntegrity::CRC::CRC_Base<uint8_t, 0x03, false, false, 0xF, 0xF, 4> CRCTest = {};
 		CRCTest.UpdateCRC("123456789", 9);
 		auto CRC = (uint64_t)CRCTest.GetCRC();
 		std::cout << std::hex << CRC << '\n';

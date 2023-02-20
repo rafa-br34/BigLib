@@ -1,9 +1,9 @@
 #pragma once
 #include "../../../Includes.h"
-#include "../../Data/Bitwise.h"
+#include "../Bitwise.h"
 
 namespace BigLib {
-	namespace Crypts {
+	namespace DataIntegrity {
 		namespace CRC {
 
 			// TODO: Fix CRCs With Width Lower Than 8

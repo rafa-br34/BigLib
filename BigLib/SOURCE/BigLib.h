@@ -16,8 +16,8 @@
 #include "Modules/Data/Random.h"
 #include "Modules/Data/Math.h"
 
-// Crypts
-#include "Modules/Security/Crypts.h"
+// DataIntegrity
+#include "Modules/Data/DataIntegrity/CRCs.h"
 
 // MultiThreading
 #include "Modules/MultiThreading/ThreadSafeQueue/ThreadSafeQueue.h"

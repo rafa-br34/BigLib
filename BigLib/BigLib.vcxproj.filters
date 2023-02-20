@@ -33,9 +33,6 @@
     <ClInclude Include="SOURCE\Modules\Profiling\Profiler.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\Modules\Security\Crypts.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
     <ClInclude Include="SOURCE\Modules\Types\Modules\Color24.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
@@ -102,7 +99,7 @@
     <ClInclude Include="SOURCE\Modules\Types\Modules\String.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\Modules\Security\Modules\CRCs.h">
+    <ClInclude Include="SOURCE\Modules\Data\DataIntegrity\CRCs.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
     <ClInclude Include="EXAMPLES\Example.h">
@@ -112,6 +109,9 @@
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\Modules\VMs\Modules\System300s\System300s.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Modules\Data\DataIntegrity\MD2-6.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
   </ItemGroup>
