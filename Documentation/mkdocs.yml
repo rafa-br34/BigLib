@@ -39,12 +39,11 @@ nav:
         - "Release Notes": "release-notes.md"
 
     - Modules:
-      - Data:
         - Data Integrity:
           - CRC:
-            - About: "Modules/Data/DataIntegrity/CRC/About.md"
-            - CRCEngine: "Modules/Data/DataIntegrity/CRC/CRCEngine.md"
-            - Predefined CRCs: "Modules/Data/DataIntegrity/CRC/Predefined_CRCs.md"
+            - About: "Modules/DataIntegrity/CRC/About.md"
+            - CRCEngine: "Modules/DataIntegrity/CRC/CRCEngine.md"
+            - Predefined CRCs: "Modules/DataIntegrity/CRC/Predefined_CRCs.md"
           #- MD5
 
       
