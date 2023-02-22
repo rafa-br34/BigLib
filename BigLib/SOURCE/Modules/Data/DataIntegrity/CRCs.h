@@ -25,7 +25,7 @@ namespace BigLib {
 				Type LookupTable[TableLen];
 				const Type LimiterMask = Bitwise::MakeBinaryMask<Type>(Width);
 
-				CONST_EXPRESSION void GenerateLookupTable() {
+				CONST_EXPRESSION void p_GenerateLookupTable() {
 					const Type MaxBitMask = (Width < 8 ? 0x80 : UI64(1) << (Width - 1));
 					
 					Type Poly;
@@ -50,7 +50,7 @@ namespace BigLib {
 					}
 				}
 
-				CONST_EXPRESSION FORCE_INLINE void NormalUpdateCRC(Type Data) {
+				CONST_EXPRESSION FORCE_INLINE void p_NormalUpdateCRC(Type Data) {
 					if CONST_EXPRESSION(Width > 8)
 						this->CRC = (this->LookupTable[(Data ^ (this->CRC >> (Width - 8))) & 0xFF] ^ (this->CRC << 8)) & this->LimiterMask;
 					else
@@ -59,7 +59,7 @@ namespace BigLib {
 						this->CRC = this->LookupTable[(Data ^ this->CRC) & 0xFF];
 				}
 
-				CONST_EXPRESSION FORCE_INLINE void InversedUpdateCRC(Type Data) {
+				CONST_EXPRESSION FORCE_INLINE void p_InversedUpdateCRC(Type Data) {
 					if CONST_EXPRESSION(Width > 8)
 						this->CRC = (this->LookupTable[(this->CRC ^ Data) & 0xFF] ^ (this->CRC >> 8)) & this->LimiterMask;
 					else
@@ -69,7 +69,7 @@ namespace BigLib {
 
 			public:
 				CRCEngineStatic() {
-					this->GenerateLookupTable();
+					this->p_GenerateLookupTable();
 					this->ResetCRC();
 				}
 
@@ -106,11 +106,11 @@ namespace BigLib {
 				}
 
 				CONST_EXPRESSION FORCE_INLINE CRCEngineStatic& UpdateCRC(Type Data) {
-					// InversedUpdateCRC Needs To Be Used In Case The Table Is Reflected To Fully Emulate ReflectIn
+					// p_InversedUpdateCRC Needs To Be Used In Case The Table Is Reflected To Fully Emulate ReflectIn
 					if CONST_EXPRESSION(ReflectIn)
-						InversedUpdateCRC(Data);
+						p_InversedUpdateCRC(Data);
 					else
-						NormalUpdateCRC(Data);
+						p_NormalUpdateCRC(Data);
 
 					return *this;
 				}
