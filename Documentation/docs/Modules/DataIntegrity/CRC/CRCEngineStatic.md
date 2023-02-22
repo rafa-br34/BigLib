@@ -11,7 +11,7 @@ CRCEngineStatic is a class that's able to define any CRC in compile time as long
 `Type` defines what type the CRCEngineStatic will use for the CRC, lookup table, mask, and others. This can be any type as long as it supports all math operators(including bitwise operators) and fits `Width` amount of bits.
 
 #### Polynomial
-The `Polynomial` defines the used polynomial. The polynomial will be converted into a lookup table.
+`Polynomial` defines the used polynomial. The polynomial will be converted into a lookup table.
 
 #### ReflectIn, ReflectOut
 `ReflectIn`/`ReflectOut` defines whether to cause a binary reflection in the input or the output.
