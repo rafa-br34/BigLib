@@ -45,8 +45,8 @@ Current CRC value.
 ```c++
 CRCEngineStatic& ResetCRC(Type Initial=Type(0))
 ```
-Resets the CRC value to the default values.
- - `Initial` Initial value to XOR with `XORIn`
+Resets the CRC value to the default values.<br>
+ - `Initial` Initial value to XOR with `XORIn`<br>
 #### Returns:
 A reference to its own class.
 
@@ -77,11 +77,11 @@ The lookup table pointer.
 CRCEngineStatic& UpdateCRC(Type Data)
 CRCEngineStatic& UpdateCRC(const BufferType* Buffer, size_t Size)
 ```
-Updates the CRC checksum with `Data` or `Buffer`.
- - `Data` Integer value that will be added to the CRC.
+Updates the CRC checksum with `Data` or `Buffer`.<br>
+ - `Data` Integer value that will be added to the CRC.<br>
  --
- - `Buffer` Array in memory with `BufferType` objects.
- - `Size` Amount of `BufferType` objects to read.
+ - `Buffer` Array in memory with `BufferType` objects.<br>
+ - `Size` Amount of `BufferType` objects to read.<br>
 #### Returns
 A reference to its own class.
 
