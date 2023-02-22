@@ -2,7 +2,7 @@
 This page contains a list of all predefined CRCs implemented.
 
 
-|Width|Polynomial|Ref In/Out|Initial|XOROut|Name In Library|Aliases|
+|Width|Polynomial|Ref In/Out|XORIn|XOROut|Name In Library|Aliases|
 |-|-|-|-|-|-|-|
 |3|0x3|00|0x0|0x7|CRC_3_GSM|CRC-3/GSM|
 |3|0x3|11|0x0|0x7|CRC_3_ROHC|CRC-3/ROHC|

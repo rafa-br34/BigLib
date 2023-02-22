@@ -108,13 +108,13 @@ template<
 
 	const bool ReflectIn = false,
 	const bool ReflectOut = false,
-	const Type Initial = 0,
+	const Type XORIn = 0,
 	const Type XOROut = 0,
 
 	const size_t Width = SIZEOF_BITS(Type),
 	const size_t TableLen = 256
 >
-void _TEST_CRC(BigLib::DataIntegrity::CRC::CRCEngine<Type, Polynomial, ReflectIn, ReflectOut, Initial, XOROut, Width, TableLen>* CRCClass) {
+void _TEST_CRC(BigLib::DataIntegrity::CRC::CRCEngineStatic<Type, Polynomial, ReflectIn, ReflectOut, XORIn, XOROut, Width, TableLen>* CRCClass) {
 	const char* Data = "123456789";
 	size_t DataLen = 9;
 
@@ -585,7 +585,7 @@ int main() {
 
 	/*
 	{
-		BigLib::DataIntegrity::CRC::CRC_Base<uint8_t, 0x03, false, false, 0xF, 0xF, 4> CRCTest = {};
+		BigLib::DataIntegrity::CRC::CRCEngineStatic<uint8_t, 0x03, false, false, 0xF, 0xF, 4> CRCTest = {};
 		CRCTest.UpdateCRC("123456789", 9);
 		auto CRC = (uint64_t)CRCTest.GetCRC();
 		std::cout << std::hex << CRC << '\n';
