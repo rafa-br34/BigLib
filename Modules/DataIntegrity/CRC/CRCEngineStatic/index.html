@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://rafa-br34.github.io/BigLib/Modules/DataIntegrity/CRC/CRCEngine/">
+        <link rel="canonical" href="https://rafa-br34.github.io/BigLib/Modules/DataIntegrity/CRC/CRCEngineStatic/">
       
       
         <link rel="prev" href="../About/">
@@ -21,7 +21,7 @@
     
     
       
-        <title>CRCEngine - BigLib Documentation</title>
+        <title>CRCEngineStatic - BigLib Documentation</title>
       
     
     
@@ -70,6 +70,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#crcenginestatic" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -99,7 +104,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              CRCEngine
+              CRCEngineStatic
             
           </span>
         </div>
@@ -395,9 +400,99 @@
       
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          CRCEngineStatic
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
-        CRCEngine
+        CRCEngineStatic
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#crcenginestatic" class="md-nav__link">
+    CRCEngineStatic
+  </a>
+  
+    <nav class="md-nav" aria-label="CRCEngineStatic">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#template-parameters" class="md-nav__link">
+    Template Parameters
+  </a>
+  
+    <nav class="md-nav" aria-label="Template Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#type" class="md-nav__link">
+    Type
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#polynomial" class="md-nav__link">
+    Polynomial
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reflectin-reflectout" class="md-nav__link">
+    ReflectIn, ReflectOut
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xorin" class="md-nav__link">
+    XORIn
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xorout" class="md-nav__link">
+    XOROut
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#width" class="md-nav__link">
+    Width
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -456,6 +551,82 @@
   
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#crcenginestatic" class="md-nav__link">
+    CRCEngineStatic
+  </a>
+  
+    <nav class="md-nav" aria-label="CRCEngineStatic">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#template-parameters" class="md-nav__link">
+    Template Parameters
+  </a>
+  
+    <nav class="md-nav" aria-label="Template Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#type" class="md-nav__link">
+    Type
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#polynomial" class="md-nav__link">
+    Polynomial
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reflectin-reflectout" class="md-nav__link">
+    ReflectIn, ReflectOut
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xorin" class="md-nav__link">
+    XORIn
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xorout" class="md-nav__link">
+    XOROut
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#width" class="md-nav__link">
+    Width
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -472,9 +643,25 @@
   
 
 
-  <h1>CRCEngine</h1>
+  <h1>CRCEngineStatic</h1>
 
-
+<h2 id="crcenginestatic">CRCEngineStatic</h2>
+<p>CRCEngineStatic is a class that's able to define any CRC in compile time as long as the parameters are defined.</p>
+<h3 id="template-parameters">Template Parameters</h3>
+<p><code>typename Type, Type Polynomial, bool ReflectIn=false, bool ReflectOut=false, Type XORIn=0, Type XOROut=0, size_t Width=SIZEOF_BITS(Type), size_t TableLen=256</code></p>
+<h4 id="type">Type</h4>
+<p><code>Type</code> defines what type the CRCEngineStatic will use for the CRC, lookup table, mask, and others. This can be any type as long as it supports all math operators(including bitwise operators) and fits <code>Width</code> amount of bits.</p>
+<h4 id="polynomial">Polynomial</h4>
+<p>The <code>Polynomial</code> defines the used polynomial. The polynomial will be converted into a lookup table.</p>
+<h4 id="reflectin-reflectout">ReflectIn, ReflectOut</h4>
+<p><code>ReflectIn</code>/<code>ReflectOut</code> defines whether to cause a binary reflection in the input or the output.</p>
+<h4 id="xorin">XORIn</h4>
+<p><code>XORIn</code> defines the value that will be XOR-ed with the initial value. This argument also has the role of the "Initial" value when provided initial value is zero(by default).
+Please note that the Initial CRC value is also affected by the <code>ReflectIn</code>.</p>
+<h4 id="xorout">XOROut</h4>
+<p><code>XOROut</code> defines the value that will be XOR-ed with the resulting value.</p>
+<h4 id="width">Width</h4>
+<p><code>Width</code> defines the size of the CRC.</p>
 
 
 
