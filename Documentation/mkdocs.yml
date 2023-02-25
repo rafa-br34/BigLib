@@ -94,22 +94,22 @@ markdown_extensions:
       custom_checkbox: true
   - pymdownx.tilde
   - pymdownx.snippets
-"""
-markdown_extensions:
-  - pymdownx.superfences:
-      custom_fences:
-        - name: mermaid
-          class: mermaid
-          format: !!python/name:pymdownx.superfences.fence_code_format
-  - pymdownx.highlight:
-      use_pygments: true
-  - pymdownx.superfences
-  - pymdownx.highlight
-  - pymdownx.inlinehilite
-  - pymdownx.superfences
-  - pymdownx.snippets
-  - abbr
-"""
+  
+#markdown_extensions:
+#  - pymdownx.superfences:
+#      custom_fences:
+#        - name: mermaid
+#          class: mermaid
+#          format: !!python/name:pymdownx.superfences.fence_code_format
+#  - pymdownx.highlight:
+#      use_pygments: true
+#  - pymdownx.superfences
+#  - pymdownx.highlight
+#  - pymdownx.inlinehilite
+#  - pymdownx.superfences
+#  - pymdownx.snippets
+#  - abbr
+
 
 nav:
     - Home: "index.md"
