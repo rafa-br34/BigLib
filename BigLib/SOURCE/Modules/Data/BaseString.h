@@ -3,24 +3,20 @@
 
 namespace BigLib {
 	namespace Strings {
-		// Reads The Length Of An ASCII String
-		FORCE_INLINE CONST_EXPRESSION size_t StringLength(const char* Pointer) {
-			const char* Initial = Pointer;
-			while (*Pointer != char(0))
+		template<typename StringType=char, typename LimiterType=size_t>
+		FORCE_INLINE CONST_EXPRESSION LimiterType StringLength(const StringType* Pointer, LimiterType Limit=LimiterType(0)) {
+			const StringType* Initial = Pointer;
+			LimiterType Counter = Limit;
+			while (*Pointer != StringType(0) && (Limit > 0 && Counter--)) {
+				if (Limit > 0) {
+					Counter--;
+				}
 				Pointer++;
-			
+			}
+				
 			return Pointer - Initial;
 		}
 		
-		// Reads The Length Of An Wide String
-		FORCE_INLINE CONST_EXPRESSION size_t StringLength(const wchar_t* Pointer) {
-			const wchar_t* Initial = Pointer;
-			while (*Pointer != wchar_t(0))
-				Pointer++;
-
-			return Pointer - Initial;
-		}
-
 		// Converts Wide String To C String
 		FORCE_INLINE CONST_EXPRESSION size_t StringConvert(const wchar_t* From, char* Output, size_t* MissedChars = nullptr, char Missing = '?') {
 			size_t StringSize = StringLength(From);
@@ -54,7 +50,7 @@ namespace BigLib {
 			Class Power = 1;
 			Class Value = 0;
 
-			while (Position >= 0) {
+			while (Position != 0) {
 				Digit = 0;
 				if ('0' <= String[Position] && String[Position] <= '9')
 					Digit = String[Position] - '0';
@@ -79,15 +75,15 @@ namespace BigLib {
 			Class Power = 1;
 			Class Value = 0;
 
-			while (Position >= 0) {
+			while (Position != 0) {
 				Digit = 0;
 				if (L'0' <= String[Position] && String[Position] <= L'9')
-					Digit = String[Position] - L'0';
+					Digit = uint8_t(String[Position] - L'0');
 
 				else if (L'a' <= String[Position] && String[Position] <= L'z')
-					Digit = (String[Position] - L'a') + 10;
+					Digit = uint8_t((String[Position] - L'a') + 10);
 				else if (L'A' <= String[Position] && String[Position] <= L'Z')
-					Digit = (String[Position] - L'A') + 10;
+					Digit = uint8_t((String[Position] - L'A') + 10);
 
 				Value += Digit * Power;
 				Power *= (Class)Base;

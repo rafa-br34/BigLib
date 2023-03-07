@@ -14,6 +14,13 @@ void PrintList(Type* List, size_t ListSize, size_t Separate = 8, size_t Padding 
 	std::cout << std::dec << '\n';
 }
 
+template<typename Type>
+void HexPrint(Type* Data, size_t DataSize, size_t Padding = (sizeof(Type) * 2)) {
+	for (size_t i = 0; i < DataSize; i++) {
+		std::cout << std::hex << std::uppercase << std::setfill('0') << std::setw(Padding) << (size_t)(Data[i]);
+	}
+	std::cout << std::dec << '\n';
+}
 
 void TestThreadPool() {
 	const size_t Threads = std::thread::hardware_concurrency();
@@ -550,10 +557,41 @@ float TEST_CRCs() {
 	return ((float)_TEST_CRC_PASS / (float)_TEST_CRC_I) * 100.f;
 }
 
+float TEST_MD2_6() {
+	uint8_t Tests = 0;
+	uint8_t Failed = 0;
+	const uint8_t* MDResult;
+	// MD2
+	{
+		auto MD2 = BigLib::DataIntegrity::MD2_6::MD2();
+
+		MDResult = MD2.Update((const uint8_t*)"", 0).Finalize(); Tests++;
+		if (!BigLib::Memory::MemoryCompare(MDResult, "\x83\x50\xE5\xA3\xE2\x4C\x15\x3D\xF2\x27\x5C\x9F\x80\x69\x27\x73", 16)) {
+			std::cout << "MD2 Zero Len String Failed, Value: "; HexPrint(MDResult, 16);
+			Failed++;
+		}
+		else
+			std::cout << "MD2 Zero Passed\n";
+		MD2.Reset();
+
+		MDResult = MD2.Update((const uint8_t*)"0123456789ABCDEF", 16).Finalize(); Tests++;
+		if (!BigLib::Memory::MemoryCompare(MDResult, "\xC3\x1D\x79\x45\xAA\xFB\x1D\x69\x48\x20\xB7\x1A\xA7\xEA\xE7\x2B", 16)) {
+			std::cout << "MD2 16 Len String Failed, Value: "; HexPrint(MDResult, 16);
+			Failed++;
+		}
+		else
+			std::cout << "MD2 16 Passed\n";
+		MD2.Reset();
+	}
+	
+	return (float(Tests - Failed) / (float)Tests) * 100.f;
+}
+
 
 void LIB_TEST() {
 	float Stability[] = {
-		TEST_CRCs()
+		TEST_CRCs(),
+		TEST_MD2_6(),
 	};
 	size_t TestCount = sizeof(Stability) / sizeof(float);
 

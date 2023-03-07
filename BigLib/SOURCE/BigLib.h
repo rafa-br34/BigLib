@@ -18,6 +18,7 @@
 
 // DataIntegrity
 #include "Modules/Data/DataIntegrity/CRCs.h"
+#include "Modules/Data/DataIntegrity/MD2-6.h"
 
 // MultiThreading
 #include "Modules/MultiThreading/ThreadSafeQueue/ThreadSafeQueue.h"

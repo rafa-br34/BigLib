@@ -17,7 +17,7 @@
 
 namespace BigLib {
 	namespace Memory {
-		MEM_INLINE void MemorySet(void* Target, void* Source, size_t Size) {
+		MEM_INLINE void MemorySet(void* Target, const void* Source, size_t Size) {
 			// Set Memory Using Largest Type Possible
 			for (size_t i = 0; i < Size / sizeof(BIGGEST_DATATYPE); i++) {
 				((BIGGEST_DATATYPE*)Target)[i] = ((BIGGEST_DATATYPE*)Source)[i];
@@ -31,7 +31,7 @@ namespace BigLib {
 			}
 		}
 
-		MEM_INLINE bool MemoryCompare(void* D1, void* D2, size_t Size) {
+		MEM_INLINE bool MemoryCompare(const void* D1, const void* D2, size_t Size) {
 			// Check Memory Using Largest Type Possible
 			for (size_t i = 0; i < Size / sizeof(BIGGEST_DATATYPE); i++) {
 				if (((BIGGEST_DATATYPE*)D1)[i] != ((BIGGEST_DATATYPE*)D2)[i])
@@ -66,7 +66,7 @@ namespace BigLib {
 		}
 
 		MEM_INLINE void* GetMultiLevelPointer(void* Init, size_t Offsets[], size_t OffsetsSize) {
-			uint8_t* Current = (uint8_t*)Init;
+			auto Current = (uint8_t*)Init;
 
 			for (size_t i = 0; i < OffsetsSize; i++) {
 				Current = *(uint8_t**)(Current + Offsets[i]);
@@ -76,7 +76,7 @@ namespace BigLib {
 		}
 
 		MEM_INLINE uintptr_t* HookVTable(void* VTable, size_t VTableByteSize) {
-			uint8_t* NewVTable = ALLOCATE(uint8_t, VTableByteSize);
+			auto NewVTable = ALLOCATE(uint8_t, VTableByteSize);
 
 			MemorySet(NewVTable, *(void**)VTable, VTableByteSize);
 			MemorySet(VTable, &NewVTable, sizeof(VTable));

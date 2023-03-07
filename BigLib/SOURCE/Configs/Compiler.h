@@ -6,6 +6,9 @@
 #define FORCE_INLINE __forceinline
 #define NO_INLINE __declspec(noinline)
 #define INLINE inline
+#define STATIC static
+#define CONST const
+#define STATIC_CONST STATIC CONST
 
 #define UI64(Literal) Literal ## ui64
 #define UI32(Literal) Literal ## ui32
@@ -30,6 +33,9 @@
 #define FORCE_INLINE __attribute__((always_inline)) inline
 #define NO_INLINE __attribute__((noinline))
 #define INLINE inline
+#define STATIC static
+#define CONST const
+#define STATIC_CONST STATIC CONST
 
 #define UI64(Literal) Literal ## ULL
 #define UI32(Literal) Literal ## UL

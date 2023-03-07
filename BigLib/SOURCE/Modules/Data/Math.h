@@ -1,7 +1,9 @@
 #pragma once
 #include "../../Includes.h"
 
-#define PIXEL_INDEX_FROM_XY(X, Y, DataSize, Width) ((DataSize) * (Width) * (Y) + (DataSize) * (X))
+#define INDEX_2D_FROM_XY(X, Y, Width) ((Width) * (Y) + (X))
+#define INDEX_3D_FROM_XYZ(X, Y, Z, Width, Height) ((X) + (Height) * ((Y) + (Width) * (Z)))
+
 
 namespace BigLib {
 	namespace Math {

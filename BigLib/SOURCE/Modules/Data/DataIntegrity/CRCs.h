@@ -42,7 +42,6 @@ namespace BigLib {
 							Remainder <<= (Width - 8);
 
 						for (size_t B = 0; B < 8; B++)
-							//Remainder = (Remainder & 1) ? ((Remainder >> 1) ^ Poly) : (Remainder >> 1);
 							Remainder = (Remainder & MaxBitMask) ? ((Remainder << 1) ^ Poly) : (Remainder << 1);
 							
 						// Reflecting The Table Item Will Have The Same Effect Of ReflectIn.
