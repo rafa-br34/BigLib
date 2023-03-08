@@ -945,7 +945,7 @@ Please note that the Initial CRC value is also affected by the <code>ReflectIn</
 <h4 id="xorout">XOROut<a class="headerlink" href="#xorout" title="Permanent link">&para;</a></h4>
 <p><code>XOROut</code> defines the value that will be XOR-ed with the resulting value.</p>
 <h4 id="width">Width<a class="headerlink" href="#width" title="Permanent link">&para;</a></h4>
-<p><code>Width</code> defines the size of the CRC.</p>
+<p><code>Width</code> defines the size of the CRC (in bits). This argument is set as <code>SIZEOF_BITS(Type)</code> by default.</p>
 <h4 id="tablelen">TableLen<a class="headerlink" href="#tablelen" title="Permanent link">&para;</a></h4>
 <p><code>TableLen</code> defines the size of the table, this parameter should always be 256.</p>
 <h2 id="variables">Variables<a class="headerlink" href="#variables" title="Permanent link">&para;</a></h2>
@@ -981,10 +981,12 @@ Gets the lookup table pointer.</p>
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">CRCEngineStatic</span><span class="o">&amp;</span><span class="w"> </span><span class="n">UpdateCRC</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">BufferType</span><span class="o">*</span><span class="w"> </span><span class="n">Buffer</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">Size</span><span class="p">)</span>
 </span></code></pre></div>
 Updates the CRC checksum with <code>Data</code> or <code>Buffer</code>.<br>
- - <code>Data</code> Integer value that will be added to the CRC.<br>
- --
- - <code>Buffer</code> Array in memory with <code>BufferType</code> objects.<br>
- - <code>Size</code> Amount of <code>BufferType</code> objects to read.<br></p>
+ - <code>Data</code> Integer value that will be added to the CRC.<br></p>
+<hr />
+<ul>
+<li><code>Buffer</code> Array in memory with <code>BufferType</code> objects.<br></li>
+<li><code>Size</code> Amount of <code>BufferType</code> objects to read.<br></li>
+</ul>
 <h4 id="returns_3">Returns<a class="headerlink" href="#returns_3" title="Permanent link">&para;</a></h4>
 <p>A reference to its own class.</p>
 
