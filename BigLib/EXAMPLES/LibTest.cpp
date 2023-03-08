@@ -564,19 +564,21 @@ float TEST_MD2_6() {
 	// MD2
 	{
 		auto MD2 = BigLib::DataIntegrity::MD2_6::MD2();
+		const uint8_t* Expectation = nullptr;
 
+		Expectation = (uint8_t*)"\x83\x50\xE5\xA3\xE2\x4C\x15\x3D\xF2\x27\x5C\x9F\x80\x69\x27\x73";
 		MDResult = MD2.Update((const uint8_t*)"", 0).Finalize(); Tests++;
-		if (!BigLib::Memory::MemoryCompare(MDResult, "\x83\x50\xE5\xA3\xE2\x4C\x15\x3D\xF2\x27\x5C\x9F\x80\x69\x27\x73", 16)) {
-			std::cout << "MD2 Zero Len String Failed, Value: "; HexPrint(MDResult, 16);
+		if (!BigLib::Memory::MemoryCompare(MDResult, Expectation, 16)) {
+			std::cout << "MD2 Zero Len String Failed, Value: "; HexPrint(MDResult, 16); std::cout << "Expected: "; HexPrint(Expectation, 16);
 			Failed++;
 		}
 		else
 			std::cout << "MD2 Zero Passed\n";
 		MD2.Reset();
-
+		Expectation = (uint8_t*)"\xC3\x1D\x79\x45\xAA\xFB\x1D\x69\x48\x20\xB7\x1A\xA7\xEA\xE7\x2B";
 		MDResult = MD2.Update((const uint8_t*)"0123456789ABCDEF", 16).Finalize(); Tests++;
-		if (!BigLib::Memory::MemoryCompare(MDResult, "\xC3\x1D\x79\x45\xAA\xFB\x1D\x69\x48\x20\xB7\x1A\xA7\xEA\xE7\x2B", 16)) {
-			std::cout << "MD2 16 Len String Failed, Value: "; HexPrint(MDResult, 16);
+		if (!BigLib::Memory::MemoryCompare(MDResult, Expectation, 16)) {
+			std::cout << "MD2 16 Len String Failed, Value: "; HexPrint(MDResult, 16); std::cout << "Expected: "; HexPrint(Expectation, 16);
 			Failed++;
 		}
 		else

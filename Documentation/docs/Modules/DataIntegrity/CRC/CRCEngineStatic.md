@@ -25,7 +25,7 @@ Please note that the Initial CRC value is also affected by the `ReflectIn`.
 `XOROut` defines the value that will be XOR-ed with the resulting value.
 
 #### Width
-`Width` defines the size of the CRC.
+`Width` defines the size of the CRC (in bits). This argument is set as `SIZEOF_BITS(Type)` by default.
 
 #### TableLen
 `TableLen` defines the size of the table, this parameter should always be 256.
@@ -79,7 +79,7 @@ CRCEngineStatic& UpdateCRC(const BufferType* Buffer, size_t Size)
 ```
 Updates the CRC checksum with `Data` or `Buffer`.<br>
  - `Data` Integer value that will be added to the CRC.<br>
- --
+ ---
  - `Buffer` Array in memory with `BufferType` objects.<br>
  - `Size` Amount of `BufferType` objects to read.<br>
 #### Returns
