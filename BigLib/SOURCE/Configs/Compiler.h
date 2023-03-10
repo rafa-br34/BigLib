@@ -5,6 +5,7 @@
 #define CONST_EXPRESSION constexpr
 #define FORCE_INLINE __forceinline
 #define NO_INLINE __declspec(noinline)
+#define VOLATILE volatile
 #define INLINE inline
 #define STATIC static
 #define CONST const
@@ -32,6 +33,7 @@
 #define CONST_EXPRESSION constexpr
 #define FORCE_INLINE __attribute__((always_inline)) inline
 #define NO_INLINE __attribute__((noinline))
+#define VOLATILE volatile
 #define INLINE inline
 #define STATIC static
 #define CONST const

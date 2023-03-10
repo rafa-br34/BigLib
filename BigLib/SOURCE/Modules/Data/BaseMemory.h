@@ -20,21 +20,23 @@ namespace BigLib {
 		MEM_INLINE void MemorySet(void* Target, const void* Source, size_t Size) {
 			// Set Memory Using Largest Type Possible
 			for (size_t i = 0; i < Size / sizeof(BIGGEST_DATATYPE); i++) {
-				((BIGGEST_DATATYPE*)Target)[i] = ((BIGGEST_DATATYPE*)Source)[i];
+				((BIGGEST_DATATYPE*)Target)[i] = ((const BIGGEST_DATATYPE*)Source)[i];
 			}
 
 			// Set Remaining Bytes
 			const size_t ExtraBytes = Size % sizeof(BIGGEST_DATATYPE);
 			for (size_t i = 0; i < ExtraBytes; i++) {
 				size_t TrueIndex = (Size - ExtraBytes) + i;
-				((uint8_t*)Target)[TrueIndex] = ((uint8_t*)Source)[TrueIndex];
+				((uint8_t*)Target)[TrueIndex] = ((const uint8_t*)Source)[TrueIndex];
 			}
 		}
 
 		MEM_INLINE bool MemoryCompare(const void* D1, const void* D2, size_t Size) {
+			if (D1 == D2) return true;
+
 			// Check Memory Using Largest Type Possible
 			for (size_t i = 0; i < Size / sizeof(BIGGEST_DATATYPE); i++) {
-				if (((BIGGEST_DATATYPE*)D1)[i] != ((BIGGEST_DATATYPE*)D2)[i])
+				if (((const BIGGEST_DATATYPE*)D1)[i] != ((const BIGGEST_DATATYPE*)D2)[i])
 					return false;
 			}
 
@@ -42,7 +44,7 @@ namespace BigLib {
 			const size_t ExtraBytes = Size % sizeof(BIGGEST_DATATYPE);
 			for (size_t i = 0; i < ExtraBytes; i++) {
 				size_t TrueIndex = (Size - ExtraBytes) + i;
-				if (((uint8_t*)D1)[TrueIndex] != ((uint8_t*)D2)[TrueIndex])
+				if (((const uint8_t*)D1)[TrueIndex] != ((const uint8_t*)D2)[TrueIndex])
 					return false;
 			}
 			return true;

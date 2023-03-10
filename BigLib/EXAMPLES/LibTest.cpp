@@ -32,6 +32,8 @@ void HexPrintInteger(Type Data, size_t Padding=(sizeof(Type) * 2)) {
 }
 
 
+
+
 size_t _TEST_CRC_I = 0;
 size_t _TEST_CRC_PASS = 0;
 template<
@@ -338,6 +340,59 @@ void _TEST_CRC(BigLib::DataIntegrity::CRC::CRCEngineStatic<Type, Polynomial, Ref
 	delete[] CRCClass;
 }
 
+float TEST_MEM_UTILS() {
+	std::cout << "MEMORY UTILITIES TEST BEGIN\n";
+	bool TotalFail = false;
+	size_t Tests = 0;
+	size_t Passed = 0;
+
+	const char* TestData = "01234567890123456789";
+	const char* TestDataChunk = "0123456789\0\0\0\0\0\0\0\0\0\0"; // Padding Is Added So MemoryCompare Doesn't Access Data It Shouldn't
+
+	bool TrueTestResults[] = {
+		BigLib::Memory::MemoryCompare(TestData, TestData, 20), // Pointer Comparation
+		BigLib::Memory::MemoryCompare(TestData, TestData + 10, 10), // Data Comparation First
+		BigLib::Memory::MemoryCompare(TestData + 10, TestData, 10), // Data Comparation Second
+	};
+	bool FalseTestResults[] = {
+		BigLib::Memory::MemoryCompare(TestData + 1, TestData, 20), // Un-Aligned Data First
+		BigLib::Memory::MemoryCompare(TestData, TestData + 1, 20), // Un-Aligned Data Second
+		BigLib::Memory::MemoryCompare(TestData, TestDataChunk, 20), // Invalid Data First
+		BigLib::Memory::MemoryCompare(TestDataChunk, TestData, 20), // Invalid Data Second
+	};
+
+	std::cout << "MemoryCompare True Tests:\n";
+	for (size_t i = 0; i < sizeof(TrueTestResults) / sizeof(bool); i++) {
+		Tests++; G_TOTAL_TESTS++;
+		if (TrueTestResults[i] != true) {
+			std::cout << "\tTest " << i << " Failed\n";
+			G_TOTAL_FAILS++;
+		}
+		else {
+			std::cout << "\tPassed\n";
+			Passed++;
+		}
+	}
+	std::cout << "MemoryCompare False Tests:\n";
+	for (size_t i = 0; i < sizeof(FalseTestResults) / sizeof(bool); i++) {
+		Tests++; G_TOTAL_TESTS++;
+		if (FalseTestResults[i] != false) {
+			std::cout << "\tTest " << i << " Failed\n";
+			G_TOTAL_FAILS++;
+		}
+		else {
+			std::cout << "\tPassed\n";
+			Passed++;
+		}
+	}
+	
+
+
+
+	std::cout << "MEMORY UTILITIES TEST FINISH\n\n";
+	return TotalFail ? 0 : (float(Passed) / float(Tests)) * 100.f;
+}
+
 float TEST_CRCs() {
 	std::cout << "CRC TEST BEGIN\n";
 	_TEST_CRC_I = 0;
@@ -527,7 +582,7 @@ float TEST_MD2_6() {
 
 void LIB_TEST() {
 	float Stability[] = {
-
+		TEST_MEM_UTILS(),
 		TEST_CRCs(),
 		TEST_MD2_6(),
 	};
@@ -541,7 +596,7 @@ void LIB_TEST() {
 	}
 	std::cout << "\n\n\n----------------TEST RESULTS----------------\n";
 	std::cout << "Target Architecture: " << ARCH_CURRENT_NAME << " (ID:" << ARCH_CURRENT_ID << ")\n";
-	std::cout << TestCount << " Tests Were Ran";
+	std::cout << "Ran " << TestCount << " Tests";
 	if (Fails != 0)
 		std::cout << " " << Fails << " Tests Completely Failed";
 	if (Unsuccessful != 0)
