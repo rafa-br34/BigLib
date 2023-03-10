@@ -3,6 +3,9 @@
 #include "../SOURCE/BigLib.h"
 #include "Example.h"
 
+size_t G_TOTAL_TESTS = 0;
+size_t G_TOTAL_FAILS = 0;
+
 template<typename Type>
 void PrintList(Type* List, size_t ListSize, size_t Separate = 8, size_t Padding = (sizeof(Type) * 2)) {
 	for (size_t i = 0; i < ListSize; i++) {
@@ -15,97 +18,19 @@ void PrintList(Type* List, size_t ListSize, size_t Separate = 8, size_t Padding 
 }
 
 template<typename Type>
-void HexPrint(Type* Data, size_t DataSize, size_t Padding = (sizeof(Type) * 2)) {
+void HexPrint(Type* Data, size_t DataSize, bool NewLine=true, size_t Padding=(sizeof(Type) * 2)) {
 	for (size_t i = 0; i < DataSize; i++) {
 		std::cout << std::hex << std::uppercase << std::setfill('0') << std::setw(Padding) << (size_t)(Data[i]);
 	}
-	std::cout << std::dec << '\n';
+	std::cout << std::dec;
+	if (NewLine) std::cout << '\n';
 }
 
-void TestThreadPool() {
-	const size_t Threads = std::thread::hardware_concurrency();
-
-	struct Task {
-		size_t Type = 0;
-		uintptr_t* Data = nullptr;
-		size_t DataSize = 0;
-	};
-
-	BigLib::MultiThreading::ThreadPool<Task> ThreadPool = {};
-
-	for (size_t i = 0; i < Threads; i++) {
-		ThreadPool.InitializeThread([](Task& Tsk) -> void {
-			while (Tsk.Type > 0) {
-				Tsk.Type--;
-			}
-		std::cout << "Done";
-			});
-	}
-
-	if (ThreadPool.RunningThreads() != Threads)
-		__debugbreak();
-
-	for (size_t i = 0; i < 50; i++) {
-		Task Tsk = {};
-		Tsk.Type = 0xffffffff;
-		ThreadPool.TaskList.PushTask(Tsk);
-	}
-
-
-
-	while (ThreadPool.TaskList.TaskCount() > 0) {
-		Sleep(1);
-	}
+template<typename Type>
+void HexPrintInteger(Type Data, size_t Padding=(sizeof(Type) * 2)) {
+	std::cout << std::hex << std::uppercase << std::setfill('0') << std::setw(Padding) << Data << std::dec;
 }
 
-void TestList() {
-	BigLib::Types::List<uint8_t> List = {};
-	List.PreAllocate(10);
-
-	for (uint8_t i = 1; i <= 10; i++)
-		List.PushFront(i * 10);
-
-	//List.Move(0, 10, 1, true);
-	for (uint8_t i = 1; i <= 10; i++)
-		List.PushBack(i * 10);
-
-	for (size_t i = 0; i < List.Size(); i++) {
-		std::cout << i << " : " << (size_t)List[i] << '\n';
-	}
-}
-
-void TestPRNGs() {
-	// TODO: I Couldn't Find Any Reference For XorShift Generators Output Data.
-
-	{
-		BigLib::Random::MersenneTwister19937 MersenneTwister19937 = {};
-		MersenneTwister19937.Seed();
-
-		int Supposed[] = { -795755684, 581869302, -404620562, -708632711, 545404204, -133711905, -372047867, 949333985, -1579004998, 1323567403 };
-		for (size_t i = 0; i < sizeof(Supposed) / sizeof(int); i++) {
-			int Result = MersenneTwister19937.Next();
-			if (Supposed[i] != Result) {
-				std::cout << "BigLib::Random::MersenneTwister19937 Failed At Index " << i << " Expected: " << Supposed[i] << " Got: " << Result << std::endl;
-				break;
-			}
-
-		}
-	}
-	{
-		BigLib::Random::MersenneTwister19937_64 MersenneTwister19937 = {};
-		MersenneTwister19937.Seed();
-
-		int64_t Supposed[] = { -795755684, 581869302, -404620562, -708632711, 545404204, -133711905, -372047867, 949333985, -1579004998, 1323567403 };
-		for (size_t i = 0; i < sizeof(Supposed) / sizeof(int); i++) {
-			int64_t Result = MersenneTwister19937.Next();
-			if (Supposed[i] != Result) {
-				std::cout << "BigLib::Random::MersenneTwister19937_64 Failed At Index " << i << " Expected: " << Supposed[i] << " Got: " << Result << std::endl;
-				break;
-			}
-
-		}
-	}
-}
 
 size_t _TEST_CRC_I = 0;
 size_t _TEST_CRC_PASS = 0;
@@ -396,22 +321,25 @@ void _TEST_CRC(BigLib::DataIntegrity::CRC::CRCEngineStatic<Type, Polynomial, Ref
 
 	CRCClass->UpdateCRC(Data, DataLen);
 	auto CRC = (uint64_t)CRCClass->GetCRC();
+	std::cout << "[(" << AlgoNames[_TEST_CRC_I] << "[" << _TEST_CRC_I << "]) => "; HexPrintInteger(CRC); std::cout << ']';
 	if (CRC != Results[_TEST_CRC_I]) {
-		std::cout << AlgoNames[_TEST_CRC_I] << "->[" << _TEST_CRC_I << "] Failed, Expected " << Results[_TEST_CRC_I] << " Got: " << CRC;
+		std::cout << " Failed, Expected: ";  HexPrintInteger(Results[_TEST_CRC_I]); std::cout << '\n';
 		PrintList(CRCClass->GetLookupTable(), TableLen);
+		G_TOTAL_FAILS++;
 	}
 	else {
-		std::cout << AlgoNames[_TEST_CRC_I] << " Passed" << std::endl;
+		std::cout << " Passed\n";
 		_TEST_CRC_PASS++;
 	}
 
 	_TEST_CRC_I++;
+	G_TOTAL_TESTS++;
 
 	delete[] CRCClass;
 }
 
 float TEST_CRCs() {
-	std::cout << "Begining CRC Test\n";
+	std::cout << "CRC TEST BEGIN\n";
 	_TEST_CRC_I = 0;
 	_TEST_CRC_PASS = 0;
 	// Not Optimal But Will Do The Job.
@@ -553,11 +481,13 @@ float TEST_CRCs() {
 	else
 		std::cout << "All " << _TEST_CRC_PASS << " CRCs Passed" << std::endl;
 
-	std::cout << "CRC Test Finished\n\n";
+	std::cout << "CRC TEST FINISH\n\n";
 	return ((float)_TEST_CRC_PASS / (float)_TEST_CRC_I) * 100.f;
 }
 
 float TEST_MD2_6() {
+	std::cout << "MD2-6 TEST BEGIN\n";
+
 	uint8_t Tests = 0;
 	uint8_t Failed = 0;
 	const uint8_t* MDResult;
@@ -566,32 +496,38 @@ float TEST_MD2_6() {
 		auto MD2 = BigLib::DataIntegrity::MD2_6::MD2();
 		const uint8_t* Expectation = nullptr;
 
-		Expectation = (uint8_t*)"\x83\x50\xE5\xA3\xE2\x4C\x15\x3D\xF2\x27\x5C\x9F\x80\x69\x27\x73";
+		Expectation = (const uint8_t*)"\x83\x50\xE5\xA3\xE2\x4C\x15\x3D\xF2\x27\x5C\x9F\x80\x69\x27\x73";
 		MDResult = MD2.Update((const uint8_t*)"", 0).Finalize(); Tests++;
 		if (!BigLib::Memory::MemoryCompare(MDResult, Expectation, 16)) {
 			std::cout << "MD2 Zero Len String Failed, Value: "; HexPrint(MDResult, 16); std::cout << "Expected: "; HexPrint(Expectation, 16);
 			Failed++;
+			G_TOTAL_FAILS++;
 		}
 		else
 			std::cout << "MD2 Zero Passed\n";
 		MD2.Reset();
-		Expectation = (uint8_t*)"\xC3\x1D\x79\x45\xAA\xFB\x1D\x69\x48\x20\xB7\x1A\xA7\xEA\xE7\x2B";
+		Expectation = (const uint8_t*)"\xC3\x1D\x79\x45\xAA\xFB\x1D\x69\x48\x20\xB7\x1A\xA7\xEA\xE7\x2B";
 		MDResult = MD2.Update((const uint8_t*)"0123456789ABCDEF", 16).Finalize(); Tests++;
 		if (!BigLib::Memory::MemoryCompare(MDResult, Expectation, 16)) {
 			std::cout << "MD2 16 Len String Failed, Value: "; HexPrint(MDResult, 16); std::cout << "Expected: "; HexPrint(Expectation, 16);
 			Failed++;
+			G_TOTAL_FAILS++;
 		}
 		else
 			std::cout << "MD2 16 Passed\n";
 		MD2.Reset();
 	}
-	
+	G_TOTAL_TESTS += 2;
+
+
+	std::cout << "MD2-6 TEST FINISH\n\n";
 	return (float(Tests - Failed) / (float)Tests) * 100.f;
 }
 
 
 void LIB_TEST() {
 	float Stability[] = {
+
 		TEST_CRCs(),
 		TEST_MD2_6(),
 	};
@@ -603,42 +539,21 @@ void LIB_TEST() {
 		if (Stability[i] == 0.f) Fails++;
 		else if (Stability[i] != 100.f) Unsuccessful++;
 	}
-
+	std::cout << "\n\n\n----------------TEST RESULTS----------------\n";
+	std::cout << "Target Architecture: " << ARCH_CURRENT_NAME << " (ID:" << ARCH_CURRENT_ID << ")\n";
 	std::cout << TestCount << " Tests Were Ran";
 	if (Fails != 0)
-		std::cout << " " << Fails << " Tests Failed";
+		std::cout << " " << Fails << " Tests Completely Failed";
 	if (Unsuccessful != 0)
-		std::cout << " " << Unsuccessful << " Tests Were Unsuccessful.";
+		std::cout << " " << Unsuccessful << " Tests Were Not 100% Successful.";
 
-	std::cout << "\nLibrary Stability: " << BigLib::Math::Average(Stability, TestCount) << "%\n";
+	std::cout << "\nTest Percentage Average: " << BigLib::Math::Average(Stability, TestCount) << "%\n";
+	std::cout << "Library Stability(" << (G_TOTAL_TESTS - G_TOTAL_FAILS) << '/' << G_TOTAL_TESTS << " Tests Passed): " << (float(G_TOTAL_TESTS - G_TOTAL_FAILS) / (float)G_TOTAL_TESTS) * 100.f << "%\n";
 }
 
 
 #if EXAMPLE_SELECTOR == 0
 int main() {
 	LIB_TEST();
-	//TestThreadPool();
-	TestList();
-	//TestPRNGs();
-	//return 0;
-	//std::cout << (size_t)BigLib::Bitwise::BinaryReflect<uint8_t>(0xF1) << '\n';
-
-	/*
-	{
-		BigLib::DataIntegrity::CRC::CRCEngineStatic<uint8_t, 0x03, false, false, 0xF, 0xF, 4> CRCTest = {};
-		CRCTest.UpdateCRC("123456789", 9);
-		auto CRC = (uint64_t)CRCTest.GetCRC();
-		std::cout << std::hex << CRC << '\n';
-		std::cout << std::hex << (size_t)(CRCTest.GetLookupTable()[0x80]) << '\n';
-
-	}
-	*/
-
-
-	//BigLib::Random::ACORN Gen = {};
-	//Gen.Seed(1);
-	//for (size_t i = 0; i < 100; i++) {
-	//	std::cout << Gen.Next() << std::endl;
-	//}
 }
 #endif

@@ -60,9 +60,6 @@
     <ClCompile Include="SOURCE\Modules\Profiling\Profiler.cpp" />
     <ClCompile Include="EXAMPLES\LibTest.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="ABOUT\MODULES.md" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

@@ -132,7 +132,4 @@
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="ABOUT\MODULES.md" />
-  </ItemGroup>
 </Project>

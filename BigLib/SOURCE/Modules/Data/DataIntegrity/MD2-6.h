@@ -93,7 +93,7 @@ namespace BigLib {
 				}
 
 				const uint8_t* Finalize() {
-					uint8_t N = 16 - (uint8_t)this->p_Size;
+					const uint8_t N = 16 - (uint8_t)this->p_Size;
 					Memory::MemoryFill(this->p_Block + this->p_Size, N, N);
 					this->p_ProcessBlock(this->Checksum, this->p_AuxBlock, this->p_Block);
 					Memory::MemorySet(this->p_Block, this->Checksum, 16);
