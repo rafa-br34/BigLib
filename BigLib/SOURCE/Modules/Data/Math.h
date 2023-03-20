@@ -30,13 +30,8 @@ namespace BigLib {
 		CONST_EXPRESSION INLINE Value Modulo(CONST Value X, CONST Value Y) {
 			Value R = X / Y;
 			Value D = R - Value(ModuloFloorCastType(R));
-			if (D > Value(0))
+			if (D != Value(0))
 				return X - (Y * Value(ModuloFloorCastType(R)));
-			else if (D < Value(0))
-				if (X > Value(0))
-					return ((Y * Value(ModuloFloorCastType(R))) + X);
-				else
-					return Y - ((Y * Value(ModuloFloorCastType(R))) - X);
 
 			return Value(0);
 		}
@@ -129,7 +124,7 @@ namespace BigLib {
 
 		template<typename DataType, typename SizeType = size_t, typename FloatType = double>
 		CONST_EXPRESSION INLINE FloatType ShannonEntropy(DataType Data[], SizeType DataCount) {
-
+			// TODO
 		}
 
 		template <typename Value>

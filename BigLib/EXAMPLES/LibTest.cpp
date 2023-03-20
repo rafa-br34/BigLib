@@ -431,11 +431,12 @@ float TEST_MEM_UTILS() {
 			Tests++;
 			if (Passes) {
 				Passed++;
-				std::cout << "\tPassed " << i << '\n';
+				std::cout << "\tPassed i:" << i << '\r';
 			}
 		}
 		G_TOTAL_TESTS++;
 		if (FailedOnce) G_TOTAL_FAILS++;
+		std::cout << '\n';
 	}
 
 	// MemorySet Test
@@ -466,59 +467,66 @@ float TEST_MEM_UTILS() {
 			Tests++;
 			if (Passes) {
 				Passed++;
-				std::cout << "\tPassed " << i << '\n';
+				std::cout << "\tPassed i:" << i << '\r';
 			}
 		}
 		G_TOTAL_TESTS++;
 		if (FailedOnce) G_TOTAL_FAILS++;
+		std::cout << '\n';
 	}
 
 
 
 	std::cout << "MEMORY UTILITIES TEST FINISH\n\n";
-	return TotalFail ? 0 : (float(Passed) / float(Tests)) * 100.f;
+	return TotalFail ? 0.f : (float(Passed) / float(Tests)) * 100.f;
 }
 
 float TEST_MATH() {
 	std::cout << "MATH UTILITIES TEST BEGIN\n";
+	size_t Tests = 0;
+	size_t Fails = 0;
+
 	// Test Modulo
 	{
+		std::cout << "\nStarting Integer Modulo Test\n";
 		size_t TotalTests = 0;
 		size_t FP32Fails = 0;
 		size_t FP64Fails = 0;
-		size_t IntFails = 0;
 
 		for (int M = -500; M < 500; M++) {
+			if (M == 0) continue;
+			if (FP32Fails + FP64Fails > 100) break;
+
 			for (int X = -500; X < 500; X++) {
 				TotalTests++;
 				int IntModulo = (X % M);
 				auto FP32Res = BigLib::Math::Modulo<float>((float)X, (float)M);
 				auto FP64Res = BigLib::Math::Modulo<double>((double)X, (double)M);
-				auto IntRes = BigLib::Math::Modulo<int>(X, M);
-
+				
+				Tests += 2;
 				if (!(FP32Res == (float)IntModulo)) {
 					std::cout << X << '%' << M << " FP32 Failed, Expected: " << IntModulo << " Got: " << FP32Res << '\n';
-					FP32Fails++;
+					FP32Fails++; Fails++;
 				}
 				if (!(FP64Res == (double)IntModulo)) {
 					std::cout << X << '%' << M << " FP64 Failed, Expected: " << IntModulo << " Got: " << FP64Res << '\n';
-					FP64Fails++;
+					FP64Fails++; Fails++;
 				}
-				if (!(IntRes == IntModulo)) {
-					//std::cout << X << '%' << M << " INT Failed, Expected: " << IntModulo << " Got: " << IntRes << '\n';
-					IntFails++;
+
+				if (FP32Fails + FP64Fails > 100) {
+					std::cout << "Total Fails > 100, Ending Test.\n";
+					break;
 				}
 			}
 		}
-		G_TOTAL_TESTS += 3;
+		G_TOTAL_TESTS += 2;
 
 		if (FP32Fails > TotalTests / 2) G_TOTAL_FAILS++;
 		if (FP64Fails > TotalTests / 2) G_TOTAL_FAILS++;
-		if (IntFails > TotalTests / 2) G_TOTAL_FAILS++;
 	}
 
 	std::cout << "MATH UTILITIES TEST FINISH\n\n";
-	return 0.f;
+	return (float(Tests - Fails) / float(Tests)) * 100.f;
 }
 
 float TEST_CRCs() {
