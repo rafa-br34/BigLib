@@ -26,7 +26,7 @@ namespace BigLib {
 			Value Dot(Vector2<Value> Target) {
 				Value First[] = { this->X, this->Y };
 				Value Second[] = { Target.X, Target.Y };
-				return Math::Dot(First, Second, 2);
+				return Math::DotProduct(First, Second, 2);
 			}
 			template<typename RetValue=double>
 			RetValue Magnitude() {

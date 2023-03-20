@@ -26,31 +26,57 @@ namespace BigLib {
 		}
 
 
-		template<typename Value, typename ModuloRoundCastType=int>
-		CONST_EXPRESSION INLINE Value Modulo(Value A, Value B) {
-			return A - ModuloRoundCastType(A / B) * B;
+		template<typename Value, typename ModuloFloorCastType=int>
+		CONST_EXPRESSION INLINE Value Modulo(CONST Value X, CONST Value Y) {
+			Value R = X / Y;
+			Value D = R - Value(ModuloFloorCastType(R));
+			if (D > Value(0))
+				return X - (Y * Value(ModuloFloorCastType(R)));
+			else if (D < Value(0))
+				if (X > Value(0))
+					return ((Y * Value(ModuloFloorCastType(R))) + X);
+				else
+					return Y - ((Y * Value(ModuloFloorCastType(R))) - X);
+
+			return Value(0);
 		}
 
 		template<typename Value>
-		CONST_EXPRESSION INLINE Value Min(Value A, Value B) {
+		CONST_EXPRESSION INLINE Value Min(CONST Value A, CONST Value B) {
 			return A < B ? A : B;
 		}
 
 		template<typename Value>
-		CONST_EXPRESSION INLINE Value Max(Value A, Value B) {
+		CONST_EXPRESSION INLINE Value Max(CONST Value A, CONST Value B) {
 			return A > B ? A : B;
 		}
 
-		template<typename Value>
-		CONST_EXPRESSION INLINE Value Power(Value A, Value V) {
-			Value Result = A;
-			for (Value i = 0; i < V - Value(1); i++)
-				Result *= A;
+		template<typename Value, typename IterType=size_t>
+		CONST_EXPRESSION INLINE Value IntegerPower(CONST Value X, CONST IterType Y) {
+			Value Result = X;
+			for (IterType i = 0; i < Y - IterType(1); i++)
+				Result *= X;
 			return Result;
 		}
 
 		template<typename Value>
-		CONST_EXPRESSION INLINE Value Absolute(Value X) {
+		CONST_EXPRESSION INLINE Value Power(CONST Value X, CONST Value Y) {
+			Value T;
+			if (Y == Value(0))
+				return Value(1);
+			T = Power<Value>(X, Y / Value(2));
+			if (Y % Value(2) == Value(0))
+				return T * T;
+			else {
+				if (Y > Value(0))
+					return X * T * T;
+				else
+					return (T * T) / X;
+			}
+		}
+
+		template<typename Value>
+		CONST_EXPRESSION INLINE Value Absolute(CONST Value X) {
 #if APPROACH__MATH_ABSOLUTE == 1
 			return X > Value(0) ? X : -X;
 #elif APPROACH__MATH_ABSOLUTE == 2
@@ -61,7 +87,7 @@ namespace BigLib {
 			X += Temp & 1;
 			return X;
 #else
-#error APPROACH__MATH_ABSOLUTE Invalid Value
+#error APPROACH__MATH_ABSOLUTE Invalid Approach
 #endif
 		}
 
@@ -78,13 +104,9 @@ namespace BigLib {
 			return std::sqrt(X);
 		}
 
-		template<typename Value>
-		Value Exponent(Value A) {
-			return Power(CONSTANTS_E, A);
-		}
 
 		template<typename Value>
-		bool IsPrimeInteger(Value A) {
+		bool IsIntegerPrime(const Value A) {
 			if (A == Value(0) || A == Value(1))
 				return false;
 
@@ -96,22 +118,33 @@ namespace BigLib {
 		}
 
 
-		template<typename Value>
-		CONST_EXPRESSION INLINE Value Average(Value List[], size_t Items) {
+		template<typename Value, typename SizeType=size_t>
+		CONST_EXPRESSION INLINE Value Average(const Value List[], SizeType Items) {
 			Value Sum{};
-			for (size_t i = 0; i < Items; i++) {
+			for (SizeType i = 0; i < Items; i++) {
 				Sum += List[i];
 			}
 			return Sum / (Value)Items;
 		}
 
+		template<typename DataType, typename SizeType = size_t, typename FloatType = double>
+		CONST_EXPRESSION INLINE FloatType ShannonEntropy(DataType Data[], SizeType DataCount) {
+
+		}
+
 		template <typename Value>
-		CONST_EXPRESSION INLINE Value Dot(Value First[], Value Second[], size_t ArraySize) {
+		CONST_EXPRESSION INLINE Value DotProduct(const Value First[], const Value Second[], size_t ArraySize) {
 			Value Result{};
 			for (size_t i = 0; i < ArraySize; i++) {
 				Result += First[i] * Second[i];
 			}
 			return Result;
+		}
+		
+
+		template<typename Value>
+		Value Exponent(CONST Value A) {
+			return FloatPower<Value>(CONSTANTS_E, A);
 		}
 
 		template <typename Value>
