@@ -372,7 +372,7 @@ float TEST_MEM_UTILS() {
 		};
 
 		std::cout << "Starting MemoryCompare Test\n";
-		std::cout << "True Tests:\n";
+		std::cout << "TRUE:\n";
 		for (size_t i = 0; i < sizeof(TrueTestResults) / sizeof(bool); i++) {
 			Tests++; G_TOTAL_TESTS++;
 			if (TrueTestResults[i] != true) {
@@ -384,7 +384,7 @@ float TEST_MEM_UTILS() {
 				Passed++;
 			}
 		}
-		std::cout << "False Tests:\n";
+		std::cout << "FALSE:\n";
 		for (size_t i = 0; i < sizeof(FalseTestResults) / sizeof(bool); i++) {
 			Tests++; G_TOTAL_TESTS++;
 			if (FalseTestResults[i] != false) {
@@ -399,7 +399,7 @@ float TEST_MEM_UTILS() {
 	}
 	
 	
-	const uint8_t BufferSize = 64;
+	const uint16_t BufferSize = 1024;
 	uint8_t ExpectationBuffer[BufferSize]{};
 	uint8_t FilledBuffer[BufferSize]{};
 
@@ -411,11 +411,11 @@ float TEST_MEM_UTILS() {
 			bool Passes = true;
 			for (size_t b = 0; b < 255; b++) {
 				// Clear And Fill Buffers
-				for (uint8_t clr = 0; clr < BufferSize; clr++) {
+				for (size_t clr = 0; clr < BufferSize; clr++) {
 					ExpectationBuffer[clr] = '\0';
 					FilledBuffer[clr] = '\0';
 				}
-				for (uint8_t a = 0; a < i; a++) {
+				for (size_t a = 0; a < i; a++) {
 					ExpectationBuffer[a] = (uint8_t)b;
 				}
 
@@ -439,23 +439,23 @@ float TEST_MEM_UTILS() {
 		std::cout << '\n';
 	}
 
-	// MemorySet Test
+	// MemoryCopy Test
 	{
-		std::cout << "\nStarting MemorySet Test\n";
+		std::cout << "\nStarting MemoryCopy Test\n";
 		bool FailedOnce = false;
 		for (size_t i = 1; i <= BufferSize; i++) {
 			bool Passes = true;
 			for (size_t b = 0; b < 255; b++) {
 				// Clear And Fill Buffers
-				for (uint8_t clr = 0; clr < BufferSize; clr++) {
+				for (size_t clr = 0; clr < BufferSize; clr++) {
 					ExpectationBuffer[clr] = '\0';
 					FilledBuffer[clr] = '\0';
 				}
-				for (uint8_t a = 0; a < i; a++) {
-					ExpectationBuffer[a] = (uint8_t)((b + a) * size_t(0x2545F4914F6CDD1D)); // Adding Some Very Poor Randomness
+				for (size_t a = 0; a < i; a++) {
+					ExpectationBuffer[a] = (uint8_t)((b + a) * size_t(0x2545F4914F6CDD1D)); // Adding Some Very Low Quality Randomness
 				}
 
-				BigLib::Memory::MemorySet(FilledBuffer, ExpectationBuffer, i);
+				BigLib::Memory::MemoryCopy(FilledBuffer, ExpectationBuffer, i);
 				if (_TEST_MemoryCompare(FilledBuffer, ExpectationBuffer, i) != true) {
 					std::cout << "\tMemorySet Failed Buffer Fill Size: " << i << " Expected: "; HexPrint(ExpectationBuffer, i, false); std::cout << " Got: "; HexPrint(FilledBuffer, i);
 					Passes = false;
@@ -679,6 +679,20 @@ float TEST_CRCs() {
 float TEST_MD2_6() {
 	std::cout << "MD2-6 TEST BEGIN\n";
 
+	const uint8_t AvailableTests = 3;
+
+	const uint8_t* TestStrings[] = {
+		(const uint8_t*)"",
+		(const uint8_t*)"0123456789ABCDEF",
+		(const uint8_t*)"abcdefghijklmnopqrstuvwxyz"
+	};
+
+	const uint8_t* ExpectationsMD2[] = {
+		(const uint8_t*)"\x83\x50\xE5\xA3\xE2\x4C\x15\x3D\xF2\x27\x5C\x9F\x80\x69\x27\x73",
+		(const uint8_t*)"\xC3\x1D\x79\x45\xAA\xFB\x1D\x69\x48\x20\xB7\x1A\xA7\xEA\xE7\x2B",
+		(const uint8_t*)"\x4E\x8D\xDF\xF3\x65\x02\x92\xAB\x5A\x41\x08\xC3\xAA\x47\x94\x0B"
+	};
+
 	uint8_t Tests = 0;
 	uint8_t Failed = 0;
 	const uint8_t* MDResult;
@@ -686,34 +700,31 @@ float TEST_MD2_6() {
 	{
 		auto MD2 = BigLib::DataIntegrity::MD2_6::MD2();
 		const uint8_t* Expectation = nullptr;
+		const uint8_t* String = nullptr;
 
-		Expectation = (const uint8_t*)"\x83\x50\xE5\xA3\xE2\x4C\x15\x3D\xF2\x27\x5C\x9F\x80\x69\x27\x73";
-		MDResult = MD2.Update((const uint8_t*)"", 0).Finalize(); Tests++;
-		if (!BigLib::Memory::MemoryCompare(MDResult, Expectation, 16)) {
-			std::cout << "MD2 Zero Len String Failed, Value: "; HexPrint(MDResult, 16); std::cout << "Expected: "; HexPrint(Expectation, 16);
-			Failed++;
-			G_TOTAL_FAILS++;
+		for (uint8_t i = 0; i < AvailableTests; i++) {
+			Expectation = ExpectationsMD2[i];
+			String = TestStrings[i];
+
+			MDResult = MD2.Update(String, BigLib::Strings::StringLength(String)).Finalize(); Tests++;
+			if (!BigLib::Memory::MemoryCompare(MDResult, Expectation, 16)) {
+				std::cout << "MD2 String(" << (const char*)String << ") Failed\n\tValue: "; HexPrint(MDResult, 16); std::cout << "\tExpected : "; HexPrint(Expectation, 16);
+				Failed++;
+				G_TOTAL_FAILS++;
+			}
+			else {
+				std::cout << "MD2 String IDX:" << (int)i << " Passed.\n";
+			}
+			MD2.Reset();
 		}
-		else
-			std::cout << "MD2 Zero Passed\n";
-		MD2.Reset();
-		Expectation = (const uint8_t*)"\xC3\x1D\x79\x45\xAA\xFB\x1D\x69\x48\x20\xB7\x1A\xA7\xEA\xE7\x2B";
-		MDResult = MD2.Update((const uint8_t*)"0123456789ABCDEF", 16).Finalize(); Tests++;
-		if (!BigLib::Memory::MemoryCompare(MDResult, Expectation, 16)) {
-			std::cout << "MD2 16 Len String Failed, Value: "; HexPrint(MDResult, 16); std::cout << "Expected: "; HexPrint(Expectation, 16);
-			Failed++;
-			G_TOTAL_FAILS++;
-		}
-		else
-			std::cout << "MD2 16 Passed\n";
-		MD2.Reset();
 	}
-	G_TOTAL_TESTS += 2;
+	G_TOTAL_TESTS += AvailableTests;
 
 
 	std::cout << "MD2-6 TEST FINISH\n\n";
 	return (float(Tests - Failed) / (float)Tests) * 100.f;
 }
+
 
 
 void LIB_TEST() {
@@ -743,7 +754,6 @@ void LIB_TEST() {
 	std::cout << "\nTest Percentage Average: " << BigLib::Math::Average(Stability, TestCount) << "%\n";
 	std::cout << "Library Stability(" << (G_TOTAL_TESTS - G_TOTAL_FAILS) << '/' << G_TOTAL_TESTS << " Tests Passed): " << (float(G_TOTAL_TESTS - G_TOTAL_FAILS) / (float)G_TOTAL_TESTS) * 100.f << "%\n";
 }
-
 
 #if EXAMPLE_SELECTOR == 0
 int main() {

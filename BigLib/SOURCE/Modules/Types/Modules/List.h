@@ -81,7 +81,7 @@ namespace BigLib {
 
 					Class* OldAllocation = this->Allocation;
 					this->Allocation = ALLOCATE(Class, this->AllocationSize);
-					Memory::MemorySet(this->Allocation, OldAllocation, this->ItemsCount * sizeof(Class));
+					Memory::MemoryCopy(this->Allocation, OldAllocation, this->ItemsCount * sizeof(Class));
 					FREE(OldAllocation);
 				}
 			}

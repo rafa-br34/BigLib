@@ -54,7 +54,6 @@
     <ClInclude Include="SOURCE\Modules\VMs\Modules\System300s\System300s.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SOURCE\Modules\Logging\Console.cpp" />
     <ClCompile Include="SOURCE\Modules\Memory\Modules\MemBaseWindows.cpp" />
     <ClCompile Include="SOURCE\Modules\Networking\Modules\Request.cpp" />
     <ClCompile Include="SOURCE\Modules\Profiling\Profiler.cpp" />

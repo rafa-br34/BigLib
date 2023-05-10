@@ -10,13 +10,13 @@ namespace BigLib {
 
 			class MD2 {
 			private:
-				uint8_t p_AuxBlock[48]{};
-				uint8_t p_Block[16]{};
+				uint8_t p_Block48[48]{};
+				uint8_t p_Block16[16]{};
 
 				size_t p_Size;
 
-				void p_ProcessBlock(uint8_t* ChecksumBlock, uint8_t* AuxBlock, const uint8_t* Block) CONST {
-					STATIC_CONST uint8_t STable[] = {
+				void p_ProcessBlock(uint8_t* Checksum, uint8_t* Block48, const uint8_t* State16) CONST {
+					STATIC_CONST uint8_t S[] = {
 						0x29, 0x2E, 0x43, 0xC9, 0xA2, 0xD8, 0x7C, 0x01, 0x3D, 0x36, 0x54, 0xA1, 0xEC, 0xF0, 0x06, 0x13,
 						0x62, 0xA7, 0x05, 0xF3, 0xC0, 0xC7, 0x73, 0x8C, 0x98, 0x93, 0x2B, 0xD9, 0xBC, 0x4C, 0x82, 0xCA,
 						0x1E, 0x9B, 0x57, 0x3C, 0xFD, 0xD4, 0xE0, 0x16, 0x67, 0x42, 0x6F, 0x18, 0x8A, 0x17, 0xE5, 0x12,
@@ -35,27 +35,23 @@ namespace BigLib {
 						0x31, 0x44, 0x50, 0xB4, 0x8F, 0xED, 0x1F, 0x1A, 0xDB, 0x99, 0x8D, 0x33, 0x9F, 0x11, 0x83, 0x14
 					};
 
+
 					uint8_t J;
-					uint8_t T;
-
-					for (T = ChecksumBlock[15], J = 0; J < 16; J++) {
-						ChecksumBlock[J] ^= STable[Block[J] ^ T];
-						T = ChecksumBlock[J];
-					}
-
+					uint8_t T = Checksum[15];
 					for (J = 0; J < 16; J++) {
-						AuxBlock[16 + J] = Block[J];
-						AuxBlock[32 + J] = AuxBlock[16 + J] ^ AuxBlock[J];
+						Block48[32 + J] = (Block48[16 + J] = State16[J]) ^ Block48[J];
+						T = (Checksum[J] ^= S[State16[J] ^ T]);
 					}
 
-					for (T = 0, J = 0; J < 18; J++) {
+					// Encrypt 18 Rounds
+					uint8_t R;
+					for (T = 0, R = 0; R < 18; R++) {
 
-						for (uint8_t K = 0; K < 48; K++) {
-							AuxBlock[K] ^= STable[T];
-							T = AuxBlock[K];
-						}
+						for (J = 0; J < 48; J++)
+							T = (Block48[J] ^= S[T]);
 
-						T = (T + J) & 0xFF;
+						// T = (T + R) % 256
+						T = uint8_t(((unsigned int)T + R) & 0xFF);
 					}
 				}
 
@@ -68,7 +64,9 @@ namespace BigLib {
 
 				MD2& Reset() {
 					Memory::MemoryFill(this->Checksum, 0x00, sizeof(this->Checksum));
-					Memory::MemoryFill(this->p_AuxBlock, 0x00, sizeof(this->p_AuxBlock));
+					Memory::MemoryFill(this->p_Block16, 0x00, sizeof(this->p_Block16));
+					Memory::MemoryFill(this->p_Block48, 0x00, sizeof(this->p_Block48));
+					
 					this->p_Size = 0;
 					return *this;
 				}
@@ -79,13 +77,13 @@ namespace BigLib {
 					while (Size > 0) {
 						N = Math::Min(Size, 16 - this->p_Size);
 
-						Memory::MemorySet(this->p_Block + this->p_Size, Data, N);
+						Memory::MemoryCopy(this->p_Block16 + this->p_Size, Data, N);
 						this->p_Size += N;
 						Data += N;
 						Size -= N;
 
 						if (this->p_Size == 16) {
-							this->p_ProcessBlock(this->Checksum, this->p_AuxBlock, this->p_Block);
+							this->p_ProcessBlock(this->Checksum, this->p_Block48, this->p_Block16);
 							this->p_Size = 0;
 						}
 					}
@@ -94,10 +92,14 @@ namespace BigLib {
 
 				const uint8_t* Finalize() {
 					const uint8_t N = 16 - (uint8_t)this->p_Size;
-					Memory::MemoryFill(this->p_Block + this->p_Size, N, N);
-					this->p_ProcessBlock(this->Checksum, this->p_AuxBlock, this->p_Block);
-					Memory::MemorySet(this->p_Block, this->Checksum, 16);
-					this->p_ProcessBlock(this->Checksum, this->p_AuxBlock, this->p_Block);
+
+					uint8_t Padding[16];
+					Memory::MemoryFill(Padding, N, N);
+
+					this->Update(Padding, N);
+					this->Update(this->Checksum, 16);
+
+					Memory::MemoryCopy(this->Checksum, this->p_Block48, 16);
 
 					return this->Checksum;
 				}

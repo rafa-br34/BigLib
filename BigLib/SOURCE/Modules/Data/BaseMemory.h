@@ -17,7 +17,7 @@
 
 namespace BigLib {
 	namespace Memory {
-		MEM_INLINE void MemorySet(void* Target, const void* Source, size_t Size) {
+		MEM_INLINE void MemoryCopy(void* Target, const void* Source, size_t Size) {
 			// Set Memory Using Largest Type Possible
 			for (size_t i = 0; i < Size / sizeof(BIGGEST_DATATYPE); i++) {
 				((BIGGEST_DATATYPE*)Target)[i] = ((const BIGGEST_DATATYPE*)Source)[i];
@@ -80,23 +80,11 @@ namespace BigLib {
 		MEM_INLINE uintptr_t* HookVTable(void* VTable, size_t VTableByteSize) {
 			auto NewVTable = ALLOCATE(uint8_t, VTableByteSize);
 
-			MemorySet(NewVTable, *(void**)VTable, VTableByteSize);
-			MemorySet(VTable, &NewVTable, sizeof(VTable));
+			MemoryCopy(NewVTable, *(void**)VTable, VTableByteSize);
+			MemoryCopy(VTable, &NewVTable, sizeof(VTable));
 
 			return (uintptr_t*)NewVTable;
 		}
-		
-
-		// 8 Bits Used For The Actual Descriptor, 8 Bits For Wildcard Descriptor
-		typedef uint16_t MemoryScanByte;
-
-		// Makes A MemoryScanByte List From Characters, Use '?' For Wildcards
-		// Ex: "81 F? ?0 D8 FF ?? 7E"
-		//INLINE size_t MaskFromStringA(const char* String, MemoryScanByte* Output) {
-		//	for (size_t i = 0; i < Strings::StringLength(String); i++) {
-		//
-		//	}
-		//}
 	}
 }
 

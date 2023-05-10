@@ -7,13 +7,16 @@ namespace BigLib {
 		FORCE_INLINE CONST_EXPRESSION LimiterType StringLength(const StringType* Pointer, LimiterType Limit=LimiterType(0)) {
 			const StringType* Initial = Pointer;
 			LimiterType Counter = Limit;
-			while (*Pointer != StringType(0) && (Limit > 0 && Counter--)) {
+
+			while (*Pointer != StringType(0)) {
 				if (Limit > 0) {
+					if (Counter <= 0) break;
 					Counter--;
 				}
+			
 				Pointer++;
 			}
-				
+			
 			return Pointer - Initial;
 		}
 		
@@ -22,7 +25,7 @@ namespace BigLib {
 			size_t StringSize = StringLength(From);
 			size_t MissedCharsLiteral = 0;
 
-			for (size_t i = 0; i < StringSize; i++) {				
+			for (size_t i = 0; i < StringSize; i++) {
 				if (From[i] > wchar_t(0xFF)) {
 					Output[i] = Missing;
 					MissedCharsLiteral++;
