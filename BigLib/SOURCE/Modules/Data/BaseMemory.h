@@ -4,86 +4,87 @@
 #include "Bitwise.h"
 
 
-#if APPROACH__MEMBASE_INLINE_TYPE == 1
+#if PREFS_MEMBASE_INLINE_TYPE == 1
 #define MEM_INLINE FORCE_INLINE
-#elif APPROACH__MEMBASE_INLINE_TYPE == 2
+#elif PREFS_MEMBASE_INLINE_TYPE == 2
 #define MEM_INLINE INLINE
-#elif APPROACH__MEMBASE_INLINE_TYPE == 3
+#elif PREFS_MEMBASE_INLINE_TYPE == 3
 #define MEM_INLINE
 #else
-#error APPROACH__MEMBASE_INLINE_TYPE Invalid Value
-#endif // APPROACH__MEMBASE_INLINE_TYPE
+#error PREFS_MEMBASE_INLINE_TYPE Invalid Value
+#define MEM_INLINE
+#endif // PREFS_MEMBASE_INLINE_TYPE
 
 
 namespace BigLib {
 	namespace Memory {
-		MEM_INLINE void MemoryCopy(void* Target, const void* Source, size_t Size) {
+		MEM_INLINE void MemoryCopy(void* Target, const void* Source, umax Size) {
 			// Set Memory Using Largest Type Possible
-			for (size_t i = 0; i < Size / sizeof(BIGGEST_DATATYPE); i++) {
+			for (umax i = 0; i < Size / sizeof(BIGGEST_DATATYPE); i++) {
 				((BIGGEST_DATATYPE*)Target)[i] = ((const BIGGEST_DATATYPE*)Source)[i];
 			}
 
 			// Set Remaining Bytes
-			const size_t ExtraBytes = Size % sizeof(BIGGEST_DATATYPE);
-			for (size_t i = 0; i < ExtraBytes; i++) {
-				size_t TrueIndex = (Size - ExtraBytes) + i;
-				((uint8_t*)Target)[TrueIndex] = ((const uint8_t*)Source)[TrueIndex];
+			const umax ExtraBytes = Size % sizeof(BIGGEST_DATATYPE);
+			for (umax i = 0; i < ExtraBytes; i++) {
+				umax TrueIndex = (Size - ExtraBytes) + i;
+				((uint8*)Target)[TrueIndex] = ((const uint8*)Source)[TrueIndex];
 			}
 		}
 
-		MEM_INLINE bool MemoryCompare(const void* D1, const void* D2, size_t Size) {
+		MEM_INLINE bool MemoryCompare(const void* D1, const void* D2, umax Size) {
 			if (D1 == D2) return true;
 
 			// Check Memory Using Largest Type Possible
-			for (size_t i = 0; i < Size / sizeof(BIGGEST_DATATYPE); i++) {
+			for (umax i = 0; i < Size / sizeof(BIGGEST_DATATYPE); i++) {
 				if (((const BIGGEST_DATATYPE*)D1)[i] != ((const BIGGEST_DATATYPE*)D2)[i])
 					return false;
 			}
 
 			// Check Remaining Bytes
-			const size_t ExtraBytes = Size % sizeof(BIGGEST_DATATYPE);
-			for (size_t i = 0; i < ExtraBytes; i++) {
-				size_t TrueIndex = (Size - ExtraBytes) + i;
-				if (((const uint8_t*)D1)[TrueIndex] != ((const uint8_t*)D2)[TrueIndex])
+			const umax ExtraBytes = Size % sizeof(BIGGEST_DATATYPE);
+			for (umax i = 0; i < ExtraBytes; i++) {
+				umax TrueIndex = (Size - ExtraBytes) + i;
+				if (((const uint8*)D1)[TrueIndex] != ((const uint8*)D2)[TrueIndex])
 					return false;
 			}
 			return true;
 		}
 
-		MEM_INLINE void MemoryFill(void* Target, uint8_t Data, size_t Size) {
-			typedef uint32_t MDT; // Mask DataType
+		MEM_INLINE void MemoryFill(void* Target, uint8 Data, umax Size) {
+			typedef uint32 MDT; // Mask DataType
 			const MDT Mask = (Data << 24) | (Data << 16) | (Data << 8) | Data;
 
 
 			// Set Memory Using Largest Type Possible
-			for (size_t i = 0; i < Size / sizeof(MDT); i++) {
+			for (umax i = 0; i < Size / sizeof(MDT); i++) {
 				((MDT*)Target)[i] = Mask;
 			}
 
 			// Set Remaining Bytes
-			const size_t ExtraBytes = Size % sizeof(MDT);
-			for (size_t i = 0; i < ExtraBytes; i++) {
-				((uint8_t*)Target)[(Size - ExtraBytes) + i] = Data;
+			const umax ExtraBytes = Size % sizeof(MDT);
+			for (umax i = 0; i < ExtraBytes; i++) {
+				((uint8*)Target)[(Size - ExtraBytes) + i] = Data;
 			}
 		}
 
-		MEM_INLINE void* GetMultiLevelPointer(void* Init, size_t Offsets[], size_t OffsetsSize) {
-			auto Current = (uint8_t*)Init;
+		MEM_INLINE void* GetMultiLevelPointer(void* Init, umax Offsets[], umax OffsetsSize) {
+			auto Current = (uint8*)Init;
 
-			for (size_t i = 0; i < OffsetsSize; i++) {
-				Current = *(uint8_t**)(Current + Offsets[i]);
+			for (umax i = 0; i < OffsetsSize; i++) {
+				Current = *(uint8**)(Current + Offsets[i]);
 			}
 
 			return Current;
 		}
 
-		MEM_INLINE uintptr_t* HookVTable(void* VTable, size_t VTableByteSize) {
-			auto NewVTable = ALLOCATE(uint8_t, VTableByteSize);
+		MEM_INLINE void* HookVTable(void* VTable, umax VTableByteSize) {
+			auto NewVTable = ALLOCATE(uint8, VTableByteSize);
 
 			MemoryCopy(NewVTable, *(void**)VTable, VTableByteSize);
 			MemoryCopy(VTable, &NewVTable, sizeof(VTable));
 
-			return (uintptr_t*)NewVTable;
+			return (void*)NewVTable;
 		}
 	}
 }

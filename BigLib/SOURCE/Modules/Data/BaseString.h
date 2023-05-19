@@ -3,8 +3,8 @@
 
 namespace BigLib {
 	namespace Strings {
-		template<typename StringType=char, typename LimiterType=size_t>
-		FORCE_INLINE CONST_EXPRESSION LimiterType StringLength(const StringType* Pointer, LimiterType Limit=LimiterType(0)) {
+		template<typename StringType=char, typename LimiterType=umax>
+		FORCE_INLINE LimiterType StringLength(const StringType* Pointer, LimiterType Limit=LimiterType(0)) {
 			const StringType* Initial = Pointer;
 			LimiterType Counter = Limit;
 
@@ -21,11 +21,11 @@ namespace BigLib {
 		}
 		
 		// Converts Wide String To C String
-		FORCE_INLINE CONST_EXPRESSION size_t StringConvert(const wchar_t* From, char* Output, size_t* MissedChars = nullptr, char Missing = '?') {
-			size_t StringSize = StringLength(From);
-			size_t MissedCharsLiteral = 0;
+		FORCE_INLINE umax StringConvert(const wchar_t* From, char* Output, umax* MissedChars = nullptr, char Missing = '?') {
+			umax StringSize = StringLength(From);
+			umax MissedCharsLiteral = 0;
 
-			for (size_t i = 0; i < StringSize; i++) {
+			for (umax i = 0; i < StringSize; i++) {
 				if (From[i] > wchar_t(0xFF)) {
 					Output[i] = Missing;
 					MissedCharsLiteral++;
@@ -41,15 +41,15 @@ namespace BigLib {
 		}
 
 		// Convert C String To Wide String
-		FORCE_INLINE CONST_EXPRESSION void StringConvert(const char* From, wchar_t* Output) {
-			for (size_t i = 0; i < StringLength(From); i++)
+		FORCE_INLINE void StringConvert(const char* From, wchar_t* Output) {
+			for (umax i = 0; i < StringLength(From); i++)
 				Output[i] = (wchar_t)From[i];
 		}
 
 		template <typename Class>
-		FORCE_INLINE CONST_EXPRESSION Class ToNumber(const char* String, size_t Base=10) {
-			size_t Position = StringLength(String) - 1;
-			uint8_t Digit = 0;
+		FORCE_INLINE Class ToNumber(const char* String, umax Base=10) {
+			umax Position = StringLength(String) - 1;
+			uint8 Digit = 0;
 			Class Power = 1;
 			Class Value = 0;
 
@@ -72,21 +72,21 @@ namespace BigLib {
 		}
 
 		template <typename Class>
-		FORCE_INLINE CONST_EXPRESSION Class ToNumber(const wchar_t* String, size_t Base = 10) {
-			size_t Position = StringLength(String) - 1;
-			uint8_t Digit = 0;
+		FORCE_INLINE Class ToNumber(const wchar_t* String, umax Base = 10) {
+			umax Position = StringLength(String) - 1;
+			uint8 Digit = 0;
 			Class Power = 1;
 			Class Value = 0;
 
 			while (Position != 0) {
 				Digit = 0;
 				if (L'0' <= String[Position] && String[Position] <= L'9')
-					Digit = uint8_t(String[Position] - L'0');
+					Digit = uint8(String[Position] - L'0');
 
 				else if (L'a' <= String[Position] && String[Position] <= L'z')
-					Digit = uint8_t((String[Position] - L'a') + 10);
+					Digit = uint8((String[Position] - L'a') + 10);
 				else if (L'A' <= String[Position] && String[Position] <= L'Z')
-					Digit = uint8_t((String[Position] - L'A') + 10);
+					Digit = uint8((String[Position] - L'A') + 10);
 
 				Value += Digit * Power;
 				Power *= (Class)Base;

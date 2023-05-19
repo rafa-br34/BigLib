@@ -30,9 +30,6 @@
     <ClInclude Include="SOURCE\Modules\Networking\Network.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\Modules\Profiling\Profiler.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
     <ClInclude Include="SOURCE\Modules\Types\Modules\Color24.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
@@ -57,22 +54,13 @@
     <ClInclude Include="SOURCE\Includes.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\Configs\Platform.h">
+    <ClInclude Include="SOURCE\Configs\Preferences.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\Configs\Approachs.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
-    <ClInclude Include="SOURCE\Configs\Compiler.h">
+    <ClInclude Include="SOURCE\Configs\CompilerSpecific.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\Modules\VMs\Code.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
-    <ClInclude Include="SOURCE\Modules\Memory\Memory.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
-    <ClInclude Include="SOURCE\Modules\Memory\Modules\MemBaseWindows.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\Modules\Data\BaseMemory.h">
@@ -114,21 +102,21 @@
     <ClInclude Include="SOURCE\Modules\Data\DataIntegrity\MD2-6.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
+    <ClInclude Include="SOURCE\Configs\UserDefined.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Configs\Types.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Modules\Types\BaseTypes.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SOURCE\Modules\Logging\Console.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
     <ClCompile Include="SOURCE\Modules\Networking\Modules\Request.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
-    <ClCompile Include="SOURCE\Modules\Profiling\Profiler.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
     <ClCompile Include="EXAMPLES\LibTest.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
-    <ClCompile Include="SOURCE\Modules\Memory\Modules\MemBaseWindows.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
   </ItemGroup>

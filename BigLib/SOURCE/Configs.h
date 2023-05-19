@@ -1,5 +1,5 @@
 #pragma once
-#include "Configs/Approachs.h"
-#include "Configs/Compiler.h"
-#include "Configs/Platform.h"
+#include "Configs/CompilerSpecific.h"
+#include "Configs/Preferences.h"
+#include "Configs/UserDefined.h"
 #include "Configs/Macros.h"

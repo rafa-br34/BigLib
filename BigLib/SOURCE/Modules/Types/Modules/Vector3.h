@@ -33,7 +33,8 @@ namespace BigLib {
 			}
 			template<typename RetValue = double>
 			RetValue Magnitude() {
-				return Math::SquareRoot((RetValue)Math::Power(this->X, 2) + (RetValue)Math::Power(this->Y, 2) + (RetValue)Math::Power(this->Z, 2));
+				// TODO
+				return RetValue(0);//Math::SquareRoot((RetValue)Math::Power(this->X, 2) + (RetValue)Math::Power(this->Y, 2) + (RetValue)Math::Power(this->Z, 2));
 			}
 
 			// Comparation Functions

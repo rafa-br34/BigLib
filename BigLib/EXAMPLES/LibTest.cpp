@@ -1,3 +1,4 @@
+#include <stdint.h>
 #include <iostream>
 #include <iomanip>
 #include "../SOURCE/BigLib.h"
@@ -692,10 +693,17 @@ float TEST_MD2_6() {
 		(const uint8_t*)"\xC3\x1D\x79\x45\xAA\xFB\x1D\x69\x48\x20\xB7\x1A\xA7\xEA\xE7\x2B",
 		(const uint8_t*)"\x4E\x8D\xDF\xF3\x65\x02\x92\xAB\x5A\x41\x08\xC3\xAA\x47\x94\x0B"
 	};
+	const uint8_t* ExpectationsMD4[] = {
+		(const uint8_t*)"\x31\xD6\xCF\xE0\xD1\x6A\xE9\x31\xB7\x3C\x59\xD7\xE0\xC0\x89\xC0",
+		(const uint8_t*)"\x02\x4B\x50\x28\x7D\x63\xEB\x62\xDC\x29\xB4\x7C\x6A\x9C\xE0\x03",
+		(const uint8_t*)"\xD7\x9E\x1C\x30\x8A\xA5\xBB\xCD\xEE\xA8\xED\x63\xDF\x41\x2D\xA9"
+	};
+	
 
 	uint8_t Tests = 0;
 	uint8_t Failed = 0;
 	const uint8_t* MDResult;
+
 	// MD2
 	{
 		auto MD2 = BigLib::DataIntegrity::MD2_6::MD2();
@@ -744,7 +752,17 @@ void LIB_TEST() {
 		else if (Stability[i] != 100.f) Unsuccessful++;
 	}
 	std::cout << "\n\n\n----------------TEST RESULTS----------------\n";
-	std::cout << "Target Architecture: " << ARCH_CURRENT_NAME << " (ID:" << ARCH_CURRENT_ID << ")\n";
+	std::cout << "Target Architecture: " << BigLib::Architectures::ArchitectureName[BigLib::c_MachineArchitecture] << " (IDX:" << BigLib::c_MachineArchitecture << ")\n";
+	std::cout << "Compiler Data Types:";
+	std::cout
+		<< "\n\tLP32: "	<< DT_LP32
+		<< "\n\tILP32: "	<< DT_ILP32
+		<< "\n\tLP64: "	<< DT_LP64
+		<< "\n\tLLP64: "	<< DT_LLP64
+		<< "\n\tILP64: "	<< DT_ILP64
+		<< "\n\tSILP64: "	<< DT_SILP64
+		<< "\n";
+
 	std::cout << "Ran " << TestCount << " Tests";
 	if (Fails != 0)
 		std::cout << " " << Fails << " Tests Completely Failed";

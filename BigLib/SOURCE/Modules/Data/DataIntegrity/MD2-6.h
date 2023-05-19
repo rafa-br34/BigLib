@@ -10,13 +10,13 @@ namespace BigLib {
 
 			class MD2 {
 			private:
-				uint8_t p_Block48[48]{};
-				uint8_t p_Block16[16]{};
+				uint8 p_Block48[48]{};
+				uint8 p_Block16[16]{};
 
-				size_t p_Size;
+				umax p_Size;
 
-				void p_ProcessBlock(uint8_t* Checksum, uint8_t* Block48, const uint8_t* State16) CONST {
-					STATIC_CONST uint8_t S[] = {
+				void p_ProcessBlock(uint8* Checksum, uint8* Block48, CONST uint8* State16) CONST {
+					STATIC_CONST uint8 S[] = {
 						0x29, 0x2E, 0x43, 0xC9, 0xA2, 0xD8, 0x7C, 0x01, 0x3D, 0x36, 0x54, 0xA1, 0xEC, 0xF0, 0x06, 0x13,
 						0x62, 0xA7, 0x05, 0xF3, 0xC0, 0xC7, 0x73, 0x8C, 0x98, 0x93, 0x2B, 0xD9, 0xBC, 0x4C, 0x82, 0xCA,
 						0x1E, 0x9B, 0x57, 0x3C, 0xFD, 0xD4, 0xE0, 0x16, 0x67, 0x42, 0x6F, 0x18, 0x8A, 0x17, 0xE5, 0x12,
@@ -36,27 +36,28 @@ namespace BigLib {
 					};
 
 
-					uint8_t J;
-					uint8_t T = Checksum[15];
+					uint8 J;
+					uint8 T = Checksum[15];
 					for (J = 0; J < 16; J++) {
 						Block48[32 + J] = (Block48[16 + J] = State16[J]) ^ Block48[J];
 						T = (Checksum[J] ^= S[State16[J] ^ T]);
 					}
 
 					// Encrypt 18 Rounds
-					uint8_t R;
+					uint8 R;
 					for (T = 0, R = 0; R < 18; R++) {
 
 						for (J = 0; J < 48; J++)
 							T = (Block48[J] ^= S[T]);
 
 						// T = (T + R) % 256
-						T = uint8_t(((unsigned int)T + R) & 0xFF);
+						STATIC_ASSERT(sizeof(T) == 1, FILELINE_SUFFIX("Type Of \"T\" Is Bigger Than 0xFF"));
+						T += R; // Overflow will act as modulo 0xFF
 					}
 				}
 
 			public:
-				uint8_t Checksum[16]{};
+				uint8 Checksum[16]{};
 
 				MD2() {
 					this->Reset();
@@ -71,8 +72,8 @@ namespace BigLib {
 					return *this;
 				}
 
-				MD2& Update(const uint8_t* Data, size_t Size) {
-					size_t N;
+				MD2& Update(const uint8* Data, umax Size) {
+					umax N;
 
 					while (Size > 0) {
 						N = Math::Min(Size, 16 - this->p_Size);
@@ -90,10 +91,10 @@ namespace BigLib {
 					return *this;
 				}
 
-				const uint8_t* Finalize() {
-					const uint8_t N = 16 - (uint8_t)this->p_Size;
+				const uint8* Finalize() {
+					const uint8 N = 16 - (uint8)this->p_Size;
 
-					uint8_t Padding[16];
+					uint8 Padding[16];
 					Memory::MemoryFill(Padding, N, N);
 
 					this->Update(Padding, N);

@@ -45,7 +45,7 @@ namespace BigLib {
 			return A > B ? A : B;
 		}
 
-		template<typename Value, typename IterType=size_t>
+		template<typename Value, typename IterType=umax>
 		CONST_EXPRESSION INLINE Value IntegerPower(CONST Value X, CONST IterType Y) {
 			Value Result = X;
 			for (IterType i = 0; i < Y - IterType(1); i++)
@@ -71,11 +71,11 @@ namespace BigLib {
 
 		template<typename Value>
 		CONST_EXPRESSION INLINE Value Absolute(CONST Value X) {
-#if APPROACH__MATH_ABSOLUTE == 1
+#if PREFS_MATH_ABSOLUTE == 1
 			return X > Value(0) ? X : -X;
-#elif APPROACH__MATH_ABSOLUTE == 2
+#elif PREFS_MATH_ABSOLUTE == 2
 			return (X * (X > Value(0))) + (-X * (X < Value(0)));
-#elif APPROACH__MATH_ABSOLUTE == 3
+#elif PREFS_MATH_ABSOLUTE == 3
 			Value Temp = X >> ((sizeof(Value) * 8) - 1);
 			X ^= Temp;
 			X += Temp & 1;
@@ -86,18 +86,6 @@ namespace BigLib {
 		}
 
 		// TODO: Make actual SQRT implementation
-		INLINE double SquareRoot(double X) {
-			return std::sqrt(X);
-		}
-
-		INLINE float SquareRoot(float X) {
-			return std::sqrt(X);
-		}
-
-		INLINE double SquareRoot(int X) {
-			return std::sqrt(X);
-		}
-
 
 		template<typename Value>
 		bool IsIntegerPrime(const Value A) {
@@ -112,7 +100,7 @@ namespace BigLib {
 		}
 
 
-		template<typename Value, typename SizeType=size_t>
+		template<typename Value, typename SizeType=umax>
 		CONST_EXPRESSION INLINE Value Average(const Value List[], SizeType Items) {
 			Value Sum{};
 			for (SizeType i = 0; i < Items; i++) {
@@ -121,15 +109,15 @@ namespace BigLib {
 			return Sum / (Value)Items;
 		}
 
-		template<typename DataType, typename SizeType=size_t, typename FloatType=double>
+		template<typename DataType, typename SizeType=umax, typename FloatType=double>
 		CONST_EXPRESSION INLINE FloatType ShannonEntropy(DataType Data[], SizeType DataCount) {
 			// TODO
 		}
 
 		template <typename Value>
-		CONST_EXPRESSION INLINE Value DotProduct(const Value First[], const Value Second[], size_t ArraySize) {
+		CONST_EXPRESSION INLINE Value DotProduct(const Value First[], const Value Second[], umax ArraySize) {
 			Value Result{};
-			for (size_t i = 0; i < ArraySize; i++) {
+			for (umax i = 0; i < ArraySize; i++) {
 				Result += First[i] * Second[i];
 			}
 			return Result;

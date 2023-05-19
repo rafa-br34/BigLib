@@ -34,9 +34,9 @@ namespace BigLib {
 			// TODO: Room For Optimization.
 			
 			for (size_t i = 0; i < Size; i++)
-#if APPROACH__BINARYREFLECT == 1
+#if PREFS_BINARYREFLECT == 1
 				if (X & (Type(1) << i)) Result |= (Type(1) << ((Size - Type(1)) - i));
-#elif APPROACH__BINARYREFLECT == 2
+#elif PREFS_BINARYREFLECT == 2
 				Result |= (Type(1) << ((Size - Type(1)) - i)) * ((X & (Type(1) << i)) > 0);
 #endif
 			return Result;
