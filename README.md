@@ -4,4 +4,4 @@ BigLib is a project in its early alpha stages with ambitious goals of being a mu
 BigLib will compile and run from Windows, Linux, and macOS to bare hardware-level x86/x64, ARM, and microcontrollers by using user-defined IO functions(such as functions for memory management) and feature macros. </br></br>
 Documentation about BigLib can be found [here](https://rafa-br34.github.io/BigLib/).
 ## Information
-The Library Currently Contains 33 C++ Files, With 229 Comment Lines, 610 Blank Lines, And 2742 Lines Of Code. 3581 Lines In Total.
+The Library Currently Contains 23 C++ Files, With 222 Comment Lines, 506 Blank Lines, And 2423 Lines Of Code. 3151 Lines In Total.
