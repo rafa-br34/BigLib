@@ -751,26 +751,43 @@ void LIB_TEST() {
 		if (Stability[i] == 0.f) Fails++;
 		else if (Stability[i] != 100.f) Unsuccessful++;
 	}
-	std::cout << "\n\n\n----------------TEST RESULTS----------------\n";
-	std::cout << "Target Architecture: " << BigLib::Architectures::ArchitectureName[BigLib::c_MachineArchitecture] << " (IDX:" << BigLib::c_MachineArchitecture << ")\n";
-	std::cout << "Compiler Data Types:";
-	std::cout
-		<< "\n\tLP32: "	<< DT_LP32
-		<< "\n\tILP32: "	<< DT_ILP32
-		<< "\n\tLP64: "	<< DT_LP64
-		<< "\n\tLLP64: "	<< DT_LLP64
-		<< "\n\tILP64: "	<< DT_ILP64
-		<< "\n\tSILP64: "	<< DT_SILP64
-		<< "\n";
+	std::cout << "\n\n\n----------------TEST RESULTS----------------";
+	
+	// Compile Time
+	{
+		std::cout << "\n\n----Compile Time----\n";
+		std::cout << "Target Architecture: " << BigLib::Architectures::ArchitectureName[BigLib::c_MachineArchitecture] << " (IDX:" << BigLib::c_MachineArchitecture << ")\n";
+		std::cout << "Compiler Data Types:";
+		std::cout
+			<< "\n\tLP32: " << DT_LP32
+			<< "\n\tILP32: " << DT_ILP32
+			<< "\n\tLP64: " << DT_LP64
+			<< "\n\tLLP64: " << DT_LLP64
+			<< "\n\tILP64: " << DT_ILP64
+			<< "\n\tSILP64: " << DT_SILP64
+			<< "\n";
 
-	std::cout << "Ran " << TestCount << " Tests";
-	if (Fails != 0)
-		std::cout << " " << Fails << " Tests Completely Failed";
-	if (Unsuccessful != 0)
-		std::cout << " " << Unsuccessful << " Tests Were Not 100% Successful.";
+		std::cout << "Required Virtualizations:";
+		std::cout
+			<< "\n\tDT8: " << VIRTUALIZE_DT8
+			<< "\n\tDT16: " << VIRTUALIZE_DT16
+			<< "\n\tDT32: " << VIRTUALIZE_DT32
+			<< "\n\tDT64: " << VIRTUALIZE_DT64
+			<< "\n";
+	}
 
-	std::cout << "\nTest Percentage Average: " << BigLib::Math::Average(Stability, TestCount) << "%\n";
-	std::cout << "Library Stability(" << (G_TOTAL_TESTS - G_TOTAL_FAILS) << '/' << G_TOTAL_TESTS << " Tests Passed): " << (float(G_TOTAL_TESTS - G_TOTAL_FAILS) / (float)G_TOTAL_TESTS) * 100.f << "%\n";
+	// Results
+	{
+		std::cout << "\n\n----Results----\n";
+		std::cout << "Ran " << TestCount << " Tests";
+		if (Fails != 0)
+			std::cout << " " << Fails << " Tests Completely Failed";
+		if (Unsuccessful != 0)
+			std::cout << " " << Unsuccessful << " Tests Were Not 100% Successful.";
+
+		std::cout << "\nTest Percentage Average: " << BigLib::Math::Average(Stability, TestCount) << "%\n";
+		std::cout << "Library Stability(" << (G_TOTAL_TESTS - G_TOTAL_FAILS) << '/' << G_TOTAL_TESTS << " Tests Passed): " << (float(G_TOTAL_TESTS - G_TOTAL_FAILS) / (float)G_TOTAL_TESTS) * 100.f << "%\n";
+	}
 }
 
 #if EXAMPLE_SELECTOR == 0
