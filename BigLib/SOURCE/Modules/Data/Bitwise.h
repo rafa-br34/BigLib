@@ -3,7 +3,7 @@
 
 #define BIT(Index)								(UI64(1) << (Index))
 #define SIZEOF_BITS(Value)							(sizeof(Value) * 8)
-#define OFFSET(Address, Offset)						((uint8_t*)(Address) + (Offset))
+#define OFFSET(Address, Offset)						((uint8*)(Address) + (Offset))
 #define HAS_BIT(Value, Index)						((Value) & BIT(Index))
 #define GET_BIT(Value, Index)						(HAS_BIT(Value, Index) >> (Index))
 #define SET_BIT(Value, Index, NewBit)				(GET_BIT(Value, Index) == (BitValue) ? (Value) : (Value) ^ BIT(Index))

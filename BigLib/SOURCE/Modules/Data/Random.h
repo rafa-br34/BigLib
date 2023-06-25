@@ -25,7 +25,7 @@ namespace BigLib {
 				X ^= X << 13;
 				X ^= X >> 17;
 				X ^= X << 5;
-				return X;
+				return this->State = X;
 			}
 		};
 
@@ -43,7 +43,7 @@ namespace BigLib {
 				X ^= X << 13;
 				X ^= X >> 7;
 				X ^= X << 17;
-				return X;
+				return this->State = X;
 			}
 		};
 

@@ -6,8 +6,8 @@ on:
       - 'main'
     paths-ignore:
       - '.github\workflows\**.*'
-  schedule:
-    - cron:  '00 0 * * *'
+#  schedule:
+#    - cron:  '00 0 * * *'
 
 jobs:
   updater:

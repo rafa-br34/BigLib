@@ -32,7 +32,281 @@ void HexPrintInteger(Type Data, size_t Padding=(sizeof(Type) * 2)) {
 	std::cout << std::hex << std::uppercase << std::setfill('0') << std::setw(Padding) << Data << std::dec;
 }
 
+double ByteCountToMeasurement(double Count, const char** Output) {
+	const char* Measurements[] = {
+		"B",
+		"KB",
+		"MB",
+		"GB",
+		"TB",
+		"EB",
+		"ZB",
+		"YB",
+		"RB",
+		"QB",
+		"UNK"
+	};
 
+	uint8_t Iteration = 0;
+	while (Count >= 1024.0) {
+		Count /= 1024.0;
+		Iteration++;
+	}
+	
+
+	if (const auto ListSize = sizeof(Measurements) / sizeof(void*); Iteration > ListSize)
+		*Output = Measurements[ListSize - 1];
+	else
+		*Output = Measurements[Iteration];
+
+	return Count;
+}
+
+bool _TEST_MemoryCompare(const void* A0, const void* A1, size_t Len) {
+	for (size_t i = 0; i < Len; i++) {
+		if (((const uint8_t*)A0)[i] != ((const uint8_t*)A1)[i])
+			return false;
+	}
+	return true;
+}
+
+void _TEST_MemorySet(void* A0, uint8_t Byte, size_t Len) {
+	for (size_t i = 0; i < Len; i++) {
+		((uint8_t*)A0)[i] = Byte;
+	}
+}
+
+float TEST_LIST() {
+	size_t Tests = 0, Passed = 0;
+	const char* TempString = nullptr;
+	std::cout << "LIST TEST BEGIN\n";
+
+	std::cout << "Starting Allocation Snap Test\n";
+	{
+		BigLib::Types::List<uint8_t> NewList;
+
+		for (size_t i = 0, v = 0; i < 800; i++, v += 4) {
+			if (i == 0) continue;
+			size_t Allocated = (0x9BD18D18112681B8 * i) % (v + 1);
+
+			NewList.ItemCountSnap = v;
+			NewList.AllocateTotal(Allocated);
+			size_t ModuloResult = NewList.AllocatedCount() % v;
+			size_t Difference = NewList.AllocatedCount() - Allocated;
+
+			std::cout << "IDX:" << i << " SNAP: " << v << " NEWSIZE:" << Allocated << " SIZE:" << NewList.AllocatedCount() << " DIFF:" << Difference << '(' << Difference / v << ')' << " MODRES:" << ModuloResult << "    ";
+			if (ModuloResult == 0)
+				Passed++;
+			else
+				std::cout << " Failed\n";
+			Tests++;
+			std::cout << "\r";
+
+			NewList.AllocateTotal(0);
+		}
+		std::cout << '\n';
+	}
+	std::cout << "Finished Allocation Snap Test\n";
+
+	std::cout << "Starting Initializers Test\n";
+	{
+		Tests++;
+		const uint8_t TestBuffer[] = "\x42\x93\x68\x69\x55\x9E\x31\xC0\xCC\x18\x58\x36\xAD\xE0\x73\xEC\xDE\x74\xDA\x9B\x20\x4E\x19\xE7\xA6\x88\x7A\xFE\x7E\xAA\xA5\xCB\xE8\xF0\x36\x3C\x6F\xC1\x27\xAD\x2D\x6F\xE0\x3C\x59\x3F\x81\xE0\x0B\x6A";
+		BigLib::Types::List<uint8_t> NewList(TestBuffer, sizeof(TestBuffer));
+		if (!_TEST_MemoryCompare(NewList.AllocationPointer(), TestBuffer, sizeof(TestBuffer)))
+			std::cout << "List Initializer Failed\n";
+		else
+			Passed++;
+	}
+	{
+		// TODO: Byte Initializer
+	}
+
+	std::cout << "LIST TEST END\n";
+
+	return (float(Passed) / float(Tests)) * 100.f;
+}
+
+
+float TEST_MEM_UTILS() {
+	std::cout << "MEMORY UTILITIES TEST BEGIN\n";
+	bool CompleteFailure = false;
+	size_t Tests = 0, Passed = 0;
+
+	// MemoryCompare Test
+	{
+		const char* TestData = "01234567890123456789";
+		const char* TestDataChunk = "0123456789\0\0\0\0\0\0\0\0\0\0"; // Padding Is Added So MemoryCompare Doesn't Access Data It Shouldn't
+
+		bool TrueTestResults[] = {
+			BigLib::Memory::MemoryCompare(TestData, TestData, 20), // Pointer Comparation
+			BigLib::Memory::MemoryCompare(TestData, TestData + 10, 10), // Data Comparation First
+			BigLib::Memory::MemoryCompare(TestData + 10, TestData, 10), // Data Comparation Second
+		};
+		bool FalseTestResults[] = {
+			BigLib::Memory::MemoryCompare(TestData + 1, TestData, 20), // Unaligned Data First
+			BigLib::Memory::MemoryCompare(TestData, TestData + 1, 20), // Unaligned Data Second
+			BigLib::Memory::MemoryCompare(TestData, TestDataChunk, 20), // Invalid Data First
+			BigLib::Memory::MemoryCompare(TestDataChunk, TestData, 20), // Invalid Data Second
+		};
+
+		std::cout << "Starting MemoryCompare Test\n";
+		std::cout << "TRUE:\n";
+		for (size_t i = 0; i < sizeof(TrueTestResults) / sizeof(bool); i++) {
+			Tests++; G_TOTAL_TESTS++;
+			if (TrueTestResults[i] != true) {
+				std::cout << "\tTest " << i << " Failed\n";
+				G_TOTAL_FAILS++;
+			}
+			else {
+				std::cout << "\tPassed\n";
+				Passed++;
+			}
+		}
+		std::cout << "FALSE:\n";
+		for (size_t i = 0; i < sizeof(FalseTestResults) / sizeof(bool); i++) {
+			Tests++; G_TOTAL_TESTS++;
+			if (FalseTestResults[i] != false) {
+				std::cout << "\tTest " << i << " Failed\n";
+				G_TOTAL_FAILS++;
+			}
+			else {
+				std::cout << "\tPassed\n";
+				Passed++;
+			}
+		}
+	}
+
+
+	const uint16_t BufferSize = 512;
+	uint8_t ExpectationBuffer[BufferSize]{};
+	uint8_t FilledBuffer[BufferSize]{};
+
+	// MemoryFill Test
+	{
+		std::cout << "\nStarting MemoryFill Test\n";
+		bool FailedOnce = false;
+		for (size_t i = 1; i <= BufferSize; i++) {
+			bool Passes = true;
+			for (size_t b = 0; b < 255; b++) {
+				// Clear And Fill Buffers
+				for (size_t clr = 0; clr < BufferSize; clr++) {
+					ExpectationBuffer[clr] = '\0';
+					FilledBuffer[clr] = '\0';
+				}
+				for (size_t a = 0; a < i; a++) {
+					ExpectationBuffer[a] = (uint8_t)b;
+				}
+
+				BigLib::Memory::MemoryFill(FilledBuffer, (uint8_t)b, i);
+				if (_TEST_MemoryCompare(FilledBuffer, ExpectationBuffer, i) != true) {
+					std::cout << "\tMemoryFill Failed Buffer Fill Size: " << i << " Byte: " << b << '\n';
+					Passes = false;
+					FailedOnce = true;
+					break;
+				}
+
+			}
+			Tests++;
+			if (Passes) {
+				Passed++;
+				std::cout << "\tPassed i:" << i << '\r';
+			}
+		}
+		G_TOTAL_TESTS++;
+		if (FailedOnce) G_TOTAL_FAILS++;
+		std::cout << '\n';
+	}
+
+	// MemoryCopy Test
+	{
+		std::cout << "\nStarting MemoryCopy Test\n";
+		bool FailedOnce = false;
+		for (size_t i = 1; i <= BufferSize; i++) {
+			bool Passes = true;
+			for (size_t b = 0; b < 255; b++) {
+				// Clear And Fill Buffers
+				for (size_t clr = 0; clr < BufferSize; clr++) {
+					ExpectationBuffer[clr] = '\0';
+					FilledBuffer[clr] = '\0';
+				}
+				for (size_t a = 0; a < i; a++) {
+					ExpectationBuffer[a] = (uint8_t)((b + a) * size_t(0x2545F4914F6CDD1D)); // Adding Some Very Low Quality Randomness
+				}
+
+				BigLib::Memory::MemoryCopy(FilledBuffer, ExpectationBuffer, i);
+				if (_TEST_MemoryCompare(FilledBuffer, ExpectationBuffer, i) != true) {
+					std::cout << "\tMemorySet Failed Buffer Fill Size: " << i << " Expected: "; HexPrint(ExpectationBuffer, i, false); std::cout << " Got: "; HexPrint(FilledBuffer, i);
+					Passes = false;
+					FailedOnce = true;
+					break;
+				}
+
+			}
+			Tests++;
+			if (Passes) {
+				Passed++;
+				std::cout << "\tPassed i:" << i << '\r';
+			}
+		}
+		G_TOTAL_TESTS++;
+		if (FailedOnce) G_TOTAL_FAILS++;
+		std::cout << '\n';
+	}
+
+
+
+	std::cout << "MEMORY UTILITIES TEST FINISH\n\n";
+	return CompleteFailure ? 0.f : (float(Passed) / float(Tests)) * 100.f;
+}
+
+float TEST_MATH() {
+	std::cout << "MATH UTILITIES TEST BEGIN\n";
+	size_t Tests = 0;
+	size_t Fails = 0;
+
+	// Test Modulo
+	{
+		std::cout << "\nStarting Integer Modulo Test\n";
+		size_t TotalTests = 0;
+		size_t FP32Fails = 0;
+		size_t FP64Fails = 0;
+
+		for (int M = -500; M < 500; M++) {
+			if (M == 0) continue;
+			if (FP32Fails + FP64Fails > 100) break;
+
+			for (int X = -500; X < 500; X++) {
+				TotalTests++;
+				int IntModulo = (X % M);
+				auto FP32Res = BigLib::Math::Modulo<float>((float)X, (float)M);
+				auto FP64Res = BigLib::Math::Modulo<double>((double)X, (double)M);
+
+				Tests += 2;
+				if (!(FP32Res == (float)IntModulo)) {
+					std::cout << X << '%' << M << " FP32 Failed, Expected: " << IntModulo << " Got: " << FP32Res << '\n';
+					FP32Fails++; Fails++;
+				}
+				if (!(FP64Res == (double)IntModulo)) {
+					std::cout << X << '%' << M << " FP64 Failed, Expected: " << IntModulo << " Got: " << FP64Res << '\n';
+					FP64Fails++; Fails++;
+				}
+
+				if (FP32Fails + FP64Fails > 10) {
+					std::cout << "Total Fails > 10, Ending Test.\n";
+					break;
+				}
+			}
+		}
+		G_TOTAL_TESTS += 2;
+
+		if (FP32Fails > TotalTests / 2) G_TOTAL_FAILS++;
+		if (FP64Fails > TotalTests / 2) G_TOTAL_FAILS++;
+	}
+
+	std::cout << "MATH UTILITIES TEST FINISH\n\n";
+	return (float(Tests - Fails) / float(Tests)) * 100.f;
+}
 
 
 size_t _TEST_CRC_I = 0;
@@ -231,8 +505,8 @@ void _TEST_CRC(BigLib::DataIntegrity::CRC::CRCEngineStatic<Type, Polynomial, Ref
 
 		"10 ATM",
 		"10 CDMA2000",
-		"10 GSM"
-		,
+		"10 GSM",
+		
 		"11 FLEXRAY",
 		"11 UMTS",
 
@@ -339,195 +613,6 @@ void _TEST_CRC(BigLib::DataIntegrity::CRC::CRCEngineStatic<Type, Polynomial, Ref
 	G_TOTAL_TESTS++;
 
 	delete[] CRCClass;
-}
-
-bool _TEST_MemoryCompare(const void* A0, const void* A1, size_t Len) {
-	for (size_t i = 0; i < Len; i++) {
-		if (((uint8_t*)A0)[i] != ((uint8_t*)A1)[i])
-			return false;
-	}
-	return true;
-}
-
-float TEST_MEM_UTILS() {
-	std::cout << "MEMORY UTILITIES TEST BEGIN\n";
-	bool TotalFail = false;
-	size_t Tests = 0;
-	size_t Passed = 0;
-
-	// MemoryCompare Test
-	{
-		const char* TestData = "01234567890123456789";
-		const char* TestDataChunk = "0123456789\0\0\0\0\0\0\0\0\0\0"; // Padding Is Added So MemoryCompare Doesn't Access Data It Shouldn't
-
-		bool TrueTestResults[] = {
-			BigLib::Memory::MemoryCompare(TestData, TestData, 20), // Pointer Comparation
-			BigLib::Memory::MemoryCompare(TestData, TestData + 10, 10), // Data Comparation First
-			BigLib::Memory::MemoryCompare(TestData + 10, TestData, 10), // Data Comparation Second
-		};
-		bool FalseTestResults[] = {
-			BigLib::Memory::MemoryCompare(TestData + 1, TestData, 20), // Un-Aligned Data First
-			BigLib::Memory::MemoryCompare(TestData, TestData + 1, 20), // Un-Aligned Data Second
-			BigLib::Memory::MemoryCompare(TestData, TestDataChunk, 20), // Invalid Data First
-			BigLib::Memory::MemoryCompare(TestDataChunk, TestData, 20), // Invalid Data Second
-		};
-
-		std::cout << "Starting MemoryCompare Test\n";
-		std::cout << "TRUE:\n";
-		for (size_t i = 0; i < sizeof(TrueTestResults) / sizeof(bool); i++) {
-			Tests++; G_TOTAL_TESTS++;
-			if (TrueTestResults[i] != true) {
-				std::cout << "\tTest " << i << " Failed\n";
-				G_TOTAL_FAILS++;
-			}
-			else {
-				std::cout << "\tPassed\n";
-				Passed++;
-			}
-		}
-		std::cout << "FALSE:\n";
-		for (size_t i = 0; i < sizeof(FalseTestResults) / sizeof(bool); i++) {
-			Tests++; G_TOTAL_TESTS++;
-			if (FalseTestResults[i] != false) {
-				std::cout << "\tTest " << i << " Failed\n";
-				G_TOTAL_FAILS++;
-			}
-			else {
-				std::cout << "\tPassed\n";
-				Passed++;
-			}
-		}
-	}
-	
-	
-	const uint16_t BufferSize = 1024;
-	uint8_t ExpectationBuffer[BufferSize]{};
-	uint8_t FilledBuffer[BufferSize]{};
-
-	// MemoryFill Test
-	{
-		std::cout << "\nStarting MemoryFill Test\n";
-		bool FailedOnce = false;
-		for (size_t i = 1; i <= BufferSize; i++) {
-			bool Passes = true;
-			for (size_t b = 0; b < 255; b++) {
-				// Clear And Fill Buffers
-				for (size_t clr = 0; clr < BufferSize; clr++) {
-					ExpectationBuffer[clr] = '\0';
-					FilledBuffer[clr] = '\0';
-				}
-				for (size_t a = 0; a < i; a++) {
-					ExpectationBuffer[a] = (uint8_t)b;
-				}
-
-				BigLib::Memory::MemoryFill(FilledBuffer, (uint8_t)b, i);
-				if (_TEST_MemoryCompare(FilledBuffer, ExpectationBuffer, i) != true) {
-					std::cout << "\tMemoryFill Failed Buffer Fill Size: " << i << " Byte: " << b << '\n';
-					Passes = false;
-					FailedOnce = true;
-					break;
-				}
-
-			}
-			Tests++;
-			if (Passes) {
-				Passed++;
-				std::cout << "\tPassed i:" << i << '\r';
-			}
-		}
-		G_TOTAL_TESTS++;
-		if (FailedOnce) G_TOTAL_FAILS++;
-		std::cout << '\n';
-	}
-
-	// MemoryCopy Test
-	{
-		std::cout << "\nStarting MemoryCopy Test\n";
-		bool FailedOnce = false;
-		for (size_t i = 1; i <= BufferSize; i++) {
-			bool Passes = true;
-			for (size_t b = 0; b < 255; b++) {
-				// Clear And Fill Buffers
-				for (size_t clr = 0; clr < BufferSize; clr++) {
-					ExpectationBuffer[clr] = '\0';
-					FilledBuffer[clr] = '\0';
-				}
-				for (size_t a = 0; a < i; a++) {
-					ExpectationBuffer[a] = (uint8_t)((b + a) * size_t(0x2545F4914F6CDD1D)); // Adding Some Very Low Quality Randomness
-				}
-
-				BigLib::Memory::MemoryCopy(FilledBuffer, ExpectationBuffer, i);
-				if (_TEST_MemoryCompare(FilledBuffer, ExpectationBuffer, i) != true) {
-					std::cout << "\tMemorySet Failed Buffer Fill Size: " << i << " Expected: "; HexPrint(ExpectationBuffer, i, false); std::cout << " Got: "; HexPrint(FilledBuffer, i);
-					Passes = false;
-					FailedOnce = true;
-					break;
-				}
-
-			}
-			Tests++;
-			if (Passes) {
-				Passed++;
-				std::cout << "\tPassed i:" << i << '\r';
-			}
-		}
-		G_TOTAL_TESTS++;
-		if (FailedOnce) G_TOTAL_FAILS++;
-		std::cout << '\n';
-	}
-
-
-
-	std::cout << "MEMORY UTILITIES TEST FINISH\n\n";
-	return TotalFail ? 0.f : (float(Passed) / float(Tests)) * 100.f;
-}
-
-float TEST_MATH() {
-	std::cout << "MATH UTILITIES TEST BEGIN\n";
-	size_t Tests = 0;
-	size_t Fails = 0;
-
-	// Test Modulo
-	{
-		std::cout << "\nStarting Integer Modulo Test\n";
-		size_t TotalTests = 0;
-		size_t FP32Fails = 0;
-		size_t FP64Fails = 0;
-
-		for (int M = -500; M < 500; M++) {
-			if (M == 0) continue;
-			if (FP32Fails + FP64Fails > 100) break;
-
-			for (int X = -500; X < 500; X++) {
-				TotalTests++;
-				int IntModulo = (X % M);
-				auto FP32Res = BigLib::Math::Modulo<float>((float)X, (float)M);
-				auto FP64Res = BigLib::Math::Modulo<double>((double)X, (double)M);
-				
-				Tests += 2;
-				if (!(FP32Res == (float)IntModulo)) {
-					std::cout << X << '%' << M << " FP32 Failed, Expected: " << IntModulo << " Got: " << FP32Res << '\n';
-					FP32Fails++; Fails++;
-				}
-				if (!(FP64Res == (double)IntModulo)) {
-					std::cout << X << '%' << M << " FP64 Failed, Expected: " << IntModulo << " Got: " << FP64Res << '\n';
-					FP64Fails++; Fails++;
-				}
-
-				if (FP32Fails + FP64Fails > 100) {
-					std::cout << "Total Fails > 100, Ending Test.\n";
-					break;
-				}
-			}
-		}
-		G_TOTAL_TESTS += 2;
-
-		if (FP32Fails > TotalTests / 2) G_TOTAL_FAILS++;
-		if (FP64Fails > TotalTests / 2) G_TOTAL_FAILS++;
-	}
-
-	std::cout << "MATH UTILITIES TEST FINISH\n\n";
-	return (float(Tests - Fails) / float(Tests)) * 100.f;
 }
 
 float TEST_CRCs() {
@@ -737,11 +822,11 @@ float TEST_MD2_6() {
 
 void LIB_TEST() {
 	float Stability[] = {
+		TEST_LIST(),
 		TEST_MATH(),
 		TEST_MEM_UTILS(),
 		TEST_CRCs(),
 		TEST_MD2_6(),
-		
 	};
 	size_t TestCount = sizeof(Stability) / sizeof(float);
 

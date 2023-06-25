@@ -7,9 +7,9 @@ namespace BigLib {
 	class CString {
 	private:
 		char* Buffer = nullptr;
-		size_t Size = 0;
+		umax Size = 0;
 		
-		CONST_EXPRESSION void Reallocate(size_t NewSize) {
+		CONST_EXPRESSION void p_Reallocate(umax NewSize) {
 			if (NewSize != this->Size) {
 				FREE(this->Buffer);
 				this->Size = NewSize;
