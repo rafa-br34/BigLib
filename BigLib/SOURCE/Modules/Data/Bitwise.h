@@ -18,12 +18,12 @@ namespace BigLib {
 	namespace Bitwise {
 
 		template<typename Type, typename RType=unsigned>
-		CONST_EXPRESSION FORCE_INLINE Type RotateRight(Type X, RType R) {
+		FORCE_INLINE Type RotateRight(Type X, RType R) {
 			return (X >> R) | (X << (-R & (SIZEOF_BITS(Type) - 1)));
 		}
 
 		template<typename Type, typename RType=unsigned>
-		CONST_EXPRESSION FORCE_INLINE Type RotateLeft(Type X, RType R) {
+		FORCE_INLINE Type RotateLeft(Type X, RType R) {
 			return (X << R) | (X >> (-R & (SIZEOF_BITS(Type) - 1)));
 		}
 

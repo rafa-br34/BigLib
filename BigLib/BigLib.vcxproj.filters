@@ -113,9 +113,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SOURCE\Modules\Networking\Modules\Request.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
     <ClCompile Include="EXAMPLES\LibTest.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>

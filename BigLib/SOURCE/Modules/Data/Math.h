@@ -11,42 +11,40 @@ namespace BigLib {
 		CONST_EXPRESSION INLINE auto CONSTANTS_E  = 2.71828182845904523536028747135266249775724709369995957496696762772407663035354759457138217852516642;
 
 		template<typename Value>
-		CONST_EXPRESSION INLINE Value ImpreciseLerp(Value A, Value B, Value T) {
+		CONST_EXPRESSION Value ImpreciseLerp(Value A, Value B, Value T) {
 			return A + T * (B - A);
 		}
 
 		template<typename Value>
-		CONST_EXPRESSION INLINE Value PreciseLerp(Value A, Value B, Value T) {
+		CONST_EXPRESSION Value PreciseLerp(Value A, Value B, Value T) {
 			return (Value(1) - T) * A + T * B;
 		}
 
 		template<typename Value>
-		CONST_EXPRESSION INLINE Value Lerp(Value A, Value B, Value T) {
+		CONST_EXPRESSION Value Lerp(Value A, Value B, Value T) {
 			return Math::ImpreciseLerp<Value>(A, B, T);
 		}
 
-
 		template<typename Value, typename ModuloFloorCastType=int>
-		CONST_EXPRESSION INLINE Value Modulo(CONST Value X, CONST Value Y) {
-			Value R = X / Y;
-			if ((R - Value(ModuloFloorCastType(R))) != Value(0))
+		CONST_EXPRESSION Value Modulo(CONST Value X, CONST Value Y) {
+			if (Value R = X / Y; (R - Value(ModuloFloorCastType(R))) != Value(0))
 				return X - (Y * Value(ModuloFloorCastType(R)));
 
 			return Value(0);
 		}
 
 		template<typename Value>
-		CONST_EXPRESSION INLINE Value Min(CONST Value A, CONST Value B) {
+		CONST_EXPRESSION Value Min(CONST Value A, CONST Value B) {
 			return A < B ? A : B;
 		}
 
 		template<typename Value>
-		CONST_EXPRESSION INLINE Value Max(CONST Value A, CONST Value B) {
+		CONST_EXPRESSION Value Max(CONST Value A, CONST Value B) {
 			return A > B ? A : B;
 		}
 
 		template<typename Value, typename IterType=umax>
-		CONST_EXPRESSION INLINE Value IntegerPower(CONST Value X, CONST IterType Y) {
+		CONST_EXPRESSION Value IntegerPower(CONST Value X, CONST IterType Y) {
 			Value Result = X;
 			for (IterType i = 0; i < Y - IterType(1); i++)
 				Result *= X;
@@ -54,7 +52,7 @@ namespace BigLib {
 		}
 
 		template<typename Value>
-		CONST_EXPRESSION INLINE Value Power(CONST Value X, CONST Value Y) {
+		CONST_EXPRESSION Value Power(CONST Value X, CONST Value Y) {
 			Value T;
 			if (Y == Value(0))
 				return Value(1);
@@ -70,7 +68,7 @@ namespace BigLib {
 		}
 
 		template<typename Value>
-		CONST_EXPRESSION INLINE Value Absolute(CONST Value X) {
+		CONST_EXPRESSION Value Absolute(CONST Value X) {
 #if PREFS_MATH_ABSOLUTE == 1
 			return X > Value(0) ? X : -X;
 #elif PREFS_MATH_ABSOLUTE == 2
@@ -85,23 +83,24 @@ namespace BigLib {
 #endif
 		}
 
-		// TODO: Make actual SQRT implementation
+		// TODO: Make SQRT function
 
 		template<typename Value>
-		bool IsIntegerPrime(const Value A) {
-			if (A == Value(0) || A == Value(1))
+		CONST_EXPRESSION bool IsPrime(CONST Value N) {
+			if (N == 0 || N == 1) {
 				return false;
-
-			for (Value B = Value(2); B < 2 + (A / 2); B++) {
-				if (A % B == Value(0))
-					return false;
 			}
+
+			for (Value i = 2; i * i <= N; i++)
+				if (N % i == 0)
+					return false;
+
 			return true;
 		}
 
 
 		template<typename Value, typename SizeType=umax>
-		CONST_EXPRESSION INLINE Value Average(const Value List[], SizeType Items) {
+		CONST_EXPRESSION Value Average(CONST Value List[], SizeType Items) {
 			Value Sum{};
 			for (SizeType i = 0; i < Items; i++) {
 				Sum += List[i];
@@ -110,12 +109,12 @@ namespace BigLib {
 		}
 
 		template<typename DataType, typename SizeType=umax, typename FloatType=double>
-		CONST_EXPRESSION INLINE FloatType ShannonEntropy(DataType Data[], SizeType DataCount) {
+		CONST_EXPRESSION FloatType ShannonEntropy(DataType Data[], SizeType DataCount) {
 			// TODO
 		}
 
 		template <typename Value>
-		CONST_EXPRESSION INLINE Value DotProduct(const Value First[], const Value Second[], umax ArraySize) {
+		CONST_EXPRESSION Value DotProduct(CONST Value First[], CONST Value Second[], umax ArraySize) {
 			Value Result{};
 			for (umax i = 0; i < ArraySize; i++) {
 				Result += First[i] * Second[i];
@@ -126,32 +125,32 @@ namespace BigLib {
 
 		template<typename Value>
 		Value Exponent(CONST Value A) {
-			return FloatPower<Value>(CONSTANTS_E, A);
+			return Power<Value>(CONSTANTS_E, A);
 		}
 
 		template <typename Value>
-		CONST_EXPRESSION INLINE Value StepFunction(Value Input) {
+		CONST_EXPRESSION Value StepFunction(Value Input) {
 			return (Input > Value(0)) ? Value(1) : Value(0);
 		}
 
 		template <typename Value>
-		CONST_EXPRESSION INLINE Value Sigmoid(Value Input) {
+		CONST_EXPRESSION Value Sigmoid(Value Input) {
 			return Value(1) / (Value(1) + Exponent(-Input));
 		}
 
 		template <typename Value>
-		CONST_EXPRESSION INLINE Value HyperbolicTangent(Value Input) {
+		CONST_EXPRESSION Value HyperbolicTangent(Value Input) {
 			Value Val = Exponent(Value(2) * Input);
 			return (Val - Value(1)) / (Val + Value(1));
 		}
 
 		template <typename Value>
-		CONST_EXPRESSION INLINE Value SiLU(Value Input) {
+		CONST_EXPRESSION Value SiLU(Value Input) {
 			return Input / (Value(1) + Exponent(-Input));
 		}
 
 		template <typename Value>
-		CONST_EXPRESSION INLINE Value ReLU(Value Input) {
+		CONST_EXPRESSION Value ReLU(Value Input) {
 			return Max(Value(0), Input);
 		}
 	}

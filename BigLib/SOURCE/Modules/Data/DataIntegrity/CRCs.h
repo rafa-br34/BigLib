@@ -49,7 +49,7 @@ namespace BigLib {
 					}
 				}
 
-				CONST_EXPRESSION FORCE_INLINE void p_NormalUpdateCRC(Type Data) {
+				FORCE_INLINE void p_NormalUpdateCRC(Type Data) {
 					if CONST_EXPRESSION(Width > 8)
 						this->CRC = (this->LookupTable[(Data ^ (this->CRC >> (Width - 8))) & 0xFF] ^ (this->CRC << 8)) & this->LimiterMask;
 					else
@@ -58,7 +58,7 @@ namespace BigLib {
 						this->CRC = this->LookupTable[(Data ^ this->CRC) & 0xFF];
 				}
 
-				CONST_EXPRESSION FORCE_INLINE void p_InversedUpdateCRC(Type Data) {
+				FORCE_INLINE void p_InversedUpdateCRC(Type Data) {
 					if CONST_EXPRESSION(Width > 8)
 						this->CRC = (this->LookupTable[(this->CRC ^ Data) & 0xFF] ^ (this->CRC >> 8)) & this->LimiterMask;
 					else
@@ -74,7 +74,7 @@ namespace BigLib {
 
 				Type CRC;
 
-				CONST_EXPRESSION FORCE_INLINE CRCEngineStatic& ResetCRC(Type Initial=Type(0)) {
+				FORCE_INLINE CRCEngineStatic& ResetCRC(Type Initial=Type(0)) {
 					if CONST_EXPRESSION(ReflectIn)
 						this->CRC = Bitwise::BinaryReflect<Type, Width>(Initial ^ XORIn);
 					else
@@ -86,7 +86,7 @@ namespace BigLib {
 					return *this;
 				}
 
-				CONST_EXPRESSION FORCE_INLINE Type GetCRC() {
+				FORCE_INLINE Type GetCRC() {
 					Type CRCOut = this->CRC;
 
 					if CONST_EXPRESSION(Width < 8 && !ReflectIn)
@@ -99,12 +99,12 @@ namespace BigLib {
 					else
 						return CRCOut & this->LimiterMask;
 				}
-
-				CONST_EXPRESSION FORCE_INLINE const Type* GetLookupTable() {
+				
+				FORCE_INLINE const Type* GetLookupTable() {
 					return (const Type*)&this->LookupTable;
 				}
 
-				CONST_EXPRESSION FORCE_INLINE CRCEngineStatic& UpdateCRC(Type Data) {
+				FORCE_INLINE CRCEngineStatic& UpdateCRC(Type Data) {
 					// p_InversedUpdateCRC Needs To Be Used In Case The Table Is Reflected To Fully Emulate ReflectIn
 					if CONST_EXPRESSION(ReflectIn)
 						p_InversedUpdateCRC(Data);
@@ -115,7 +115,7 @@ namespace BigLib {
 				}
 
 				template<typename BufferType>
-				CONST_EXPRESSION INLINE CRCEngineStatic& UpdateCRC(const BufferType* Buffer, size_t Size) {
+				INLINE CRCEngineStatic& UpdateCRC(const BufferType* Buffer, size_t Size) {
 					for (size_t i = 0; i < Size; i++)
 						this->UpdateCRC((Type)Buffer[i]);
 					return *this;

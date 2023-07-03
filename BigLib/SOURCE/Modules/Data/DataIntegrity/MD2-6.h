@@ -7,7 +7,6 @@
 namespace BigLib {
 	namespace DataIntegrity {
 		namespace MD2_6 {
-
 			class MD2 {
 			private:
 				uint8 p_Block48[48]{};
@@ -104,9 +103,21 @@ namespace BigLib {
 
 					return this->Checksum;
 				}
-				
 			};
 
+			// Implementation based on RFC 1320
+#define F(X, Y, Z) (((X) & (Y)) | ((~X) & (Z)))
+#define G(X, Y, Z) (((X) & (Y)) | ((X) & (Z)) | ((Y) & (Z)))
+#define H(X, Y, Z) ((X) ^ (Y) ^ (Z))
+
+			class MD4 {
+			private:
+
+			public:
+			};
+#undef F
+#undef G
+#undef H
 		}
 	}
 }

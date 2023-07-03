@@ -118,9 +118,9 @@ float TEST_LIST() {
 		else
 			Passed++;
 	}
-	{
-		// TODO: Byte Initializer
-	}
+	// TODO: Other Initializers
+
+
 
 	std::cout << "LIST TEST END\n";
 
@@ -790,27 +790,27 @@ float TEST_MD2_6() {
 	const uint8_t* MDResult;
 
 	// MD2
-	{
-		auto MD2 = BigLib::DataIntegrity::MD2_6::MD2();
-		const uint8_t* Expectation = nullptr;
-		const uint8_t* String = nullptr;
+	auto MD2 = BigLib::DataIntegrity::MD2_6::MD2();
+	auto MD4 = BigLib::DataIntegrity::MD2_6::MD4();
+	const uint8_t* Expectation = nullptr;
+	const uint8_t* String = nullptr;
 
-		for (uint8_t i = 0; i < AvailableTests; i++) {
-			Expectation = ExpectationsMD2[i];
-			String = TestStrings[i];
+	for (uint8_t i = 0; i < AvailableTests; i++) {
+		String = TestStrings[i];
 
-			MDResult = MD2.Update(String, BigLib::Strings::StringLength(String)).Finalize(); Tests++;
-			if (!BigLib::Memory::MemoryCompare(MDResult, Expectation, 16)) {
-				std::cout << "MD2 String(" << (const char*)String << ") Failed\n\tValue: "; HexPrint(MDResult, 16); std::cout << "\tExpected : "; HexPrint(Expectation, 16);
-				Failed++;
-				G_TOTAL_FAILS++;
-			}
-			else {
-				std::cout << "MD2 String IDX:" << (int)i << " Passed.\n";
-			}
-			MD2.Reset();
+		Expectation = ExpectationsMD2[i];
+		MDResult = MD2.Update(String, BigLib::Strings::StringLength(String)).Finalize(); Tests++;
+		if (!BigLib::Memory::MemoryCompare(MDResult, Expectation, 16)) {
+			std::cout << "MD2 String(" << (const char*)String << ") Failed\n\tValue: "; HexPrint(MDResult, 16); std::cout << "\tExpected : "; HexPrint(Expectation, 16);
+			Failed++;
+			G_TOTAL_FAILS++;
 		}
+		else {
+			std::cout << "MD2 String IDX:" << (int)i << " Passed.\n";
+		}
+		MD2.Reset();
 	}
+	
 	G_TOTAL_TESTS += AvailableTests;
 
 
