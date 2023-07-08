@@ -4,8 +4,8 @@
 namespace BigLib {
 	namespace Strings {
 		template<typename StringType=char, typename LimiterType=umax>
-		FORCE_INLINE LimiterType StringLength(const StringType* Pointer, LimiterType Limit=LimiterType(0)) {
-			const StringType* Initial = Pointer;
+		FORCE_INLINE LimiterType StringLength(CONST StringType* Pointer, LimiterType Limit=LimiterType(0)) {
+			CONST StringType* Initial = Pointer;
 			LimiterType Counter = Limit;
 
 			while (*Pointer != StringType(0)) {
@@ -21,7 +21,7 @@ namespace BigLib {
 		}
 		
 		// Converts Wide String To C String
-		FORCE_INLINE umax StringConvert(const wchar_t* From, char* Output, umax* MissedChars = nullptr, char Missing = '?') {
+		FORCE_INLINE umax StringConvert(CONST wchar_t* From, char* Output, umax* MissedChars = nullptr, char Missing = '?') {
 			umax StringSize = StringLength(From);
 			umax MissedCharsLiteral = 0;
 
@@ -41,13 +41,13 @@ namespace BigLib {
 		}
 
 		// Convert C String To Wide String
-		FORCE_INLINE void StringConvert(const char* From, wchar_t* Output) {
+		FORCE_INLINE void StringConvert(CONST char* From, wchar_t* Output) {
 			for (umax i = 0; i < StringLength(From); i++)
 				Output[i] = (wchar_t)From[i];
 		}
 
 		template <typename Class>
-		FORCE_INLINE Class ToNumber(const char* String, umax Base=10) {
+		FORCE_INLINE Class ToNumber(CONST char* String, umax Base=10) {
 			umax Position = StringLength(String) - 1;
 			uint8 Digit = 0;
 			Class Power = 1;
@@ -72,7 +72,7 @@ namespace BigLib {
 		}
 
 		template <typename Class>
-		FORCE_INLINE Class ToNumber(const wchar_t* String, umax Base = 10) {
+		FORCE_INLINE Class ToNumber(CONST wchar_t* String, umax Base = 10) {
 			umax Position = StringLength(String) - 1;
 			uint8 Digit = 0;
 			Class Power = 1;

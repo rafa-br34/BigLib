@@ -20,10 +20,10 @@ namespace BigLib {
 
 					if (New != this->p_AllocatedItems) {
 						Class* OldAllocation = this->p_Allocation;
-						this->p_Allocation = ALLOCATE(Class, this->p_AllocatedItems);
+						this->p_Allocation = ALLOCATE(Class, New);
 
 						// Copy Old To New If Needed
-						if (!OldAllocation) {
+						if (OldAllocation) {
 							Memory::MemoryCopy(
 								this->p_Allocation,
 								OldAllocation,

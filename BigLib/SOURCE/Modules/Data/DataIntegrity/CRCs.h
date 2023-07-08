@@ -5,8 +5,6 @@
 namespace BigLib {
 	namespace DataIntegrity {
 		namespace CRC {
-
-			// TODO: Fix CRCs With Width Lower Than 8
 			template<
 				typename Type,
 				const Type Polynomial,
@@ -35,7 +33,7 @@ namespace BigLib {
 						Poly = Polynomial;
 
 					for (size_t I = 0; I < TableLen; I++) {
-						// Only Mirror The First 8 Bits Here, Otherwise The Left Shift Will Remove Our Bits.
+						// Only mirror the first 8 bits, otherwise the left shift will remove the bits.
 						Type Remainder = ReflectIn ? Bitwise::BinaryReflect<Type, 8>((Type)I) : (Type)I;
 
 						if CONST_EXPRESSION(Width > 8)
@@ -44,7 +42,7 @@ namespace BigLib {
 						for (size_t B = 0; B < 8; B++)
 							Remainder = (Remainder & MaxBitMask) ? ((Remainder << 1) ^ Poly) : (Remainder << 1);
 							
-						// Reflecting The Table Item Will Have The Same Effect Of ReflectIn.
+						// Reflecting the table value will have the same effect of ReflectIn on the output.
 						this->LookupTable[I] = ReflectIn ? (Bitwise::BinaryReflect<Type, (Width < 8) ? 8 : Width>(Remainder)) : (Remainder);
 					}
 				}
@@ -53,8 +51,7 @@ namespace BigLib {
 					if CONST_EXPRESSION(Width > 8)
 						this->CRC = (this->LookupTable[(Data ^ (this->CRC >> (Width - 8))) & 0xFF] ^ (this->CRC << 8)) & this->LimiterMask;
 					else
-						// (this->CRC << 8) Becomes Zero If Width <= 8 
-						// If Width Is Less Than Or Equal To 8 It Should Be Removed.
+						// (this->CRC << 8) becomes zero if Width <= 8 
 						this->CRC = this->LookupTable[(Data ^ this->CRC) & 0xFF];
 				}
 
@@ -62,7 +59,7 @@ namespace BigLib {
 					if CONST_EXPRESSION(Width > 8)
 						this->CRC = (this->LookupTable[(this->CRC ^ Data) & 0xFF] ^ (this->CRC >> 8)) & this->LimiterMask;
 					else
-						// (this->CRC >> 8) Becomes Zero When Width Is Lower Or Equal To 8 
+						// (this->CRC >> 8) becomes zero if Width <= 8
 						this->CRC = this->LookupTable[(this->CRC ^ Data) & 0xFF];
 				}
 
@@ -100,8 +97,8 @@ namespace BigLib {
 						return CRCOut & this->LimiterMask;
 				}
 				
-				FORCE_INLINE const Type* GetLookupTable() {
-					return (const Type*)&this->LookupTable;
+				FORCE_INLINE CONST Type* GetLookupTable() {
+					return (CONST Type*)&this->LookupTable;
 				}
 
 				FORCE_INLINE CRCEngineStatic& UpdateCRC(Type Data) {
@@ -115,18 +112,16 @@ namespace BigLib {
 				}
 
 				template<typename BufferType>
-				INLINE CRCEngineStatic& UpdateCRC(const BufferType* Buffer, size_t Size) {
+				INLINE CRCEngineStatic& UpdateCRC(CONST BufferType* Buffer, size_t Size) {
 					for (size_t i = 0; i < Size; i++)
 						this->UpdateCRC((Type)Buffer[i]);
 					return *this;
 				}
-
-				
 			};
 
 
 			// Predefined CRCs
-			//						Type			Polynomial			RefIn	RefOut	XORIn				XOROut	Width
+			//					Type			Polynomial			RefIn	RefOut	XORIn				XOROut	Width
 
 			typedef CRCEngineStatic<uint8,		0x3,					false,	false,	0x0,					0x7,		3> CRC_3_GSM;
 			typedef CRCEngineStatic<uint8,		0x3,					true,	true,	0x7,					0x0,		3> CRC_3_ROHC;

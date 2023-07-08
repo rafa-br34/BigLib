@@ -76,6 +76,7 @@ void _TEST_MemorySet(void* A0, uint8_t Byte, size_t Len) {
 	}
 }
 
+
 float TEST_LIST() {
 	size_t Tests = 0, Passed = 0;
 	const char* TempString = nullptr;
@@ -94,7 +95,15 @@ float TEST_LIST() {
 			size_t ModuloResult = NewList.AllocatedCount() % v;
 			size_t Difference = NewList.AllocatedCount() - Allocated;
 
-			std::cout << "IDX:" << i << " SNAP: " << v << " NEWSIZE:" << Allocated << " SIZE:" << NewList.AllocatedCount() << " DIFF:" << Difference << '(' << Difference / v << ')' << " MODRES:" << ModuloResult << "    ";
+			std::cout
+				<< "IDX:" << i
+				<< " SNAP: " << v
+				<< " NEWSIZE:" << Allocated
+				<< " SIZE:" << NewList.AllocatedCount()
+				<< " DIFF:" << Difference << '(' << Difference / v << ')'
+				<< " MODRES:" << ModuloResult
+				<< "    ";
+
 			if (ModuloResult == 0)
 				Passed++;
 			else
@@ -102,7 +111,7 @@ float TEST_LIST() {
 			Tests++;
 			std::cout << "\r";
 
-			NewList.AllocateTotal(0);
+			NewList.AllocateTotal(0); // Reallocate to zero items, otherwise the current allocation could mess the next test iteration.
 		}
 		std::cout << '\n';
 	}
@@ -120,7 +129,7 @@ float TEST_LIST() {
 	}
 	// TODO: Other Initializers
 
-
+	BigLib::Types::List<uint8_t> NewList();
 
 	std::cout << "LIST TEST END\n";
 
@@ -762,26 +771,48 @@ float TEST_CRCs() {
 	return ((float)_TEST_CRC_PASS / (float)_TEST_CRC_I) * 100.f;
 }
 
+
 float TEST_MD2_6() {
 	std::cout << "MD2-6 TEST BEGIN\n";
 
-	const uint8_t AvailableTests = 3;
+	const uint8_t AvailableTests = 7;
 
-	const uint8_t* TestStrings[] = {
-		(const uint8_t*)"",
-		(const uint8_t*)"0123456789ABCDEF",
-		(const uint8_t*)"abcdefghijklmnopqrstuvwxyz"
+	const char* TestStrings[] = {
+		"",
+		"a",
+		"abc",
+		"message digest",
+		"abcdefghijklmnopqrstuvwxyz",
+		"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+		"12345678901234567890123456789012345678901234567890123456789012345678901234567890"
 	};
 
-	const uint8_t* ExpectationsMD2[] = {
-		(const uint8_t*)"\x83\x50\xE5\xA3\xE2\x4C\x15\x3D\xF2\x27\x5C\x9F\x80\x69\x27\x73",
-		(const uint8_t*)"\xC3\x1D\x79\x45\xAA\xFB\x1D\x69\x48\x20\xB7\x1A\xA7\xEA\xE7\x2B",
-		(const uint8_t*)"\x4E\x8D\xDF\xF3\x65\x02\x92\xAB\x5A\x41\x08\xC3\xAA\x47\x94\x0B"
+	const char* ExpectationsMD2[] = {
+		"\x83\x50\xE5\xA3\xE2\x4C\x15\x3D\xF2\x27\x5C\x9F\x80\x69\x27\x73",
+		"\x32\xEC\x01\xEC\x4A\x6D\xAC\x72\xC0\xAB\x96\xFB\x34\xC0\xB5\xD1",
+		"\xDA\x85\x3B\x0D\x3F\x88\xD9\x9B\x30\x28\x3A\x69\xE6\xDE\xD6\xBB",
+		"\xAB\x4F\x49\x6B\xFB\x2A\x53\x0B\x21\x9F\xF3\x30\x31\xFE\x06\xB0",
+		"\x4E\x8D\xDF\xF3\x65\x02\x92\xAB\x5A\x41\x08\xC3\xAA\x47\x94\x0B",
+		"\xDA\x33\xDE\xF2\xA4\x2D\xF1\x39\x75\x35\x28\x46\xC3\x03\x38\xCD",
+		"\xD5\x97\x6F\x79\xD8\x3D\x3A\x0D\xC9\x80\x6C\x3C\x66\xF3\xEF\xD8"
 	};
-	const uint8_t* ExpectationsMD4[] = {
-		(const uint8_t*)"\x31\xD6\xCF\xE0\xD1\x6A\xE9\x31\xB7\x3C\x59\xD7\xE0\xC0\x89\xC0",
-		(const uint8_t*)"\x02\x4B\x50\x28\x7D\x63\xEB\x62\xDC\x29\xB4\x7C\x6A\x9C\xE0\x03",
-		(const uint8_t*)"\xD7\x9E\x1C\x30\x8A\xA5\xBB\xCD\xEE\xA8\xED\x63\xDF\x41\x2D\xA9"
+	const char* ExpectationsMD4[] = {
+		"\x31\xD6\xCF\xE0\xD1\x6A\xE9\x31\xB7\x3C\x59\xD7\xE0\xC0\x89\xC0",
+		"\xBD\xE5\x2C\xB3\x1D\xE3\x3E\x46\x24\x5E\x05\xFB\xDB\xD6\xFB\x24",
+		"\xA4\x48\x01\x7A\xAF\x21\xD8\x52\x5F\xC1\x0A\xE8\x7A\xA6\x72\x9D",
+		"\xD9\x13\x0A\x81\x64\x54\x9F\xE8\x18\x87\x48\x06\xE1\xC7\x01\x4B",
+		"\xD7\x9E\x1C\x30\x8A\xA5\xBB\xCD\xEE\xA8\xED\x63\xDF\x41\x2D\xA9",
+		"\x04\x3F\x85\x82\xF2\x41\xDB\x35\x1C\xE6\x27\xE1\x53\xE7\xF0\xE4",
+		"\xE3\x3B\x4D\xDC\x9C\x38\xF2\x19\x9C\x3E\x7B\x16\x4F\xCC\x05\x36"
+	};
+	const char* ExpectationsMD5[] = {
+		"\xD4\x1D\x8C\xD9\x8F\x00\xB2\x04\xE9\x80\x09\x98\xEC\xF8\x42\x7E",
+		"\x0C\xC1\x75\xB9\xC0\xF1\xB6\xA8\x31\xC3\x99\xE2\x69\x77\x26\x61",
+		"\x90\x01\x50\x98\x3C\xD2\x4F\xB0\xD6\x96\x3F\x7D\x28\xE1\x7F\x72",
+		"\xF9\x6B\x69\x7D\x7C\xB7\x93\x8D\x52\x5A\x2F\x31\xAA\xF1\x61\xD0",
+		"\xC3\xFC\xD3\xD7\x61\x92\xE4\x00\x7D\xFB\x49\x6C\xCA\x67\xE1\x3B",
+		"\xD1\x74\xAB\x98\xD2\x77\xD9\xF5\xA5\x61\x1C\x2C\x9F\x41\x9D\x9F",
+		"\x57\xED\xF4\xA2\x2B\xE3\xC9\x55\xAC\x49\xDA\x2E\x21\x07\xB6\x7A"
 	};
 	
 
@@ -796,12 +827,12 @@ float TEST_MD2_6() {
 	const uint8_t* String = nullptr;
 
 	for (uint8_t i = 0; i < AvailableTests; i++) {
-		String = TestStrings[i];
+		String = (uint8*)TestStrings[i];
 
-		Expectation = ExpectationsMD2[i];
+		Expectation = (uint8*)ExpectationsMD2[i];
 		MDResult = MD2.Update(String, BigLib::Strings::StringLength(String)).Finalize(); Tests++;
 		if (!BigLib::Memory::MemoryCompare(MDResult, Expectation, 16)) {
-			std::cout << "MD2 String(" << (const char*)String << ") Failed\n\tValue: "; HexPrint(MDResult, 16); std::cout << "\tExpected : "; HexPrint(Expectation, 16);
+			std::cout << "MD2 String(" << (const char*)String << ") Failed\n\tValue: "; HexPrint(MDResult, 16); std::cout << "\tExpected: "; HexPrint(Expectation, 16);
 			Failed++;
 			G_TOTAL_FAILS++;
 		}
@@ -809,6 +840,18 @@ float TEST_MD2_6() {
 			std::cout << "MD2 String IDX:" << (int)i << " Passed.\n";
 		}
 		MD2.Reset();
+
+		Expectation = (uint8*)ExpectationsMD4[i];
+		MDResult = MD4.Update(String, BigLib::Strings::StringLength(String)).Finalize(); Tests++;
+		if (!BigLib::Memory::MemoryCompare(MDResult, Expectation, 16)) {
+			std::cout << "MD4 String(" << (const char*)String << ") Failed\n\tValue: "; HexPrint(MDResult, 16); std::cout << "\tExpected: "; HexPrint(Expectation, 16);
+			Failed++;
+			G_TOTAL_FAILS++;
+		}
+		else {
+			std::cout << "MD4 String IDX:" << (int)i << " Passed.\n";
+		}
+		MD4.Reset();
 	}
 	
 	G_TOTAL_TESTS += AvailableTests;

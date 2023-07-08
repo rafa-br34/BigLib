@@ -11,10 +11,9 @@ namespace BigLib {
 			private:
 				uint8 p_Block48[48]{};
 				uint8 p_Block16[16]{};
-
 				umax p_Size;
 
-				void p_ProcessBlock(uint8* Checksum, uint8* Block48, CONST uint8* State16) CONST {
+				void p_TransformBlock(uint8* CurrentChecksum, uint8* Block48, CONST uint8* State16) CONST {
 					STATIC_CONST uint8 S[] = {
 						0x29, 0x2E, 0x43, 0xC9, 0xA2, 0xD8, 0x7C, 0x01, 0x3D, 0x36, 0x54, 0xA1, 0xEC, 0xF0, 0x06, 0x13,
 						0x62, 0xA7, 0x05, 0xF3, 0xC0, 0xC7, 0x73, 0x8C, 0x98, 0x93, 0x2B, 0xD9, 0xBC, 0x4C, 0x82, 0xCA,
@@ -36,10 +35,10 @@ namespace BigLib {
 
 
 					uint8 J;
-					uint8 T = Checksum[15];
+					uint8 T = CurrentChecksum[15];
 					for (J = 0; J < 16; J++) {
 						Block48[32 + J] = (Block48[16 + J] = State16[J]) ^ Block48[J];
-						T = (Checksum[J] ^= S[State16[J] ^ T]);
+						T = (CurrentChecksum[J] ^= S[State16[J] ^ T]);
 					}
 
 					// Encrypt 18 Rounds
@@ -71,7 +70,7 @@ namespace BigLib {
 					return *this;
 				}
 
-				MD2& Update(const uint8* Data, umax Size) {
+				MD2& Update(CONST uint8* Data, umax Size) {
 					umax N;
 
 					while (Size > 0) {
@@ -83,15 +82,15 @@ namespace BigLib {
 						Size -= N;
 
 						if (this->p_Size == 16) {
-							this->p_ProcessBlock(this->Checksum, this->p_Block48, this->p_Block16);
+							this->p_TransformBlock(this->Checksum, this->p_Block48, this->p_Block16);
 							this->p_Size = 0;
 						}
 					}
 					return *this;
 				}
 
-				const uint8* Finalize() {
-					const uint8 N = 16 - (uint8)this->p_Size;
+				CONST uint8* Finalize() {
+					CONST uint8 N = 16 - (uint8)this->p_Size;
 
 					uint8 Padding[16];
 					Memory::MemoryFill(Padding, N, N);
@@ -106,15 +105,114 @@ namespace BigLib {
 			};
 
 			// Implementation based on RFC 1320
-#define F(X, Y, Z) (((X) & (Y)) | ((~X) & (Z)))
+#define F(X, Y, Z) (((X) & (Y)) | ((~(X)) & (Z)))
 #define G(X, Y, Z) (((X) & (Y)) | ((X) & (Z)) | ((Y) & (Z)))
 #define H(X, Y, Z) ((X) ^ (Y) ^ (Z))
 
+#define ROUND1(A, B, C, D, X, K, S) ((A) = Bitwise::RotateLeft((A) + F(B, C, D) + (X[K]), (S)))
+#define ROUND2(A, B, C, D, X, K, S) ((A) = Bitwise::RotateLeft((A) + G(B, C, D) + (X[K]) + uint32(0x5A827999), (S)))
+#define ROUND3(A, B, C, D, X, K, S) ((A) = Bitwise::RotateLeft((A) + H(B, C, D) + (X[K]) + uint32(0x6ED9EBA1), (S)))
 			class MD4 {
 			private:
+				uint8 p_Buffer[64]{};
+				uint32 p_Size[2];
+
+				void p_TransformBlock(uint32* State, uint32 CONST* X) CONST {
+					uint32 A = State[0], B = State[1], C = State[2], D = State[3];
+					uint32 AA = A, BB = B, CC = C, DD = D;
+
+					ROUND1(A,B,C,D, X,0, 3);	ROUND1(D,A,B,C, X,1, 7);	ROUND1(C,D,A,B, X,2, 11);	ROUND1(B,C,D,A, X,3, 19);
+					ROUND1(A,B,C,D, X,4, 3);	ROUND1(D,A,B,C, X,5, 7);	ROUND1(C,D,A,B, X,6, 11);	ROUND1(B,C,D,A, X,7, 19);
+					ROUND1(A,B,C,D, X,8, 3);	ROUND1(D,A,B,C, X,9, 7);	ROUND1(C,D,A,B, X,10, 11);	ROUND1(B,C,D,A, X,11, 19);
+					ROUND1(A,B,C,D, X,12, 3);	ROUND1(D,A,B,C, X,13, 7);	ROUND1(C,D,A,B, X,14, 11);	ROUND1(B,C,D,A, X,15, 19);
+
+					ROUND2(A,B,C,D, X,0, 3);	ROUND2(D,A,B,C, X,4, 5);	ROUND2(C,D,A,B, X,8, 9);	ROUND2(B,C,D,A, X,12, 13);
+					ROUND2(A,B,C,D, X,1, 3);	ROUND2(D,A,B,C, X,5, 5);	ROUND2(C,D,A,B, X,9, 9);	ROUND2(B,C,D,A, X,13, 13);
+					ROUND2(A,B,C,D, X,2, 3);	ROUND2(D,A,B,C, X,6, 5);	ROUND2(C,D,A,B, X,10, 9);	ROUND2(B,C,D,A, X,14, 13);
+					ROUND2(A,B,C,D, X,3, 3);	ROUND2(D,A,B,C, X,7, 5);	ROUND2(C,D,A,B, X,11, 9);	ROUND2(B,C,D,A, X,15, 13);
+
+					ROUND3(A,B,C,D, X,0, 3);	ROUND3(D,A,B,C, X,8, 9);	ROUND3(C,D,A,B, X,4, 11);	ROUND3(B,C,D,A, X,12, 15);
+					ROUND3(A,B,C,D, X,2, 3);	ROUND3(D,A,B,C, X,10, 9);	ROUND3(C,D,A,B, X,6, 11);	ROUND3(B,C,D,A, X,14, 15);
+					ROUND3(A,B,C,D, X,1, 3);	ROUND3(D,A,B,C, X,9, 9);	ROUND3(C,D,A,B, X,5, 11);	ROUND3(B,C,D,A, X,13, 15);
+					ROUND3(A,B,C,D, X,3, 3);	ROUND3(D,A,B,C, X,11, 9);	ROUND3(C,D,A,B, X,7, 11);	ROUND3(B,C,D,A, X,15, 15);
+
+					State[0] = A + AA; State[1] = B + BB; State[2] = C + CC; State[3] = D + DD;
+				}
 
 			public:
+				uint8 Checksum[16]{};
+
+				MD4() {
+					this->Reset();
+				}
+
+				MD4& Reset() {
+					Memory::MemoryCopy(this->Checksum, (const void*)"\x01\x23\x45\x67\x89\xAB\xCD\xEF\xFE\xDC\xBA\x98\x76\x54\x32\x10", sizeof(this->Checksum));
+
+					this->p_Size[0] = 0;
+					this->p_Size[1] = 0;
+					return *this;
+				}
+
+				// TODO: Make sure it can handle more than 4GB of input data
+				MD4& Update(CONST uint8* Data, umax Size) {
+					umax Index = (this->p_Size[0] >> 3) & 0b00111111;
+					
+					if ((this->p_Size[0] += (Size << 3)) < (Size << 3))
+						this->p_Size[1]++;
+					this->p_Size[1] += (Size >> 29);
+
+					umax PartLen = 64 - Index;
+					umax i = 0;
+					
+					if (Size >= PartLen) {
+						Memory::MemoryCopy(&this->p_Buffer[Index], Data, PartLen);
+						this->p_TransformBlock((uint32*)this->Checksum, (uint32*)this->p_Buffer);
+
+						for (i = PartLen; i + 63 < Size; i += 64)
+							this->p_TransformBlock((uint32*)this->Checksum, (CONST uint32*)&Data[i]);
+
+						Index = 0;
+					}
+					else
+						i = 0;
+					
+					Memory::MemoryCopy(&this->p_Buffer[Index], &Data[i], Size - i);
+
+					return *this;
+				}
+
+				CONST uint8* Finalize() {
+					STATIC_CONST uint8 Padding[] = {
+						0x80,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+						0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+						0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+						0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+						0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+						0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+						0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+						0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
+					};
+
+					uint8 Bits[8];
+
+					((uint32*)Bits)[0] = this->p_Size[0];
+					((uint32*)Bits)[1] = this->p_Size[1];
+
+					uint32 Index = ((this->p_Size[0] >> 3) & 0b00111111);
+					uint32 PadLen = (Index < 56) ? (56 - Index) : (120 - Index);
+					this->Update(Padding, PadLen);
+
+					this->Update(Bits, 8);
+					return this->Checksum;
+					
+				}
 			};
+
+#undef ROUND1
+#undef ROUND2
+#undef ROUND3
+
 #undef F
 #undef G
 #undef H

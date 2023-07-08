@@ -111,6 +111,9 @@
     <ClInclude Include="SOURCE\Modules\Types\BaseTypes.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
+    <ClInclude Include="SOURCE\Modules\Data\DataIntegrity\BaseChecksum.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EXAMPLES\LibTest.cpp">

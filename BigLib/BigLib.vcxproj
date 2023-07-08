@@ -29,6 +29,7 @@
     <ClInclude Include="SOURCE\Configs\UserDefined.h" />
     <ClInclude Include="SOURCE\Includes.h" />
     <ClInclude Include="SOURCE\Modules\Data\Bitwise.h" />
+    <ClInclude Include="SOURCE\Modules\Data\DataIntegrity\BaseChecksum.h" />
     <ClInclude Include="SOURCE\Modules\Data\DataIntegrity\MD2-6.h" />
     <ClInclude Include="SOURCE\Modules\Data\Random.h" />
     <ClInclude Include="SOURCE\Modules\MachineLearning\MachineLearning.h" />
