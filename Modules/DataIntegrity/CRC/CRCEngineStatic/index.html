@@ -938,7 +938,7 @@
 <h2 id="crcenginestatic">CRCEngineStatic<a class="headerlink" href="#crcenginestatic" title="Permanent link">&para;</a></h2>
 <p>CRCEngineStatic is a class that's able to define any CRC in compile time as long as the parameters are defined.</p>
 <h2 id="template-parameters">Template Parameters<a class="headerlink" href="#template-parameters" title="Permanent link">&para;</a></h2>
-<p><code>typename Type, Type Polynomial, bool ReflectIn=false, bool ReflectOut=false, Type XORIn=0, Type XOROut=0, size_t Width=SIZEOF_BITS(Type), size_t TableLen=256</code></p>
+<p><code>typename Type, Type Polynomial, bool ReflectIn=false, bool ReflectOut=false, Type XORIn=0, Type XOROut=0, umax Width=SIZEOF_BITS(Type), umax TableLen=256</code></p>
 <h4 id="type">Type<a class="headerlink" href="#type" title="Permanent link">&para;</a></h4>
 <p><code>Type</code> defines what type the CRCEngineStatic will use for the CRC, lookup table, mask, and others. This can be any type as long as it supports all math operators(including bitwise operators) and fits <code>Width</code> amount of bits.</p>
 <h4 id="polynomial">Polynomial<a class="headerlink" href="#polynomial" title="Permanent link">&para;</a></h4>
@@ -984,7 +984,7 @@ Gets the lookup table pointer.</p>
 <hr />
 <h3 id="updatecrc">UpdateCRC<a class="headerlink" href="#updatecrc" title="Permanent link">&para;</a></h3>
 <p><div class="language-c++ highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">CRCEngineStatic</span><span class="o">&amp;</span><span class="w"> </span><span class="n">UpdateCRC</span><span class="p">(</span><span class="n">Type</span><span class="w"> </span><span class="n">Data</span><span class="p">)</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">CRCEngineStatic</span><span class="o">&amp;</span><span class="w"> </span><span class="n">UpdateCRC</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">BufferType</span><span class="o">*</span><span class="w"> </span><span class="n">Buffer</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">Size</span><span class="p">)</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">CRCEngineStatic</span><span class="o">&amp;</span><span class="w"> </span><span class="n">UpdateCRC</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">BufferType</span><span class="o">*</span><span class="w"> </span><span class="n">Buffer</span><span class="p">,</span><span class="w"> </span><span class="n">umax</span><span class="w"> </span><span class="n">Size</span><span class="p">)</span>
 </span></code></pre></div>
 Updates the CRC checksum with <code>Data</code> or <code>Buffer</code>.<br>
  - <code>Data</code> Integer value that will be added to the CRC.<br></p>
