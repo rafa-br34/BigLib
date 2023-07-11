@@ -14,9 +14,9 @@ namespace BigLib {
 				const Type XORIn=0,
 				const Type XOROut=0,
 				
-				const size_t Width=SIZEOF_BITS(Type),
+				const umax Width=SIZEOF_BITS(Type),
 			
-				const size_t TableLen=256
+				const umax TableLen=256
 			>
 			class CRCEngineStatic {
 			private:
@@ -32,14 +32,14 @@ namespace BigLib {
 					else
 						Poly = Polynomial;
 
-					for (size_t I = 0; I < TableLen; I++) {
+					for (umax I = 0; I < TableLen; I++) {
 						// Only mirror the first 8 bits, otherwise the left shift will remove the bits.
 						Type Remainder = ReflectIn ? Bitwise::BinaryReflect<Type, 8>((Type)I) : (Type)I;
 
 						if CONST_EXPRESSION(Width > 8)
 							Remainder <<= (Width - 8);
 
-						for (size_t B = 0; B < 8; B++)
+						for (umax B = 0; B < 8; B++)
 							Remainder = (Remainder & MaxBitMask) ? ((Remainder << 1) ^ Poly) : (Remainder << 1);
 							
 						// Reflecting the table value will have the same effect of ReflectIn on the output.
@@ -66,12 +66,12 @@ namespace BigLib {
 			public:
 				CRCEngineStatic() {
 					this->p_GenerateLookupTable();
-					this->ResetCRC();
+					this->Reset();
 				}
 
 				Type CRC;
 
-				FORCE_INLINE CRCEngineStatic& ResetCRC(Type Initial=Type(0)) {
+				FORCE_INLINE CRCEngineStatic& Reset(Type Initial=Type(0)) {
 					if CONST_EXPRESSION(ReflectIn)
 						this->CRC = Bitwise::BinaryReflect<Type, Width>(Initial ^ XORIn);
 					else
@@ -83,7 +83,7 @@ namespace BigLib {
 					return *this;
 				}
 
-				FORCE_INLINE Type GetCRC() {
+				FORCE_INLINE Type Get() {
 					Type CRCOut = this->CRC;
 
 					if CONST_EXPRESSION(Width < 8 && !ReflectIn)
@@ -101,7 +101,7 @@ namespace BigLib {
 					return (CONST Type*)&this->LookupTable;
 				}
 
-				FORCE_INLINE CRCEngineStatic& UpdateCRC(Type Data) {
+				FORCE_INLINE CRCEngineStatic& Update(Type Data) {
 					// p_InversedUpdateCRC Needs To Be Used In Case The Table Is Reflected To Fully Emulate ReflectIn
 					if CONST_EXPRESSION(ReflectIn)
 						p_InversedUpdateCRC(Data);
@@ -112,9 +112,9 @@ namespace BigLib {
 				}
 
 				template<typename BufferType>
-				INLINE CRCEngineStatic& UpdateCRC(CONST BufferType* Buffer, size_t Size) {
-					for (size_t i = 0; i < Size; i++)
-						this->UpdateCRC((Type)Buffer[i]);
+				INLINE CRCEngineStatic& Update(CONST BufferType* Buffer, umax Size) {
+					for (umax i = 0; i < Size; i++)
+						this->Update((Type)Buffer[i]);
 					return *this;
 				}
 			};

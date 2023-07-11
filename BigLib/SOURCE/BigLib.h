@@ -19,4 +19,4 @@
 
 // DataIntegrity
 #include "Modules/Data/DataIntegrity/CRCs.h"
-#include "Modules/Data/DataIntegrity/MD2-6.h"
+#include "Modules/Data/DataIntegrity/MessageDigest.h"

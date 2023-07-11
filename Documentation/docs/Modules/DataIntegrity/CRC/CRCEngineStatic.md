@@ -5,7 +5,7 @@ CRCEngineStatic is a class that's able to define any CRC in compile time as long
 
 ## Template Parameters
 
-`typename Type, Type Polynomial, bool ReflectIn=false, bool ReflectOut=false, Type XORIn=0, Type XOROut=0, size_t Width=SIZEOF_BITS(Type), size_t TableLen=256`
+`typename Type, Type Polynomial, bool ReflectIn=false, bool ReflectOut=false, Type XORIn=0, Type XOROut=0, umax Width=SIZEOF_BITS(Type), umax TableLen=256`
 
 ####  Type
 
@@ -75,7 +75,7 @@ The lookup table pointer.
 ### UpdateCRC
 ```c++
 CRCEngineStatic& UpdateCRC(Type Data)
-CRCEngineStatic& UpdateCRC(const BufferType* Buffer, size_t Size)
+CRCEngineStatic& UpdateCRC(const BufferType* Buffer, umax Size)
 ```
 Updates the CRC checksum with `Data` or `Buffer`.<br>
  - `Data` Integer value that will be added to the CRC.<br>

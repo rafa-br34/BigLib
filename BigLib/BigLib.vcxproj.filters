@@ -99,7 +99,7 @@
     <ClInclude Include="SOURCE\Modules\VMs\Modules\System300s\System300s.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\Modules\Data\DataIntegrity\MD2-6.h">
+    <ClInclude Include="SOURCE\Modules\Data\DataIntegrity\MessageDigest.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\Configs\UserDefined.h">
@@ -109,9 +109,6 @@
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\Modules\Types\BaseTypes.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
-    <ClInclude Include="SOURCE\Modules\Data\DataIntegrity\BaseChecksum.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
   </ItemGroup>

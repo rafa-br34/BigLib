@@ -6,7 +6,7 @@
 
 namespace BigLib {
 	namespace DataIntegrity {
-		namespace MD2_6 {
+		namespace MessageDigest {
 			class MD2 {
 			private:
 				uint8 p_Block48[48]{};
