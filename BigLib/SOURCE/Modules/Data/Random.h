@@ -323,7 +323,7 @@ namespace BigLib {
 		struct ACORN {
 			Type SV1[K + 1];
 			Type SV2[K + 1];
-			Type M = Math::Power<Type>(Type(2), Type(60.0) * S);
+			Type M = 1152921504606846976;//Math::Power<Type>(Type(2), Type(60.0));
 			bool Swap = false;
 
 			// Seed Needs To Be A Prime Number

@@ -1,4 +1,5 @@
 #pragma once
+#include "Configs.h"
 
 /*
 * Compiler Data Types:
@@ -26,8 +27,6 @@ CONST_EXPRESSION bool VIRTUALIZE_DT32 = DT_ILP64		|| DT_SILP64		|| !CHECKSIZE(in
 CONST_EXPRESSION bool VIRTUALIZE_DT64 = DT_LP32		|| DT_ILP32		|| !CHECKSIZE(void*, 64); // Defines If 64 Bit Datatypes Need To Be Virtualized
 #undef CHECKSIZE
 
-
-
 using int8 = signed char; // 8-Bit Signed Integer
 using int16 = short; // 16-Bit Signed Integer
 using int32 = int; // 32-Bit Signed Integer
@@ -53,3 +52,13 @@ STATIC_ASSERT(sizeof(uint32) == 4, FILELINE_SUFFIX("Invalid Size For uint32"));
 
 STATIC_ASSERT(sizeof(int64) == 8, FILELINE_SUFFIX("Invalid Size For int64"));
 STATIC_ASSERT(sizeof(uint64) == 8, FILELINE_SUFFIX("Invalid Size For uint64"));
+
+
+namespace BigLib {
+	using AllocateMethod = void* (*)(umax Size);
+	using DeallocateMethod = void (*)(void* Block);
+	extern AllocateMethod Allocate;
+	extern DeallocateMethod Free;
+}
+extern bool ENDIANNESS_LE;
+extern bool ENDIANNESS_BE;

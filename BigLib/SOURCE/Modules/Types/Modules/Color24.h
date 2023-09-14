@@ -5,14 +5,14 @@
 namespace BigLib {
 	namespace Types {
 		class Color24 {
-			uint8_t R, G, B;
+			uint8 R, G, B;
 
 			CONST_EXPRESSION INLINE Color24()
 				: R()
 				, G()
 				, B()
 			{};
-			CONST_EXPRESSION INLINE Color24(uint8_t R, uint8_t G, uint8_t B)
+			CONST_EXPRESSION INLINE Color24(uint8 R, uint8 G, uint8 B)
 				: R(R)
 				, G(G)
 				, B(B)
@@ -20,22 +20,22 @@ namespace BigLib {
 
 
 			CONST_EXPRESSION INLINE Color24& Blend(Color24& Target, double Power) {
-				this->R = (uint8_t)Math::Lerp<double>((double)this->R, (double)Target.R, Power);
-				this->G = (uint8_t)Math::Lerp<double>((double)this->G, (double)Target.G, Power);
-				this->B = (uint8_t)Math::Lerp<double>((double)this->B, (double)Target.B, Power);
+				this->R = (uint8)Math::Lerp<double>((double)this->R, (double)Target.R, Power);
+				this->G = (uint8)Math::Lerp<double>((double)this->G, (double)Target.G, Power);
+				this->B = (uint8)Math::Lerp<double>((double)this->B, (double)Target.B, Power);
 				return *this;
 			}
 			CONST_EXPRESSION INLINE Color24& Blend(Color24& Target, float Power) {
 				// Floats Will Be Faster Sometimes
-				this->R = (uint8_t)Math::Lerp<float>((float)this->R, (float)Target.R, Power);
-				this->G = (uint8_t)Math::Lerp<float>((float)this->G, (float)Target.G, Power);
-				this->B = (uint8_t)Math::Lerp<float>((float)this->B, (float)Target.B, Power);
+				this->R = (uint8)Math::Lerp<float>((float)this->R, (float)Target.R, Power);
+				this->G = (uint8)Math::Lerp<float>((float)this->G, (float)Target.G, Power);
+				this->B = (uint8)Math::Lerp<float>((float)this->B, (float)Target.B, Power);
 				return *this;
 			}
 
 
 			// RGB(Red, Green, Blue) Color (0-255)
-			CONST_EXPRESSION INLINE Color24& FromRGB(uint8_t Red, uint8_t Green, uint8_t Blue) {
+			CONST_EXPRESSION INLINE Color24& FromRGB(uint8 Red, uint8 Green, uint8 Blue) {
 				this->B = Red;
 				this->G = Green;
 				this->B = Blue;
@@ -43,16 +43,16 @@ namespace BigLib {
 			}
 			// RGB(Red, Green, Blue) Color (0.0-1.0)
 			CONST_EXPRESSION INLINE Color24& FromRGB(double Red, double Green, double Blue) {
-				this->R = (uint8_t)Math::Lerp<double>((double)this->R, 255.0, Red);
-				this->G = (uint8_t)Math::Lerp<double>((double)this->G, 255.0, Green);
-				this->B = (uint8_t)Math::Lerp<double>((double)this->B, 255.0, Blue);
+				this->R = (uint8)Math::Lerp<double>((double)this->R, 255.0, Red);
+				this->G = (uint8)Math::Lerp<double>((double)this->G, 255.0, Green);
+				this->B = (uint8)Math::Lerp<double>((double)this->B, 255.0, Blue);
 				return *this;
 			}
 			// RGB(Red, Green, Blue) Color (0.0-1.0)
 			CONST_EXPRESSION INLINE Color24& FromRGB(float Red, float Green, float Blue) {
-				this->R = (uint8_t)Math::Lerp<float>((float)this->R, 255.f, Red);
-				this->G = (uint8_t)Math::Lerp<float>((float)this->G, 255.f, Green);
-				this->B = (uint8_t)Math::Lerp<float>((float)this->B, 255.f, Blue);
+				this->R = (uint8)Math::Lerp<float>((float)this->R, 255.f, Red);
+				this->G = (uint8)Math::Lerp<float>((float)this->G, 255.f, Green);
+				this->B = (uint8)Math::Lerp<float>((float)this->B, 255.f, Blue);
 				return *this;
 			}
 
@@ -162,14 +162,14 @@ namespace BigLib {
 
 			// CMYK(Cyan, Magenta, Yellow, Key) Color (0.0-1.0)
 			CONST_EXPRESSION INLINE Color24& FromCMYK(double Cyan, double Magenta, double Yellow, double Key) {
-				this->R = (uint8_t)(255.0 * (1.0 - Cyan) * (1.0 - Key));
-				this->G = (uint8_t)(255.0 * (1.0 - Magenta) * (1.0 - Key));
-				this->B = (uint8_t)(255.0 * (1.0 - Yellow) * (1.0 - Key));
+				this->R = (uint8)(255.0 * (1.0 - Cyan) * (1.0 - Key));
+				this->G = (uint8)(255.0 * (1.0 - Magenta) * (1.0 - Key));
+				this->B = (uint8)(255.0 * (1.0 - Yellow) * (1.0 - Key));
 				return *this;
 			}
 			// CMYK(Cyan, Magenta, Yellow, Key) Color (0-255)
-			CONST_EXPRESSION INLINE Color24& FromCMYK(uint8_t Cyan, uint8_t Magenta, uint8_t Yellow, uint8_t Key) {
-				const uint8_t
+			CONST_EXPRESSION INLINE Color24& FromCMYK(uint8 Cyan, uint8 Magenta, uint8 Yellow, uint8 Key) {
+				const uint8
 					R = 255 - Cyan,
 					G = 255 - Magenta,
 					B = 255 - Yellow;

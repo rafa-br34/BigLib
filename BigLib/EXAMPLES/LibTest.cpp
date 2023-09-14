@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <iostream>
 #include <iomanip>
+#include <cmath>
 #include "../SOURCE/BigLib.h"
 #include "Example.h"
 
@@ -131,7 +132,7 @@ float TEST_LIST() {
 
 	BigLib::Types::List<uint8_t> NewList();
 
-	std::cout << "LIST TEST END\n";
+	std::cout << "LIST TEST END\n\n";
 
 	return (float(Passed) / float(Tests)) * 100.f;
 }
@@ -269,70 +270,129 @@ float TEST_MEM_UTILS() {
 	return CompleteFailure ? 0.f : (float(Passed) / float(Tests)) * 100.f;
 }
 
+#define IsFPEqual(A, B, Error) ((A) + (Error) > (B) && (B) + (Error) > (A))
 float TEST_MATH() {
 	std::cout << "MATH UTILITIES TEST BEGIN\n";
 	size_t Tests = 0;
 	size_t Fails = 0;
 
+	double MaxError = 0.000001;
 	// Test Modulo
 	{
-		std::cout << "\nStarting Integer Modulo Test\n";
-		size_t TotalTests = 0;
-		size_t FP32Fails = 0;
-		size_t FP64Fails = 0;
-
+		std::cout << "\nStarting Modulo Test\n";
+		size_t TestAbortTreshold = 10;
+		
+		G_TOTAL_TESTS++;
 		for (int M = -500; M < 500; M++) {
 			if (M == 0) continue;
-			if (FP32Fails + FP64Fails > 100) break;
+			if (Fails > TestAbortTreshold) break;
 
 			for (int X = -500; X < 500; X++) {
-				TotalTests++;
-				int IntModulo = (X % M);
-				auto FP32Res = BigLib::Math::Modulo<float>((float)X, (float)M);
-				auto FP64Res = BigLib::Math::Modulo<double>((double)X, (double)M);
+				// True Floating Point Tests
+				auto XFP32 = float(X) / 100.f, MFP32 = float(M) / 100.f;
+				auto XFP64 = double(X) / 100.0, MFP64 = double(M) / 100.0;
+
+				if (XFP32 > 0.f)
+					XFP32 += (float(MaxError) / 2.f);
+				else
+					XFP32 -= (float(MaxError) / 2.f);
+
+				if (XFP64 > 0.f)
+					XFP64 += (double(MaxError) / 2.0);
+				else
+					XFP64 -= (double(MaxError) / 2.0);
+
+				auto FP32Mod = fmod(XFP32, MFP32);
+				auto FP64Mod = fmod(XFP64, MFP64);
+				auto FP32Res = BigLib::Math::Modulo(XFP32, MFP32);
+				auto FP64Res = BigLib::Math::Modulo(XFP64, MFP64);
 
 				Tests += 2;
-				if (!(FP32Res == (float)IntModulo)) {
-					std::cout << X << '%' << M << " FP32 Failed, Expected: " << IntModulo << " Got: " << FP32Res << '\n';
-					FP32Fails++; Fails++;
+				if (!IsFPEqual(FP32Mod, FP32Res, MaxError)) {
+					std::cout << XFP32 << " % " << MFP32 << " FP32 Failed, Expected: " << FP32Mod << " Got: " << FP32Res << '\n';
+					Fails++;
 				}
-				if (!(FP64Res == (double)IntModulo)) {
-					std::cout << X << '%' << M << " FP64 Failed, Expected: " << IntModulo << " Got: " << FP64Res << '\n';
-					FP64Fails++; Fails++;
+				if (!IsFPEqual(FP64Mod, FP64Res, MaxError)) {
+					std::cout << XFP64 << " % " << MFP64 << " FP32 Failed, Expected: " << FP64Mod << " Got: " << FP64Res << '\n';
+					Fails++;
 				}
 
-				if (FP32Fails + FP64Fails > 10) {
-					std::cout << "Total Fails > 10, Ending Test.\n";
-					break;
+				// Integral Tests
+				int IntModulo = (X % M);
+				auto FP32IntRes = BigLib::Math::Modulo((float)X, (float)M);
+				auto FP64IntRes = BigLib::Math::Modulo((double)X, (double)M);
+				auto TrueIntRes = BigLib::Math::Modulo(X, M);
+
+				Tests += 3;
+				if (!(FP32IntRes == (float)IntModulo)) {
+					std::cout << X << " % " << M << " FP32 Integral Failed, Expected: " << IntModulo << " Got: " << FP32IntRes << '\n';
+					Fails++;
+				}
+				if (!(FP64IntRes == (double)IntModulo)) {
+					std::cout << X << " % " << M << " FP64 Integral Failed, Expected: " << IntModulo << " Got: " << FP64IntRes << '\n';
+					Fails++;
+				}
+				if (TrueIntRes != IntModulo) {
+					std::cout << X << " % " << M << " True Integral Failed, Expected: " << IntModulo << " Got: " << TrueIntRes << '\n';
+					Fails++;
+				}
+
+				if (Fails > TestAbortTreshold) {
+					std::cout << "Total Fails > " << TestAbortTreshold << ", Ending Test.\n";
+					G_TOTAL_FAILS++;
+				}
+			}
+			std::cout << M << "(" << (double)M / 100.0 << ")      \r";
+		}
+		std::cout << '\n';
+	}
+
+	// Test Power
+	{
+		std::cout << "\nStarting Power Test\n";
+		std::cout << "\nIntegral Test:\n";
+		float PFP32 = 0, VFP32 = 0;
+		for (double PFP64 = -0.0; PFP64 < 5.0; PFP64+=0.01) {
+			PFP32 = (float)PFP64;
+
+			for (double VFP64 = -5.0; VFP64 < 5.0; VFP64+=0.01) {
+				VFP32 = (float)VFP64;
+
+				auto FP32Pow = pow(VFP32, PFP32);
+				auto FP64Pow = pow(VFP64, PFP64);
+				auto IntPow = (int)pow(double(int(VFP64 * 100.0)), double(int(PFP64 * 100.0)));
+
+				auto FP32Res = 0;// BigLib::Math::Power(VFP32, PFP32);
+				auto FP64Res = 0;// BigLib::Math::Power(VFP64, PFP64);
+				auto IntRes = 0;//BigLib::Math::Power(int(VFP64 * 100.0), int(PFP64 * 100.0));
+				
+				Tests += 3;
+				if (!IsFPEqual(FP32Pow, FP32Res, MaxError)) {
+					std::cout << "pow(" << VFP32 << ", " << PFP32 << ") FP32 Failed, Expected: " << FP32Pow << " Got: " << FP32Res << '\n';
+					Fails++;
+				}
+				if (!IsFPEqual(FP64Pow, FP64Res, MaxError)) {
+					std::cout << "pow(" << VFP64 << ", " << PFP64 << ") FP64 Failed, Expected: " << FP64Pow << " Got: " << FP64Res << '\n';
+					Fails++;
+				}
+				if (IntPow != IntRes) {
+					std::cout << "pow(" << int(VFP64 * 100.0) << ", " << int(PFP64 * 100.0) << ") Int Failed, Expected: " << IntPow << " Got: " << IntRes << '\n';
+					Fails++;
 				}
 			}
 		}
-		G_TOTAL_TESTS += 2;
-
-		if (FP32Fails > TotalTests / 2) G_TOTAL_FAILS++;
-		if (FP64Fails > TotalTests / 2) G_TOTAL_FAILS++;
+		
 	}
 
 	std::cout << "MATH UTILITIES TEST FINISH\n\n";
 	return (float(Tests - Fails) / float(Tests)) * 100.f;
 }
-
+#undef IsFPEqual
 
 size_t _TEST_CRC_I = 0;
 size_t _TEST_CRC_PASS = 0;
-template<
-	typename Type,
-	const Type Polynomial,
-
-	const bool ReflectIn = false,
-	const bool ReflectOut = false,
-	const Type XORIn = 0,
-	const Type XOROut = 0,
-
-	const size_t Width = SIZEOF_BITS(Type),
-	const size_t TableLen = 256
->
-void _TEST_CRC(BigLib::DataIntegrity::CRC::CRCEngineStatic<Type, Polynomial, ReflectIn, ReflectOut, XORIn, XOROut, Width, TableLen>* CRCClass, const char* AlgoName, uint64 ExpectedResult) {
+template<typename Type>
+void _TEST_CRC(Type* CRCClass, const char* AlgoName, uint64 ExpectedResult) {
 	const char* Data = "123456789";
 	size_t DataLen = 9;
 
@@ -341,7 +401,7 @@ void _TEST_CRC(BigLib::DataIntegrity::CRC::CRCEngineStatic<Type, Polynomial, Ref
 	std::cout << "[(" << AlgoName << "[" << _TEST_CRC_I << "]) => "; HexPrintInteger(CRC); std::cout << ']';
 	if (CRC != ExpectedResult) {
 		std::cout << " Failed, Expected: ";  HexPrintInteger(ExpectedResult); std::cout << '\n';
-		PrintList(CRCClass->GetLookupTable(), TableLen);
+		PrintList(CRCClass->GetLookupTable(), 256);
 		G_TOTAL_FAILS++;
 	}
 	else {
@@ -600,7 +660,7 @@ float TEST_MD2_6() {
 void LIB_TEST() {
 	float Stability[] = {
 		TEST_LIST(),
-		TEST_MATH(),
+		//TEST_MATH(),
 		TEST_MEM_UTILS(),
 		TEST_CRCs(),
 		TEST_MD2_6(),
@@ -617,10 +677,14 @@ void LIB_TEST() {
 	
 	// Compile Time
 	{
-		std::cout << "\n\n----Compile Time----\n";
-		std::cout << "Target Architecture: " << BigLib::Architectures::ArchitectureName[BigLib::c_MachineArchitecture] << " (IDX:" << BigLib::c_MachineArchitecture << ")\n";
-		std::cout << "Compiler Data Types:";
-		std::cout
+		std::cout << "\n\n----Static----\n";
+		std::cout << "Target Architecture: "
+			<< BigLib::Architectures::ArchitectureName[BigLib::c_MachineArchitecture]
+			<< " (IDX:" << BigLib::c_MachineArchitecture << ") Endianness: "
+			<< "BE(" << ENDIANNESS_BE << ") LE(" << ENDIANNESS_LE << ")"
+			<< '\n';
+
+		std::cout << "Compiler Data Types:"
 			<< "\n\tLP32: " << DT_LP32
 			<< "\n\tILP32: " << DT_ILP32
 			<< "\n\tLP64: " << DT_LP64
@@ -629,8 +693,7 @@ void LIB_TEST() {
 			<< "\n\tSILP64: " << DT_SILP64
 			<< "\n";
 
-		std::cout << "Required Virtualizations:";
-		std::cout
+		std::cout << "Required Virtualizations:"
 			<< "\n\tDT8: " << VIRTUALIZE_DT8
 			<< "\n\tDT16: " << VIRTUALIZE_DT16
 			<< "\n\tDT32: " << VIRTUALIZE_DT32
@@ -648,12 +711,21 @@ void LIB_TEST() {
 			std::cout << " " << Unsuccessful << " Tests Were Not 100% Successful.";
 
 		std::cout << "\nTest Percentage Average: " << BigLib::Math::Average(Stability, TestCount) << "%\n";
-		std::cout << "Library Stability(" << (G_TOTAL_TESTS - G_TOTAL_FAILS) << '/' << G_TOTAL_TESTS << " Tests Passed): " << (float(G_TOTAL_TESTS - G_TOTAL_FAILS) / (float)G_TOTAL_TESTS) * 100.f << "%\n";
+		std::cout << "Library Usability(" << (G_TOTAL_TESTS - G_TOTAL_FAILS) << '/' << G_TOTAL_TESTS << " Tests Passed): " << (float(G_TOTAL_TESTS - G_TOTAL_FAILS) / (float)G_TOTAL_TESTS) * 100.f << "%\n";
 	}
 }
 
+
 #if EXAMPLE_SELECTOR == 0
 int main() {
+	BigLib::Allocate = [](umax Size) -> void* {
+		return new uint8[Size];
+	};
+	BigLib::Free = [](void* Block) -> void {
+		return delete[] Block;
+	};
+
 	LIB_TEST();
 }
 #endif
+

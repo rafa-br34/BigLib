@@ -47,7 +47,7 @@
 #endif
 
 
-#define BIGGEST_DATATYPE_LITERAL UI64
+#define BIGGEST_LITERAL UI64
 
 /*
 * 

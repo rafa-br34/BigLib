@@ -4,7 +4,6 @@
 #define INDEX_2D_FROM_XY(X, Y, Width) ((Width) * (Y) + (X))
 #define INDEX_3D_FROM_XYZ(X, Y, Z, Width, Height) ((X) + (Height) * ((Y) + (Width) * (Z)))
 
-
 namespace BigLib {
 	namespace Math {
 		CONST_EXPRESSION INLINE auto CONSTANTS_PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706;
@@ -25,12 +24,9 @@ namespace BigLib {
 			return Math::ImpreciseLerp<Value>(A, B, T);
 		}
 
-		template<typename Value, typename ModuloFloorCastType=int>
+		template<typename Value, typename FloorCastType=int>
 		CONST_EXPRESSION Value Modulo(CONST Value X, CONST Value Y) {
-			if (Value R = X / Y; (R - Value(ModuloFloorCastType(R))) != Value(0))
-				return X - (Y * Value(ModuloFloorCastType(R)));
-
-			return Value(0);
+			return X - (Y * Value(FloorCastType(X / Y)));
 		}
 
 		template<typename Value>
@@ -42,29 +38,25 @@ namespace BigLib {
 		CONST_EXPRESSION Value Max(CONST Value A, CONST Value B) {
 			return A > B ? A : B;
 		}
-
-		template<typename Value, typename IterType=umax>
-		CONST_EXPRESSION Value IntegerPower(CONST Value X, CONST IterType Y) {
-			Value Result = X;
-			for (IterType i = 0; i < Y - IterType(1); i++)
-				Result *= X;
-			return Result;
-		}
-
-		template<typename Value>
-		CONST_EXPRESSION Value Power(CONST Value X, CONST Value Y) {
-			Value T;
-			if (Y == Value(0))
+		
+		template<typename Value, typename NValue, typename FloorCastType=int>
+		CONST_EXPRESSION Value Power(Value X, NValue N) {
+			if (N == NValue(0))
 				return Value(1);
-			T = Power<Value>(X, Y / Value(2));
-			if (Y % Value(2) == Value(0))
-				return T * T;
-			else {
-				if (Y > Value(0))
-					return X * T * T;
-				else
-					return (T * T) / X;
+
+			if (N < NValue(0)) {
+				X = Value(1) / X;
+				N = -N;
 			}
+			
+			Value Y = 1;
+			while (N > NValue(1)) {
+				if (Modulo(N, NValue(2)) != 0)
+					Y *= X;
+				X *= X;
+				N = NValue(FloorCastType(N / NValue(2)));
+			}
+			return X * Y;
 		}
 
 		template<typename Value>

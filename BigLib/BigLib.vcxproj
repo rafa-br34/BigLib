@@ -25,16 +25,19 @@
     <ClInclude Include="SOURCE\Configs\Macros.h" />
     <ClInclude Include="SOURCE\Configs\Preferences.h" />
     <ClInclude Include="SOURCE\Configs\CompilerSpecific.h" />
-    <ClInclude Include="SOURCE\Configs\Types.h" />
     <ClInclude Include="SOURCE\Configs\UserDefined.h" />
     <ClInclude Include="SOURCE\Includes.h" />
     <ClInclude Include="SOURCE\Modules\Data\Bitwise.h" />
     <ClInclude Include="SOURCE\Modules\Data\DataIntegrity\MessageDigest.h" />
+    <ClInclude Include="SOURCE\Modules\Data\DataIntegrity\SimpleChecksums.h" />
     <ClInclude Include="SOURCE\Modules\Data\Random.h" />
     <ClInclude Include="SOURCE\Modules\MachineLearning\MachineLearning.h" />
     <ClInclude Include="SOURCE\Modules\MachineLearning\NeuralNetwork.h" />
     <ClInclude Include="SOURCE\Modules\Data\BaseString.h" />
-    <ClInclude Include="SOURCE\Modules\Types\BaseTypes.h" />
+    <ClInclude Include="SOURCE\Base.h" />
+    <ClInclude Include="SOURCE\Modules\Protocols\Network\ICMP.h" />
+    <ClInclude Include="SOURCE\Modules\Protocols\Network\IP.h" />
+    <ClInclude Include="SOURCE\Modules\Types\Modules\MemoryBuffer.h" />
     <ClInclude Include="SOURCE\Modules\VMs\Code.h" />
     <ClInclude Include="SOURCE\Modules\Logging\Console.h" />
     <ClInclude Include="SOURCE\Modules\Data\Math.h" />
@@ -45,7 +48,7 @@
     <ClInclude Include="SOURCE\Modules\Data\DataIntegrity\CRCs.h" />
     <ClInclude Include="SOURCE\Modules\Types\Modules\Color24.h" />
     <ClInclude Include="SOURCE\Modules\Types\Modules\String.h" />
-    <ClInclude Include="SOURCE\Modules\Types\Modules\List.h" />
+    <ClInclude Include="SOURCE\Modules\Types\Modules\Lists.h" />
     <ClInclude Include="SOURCE\Modules\Types\Modules\Vector2.h" />
     <ClInclude Include="SOURCE\Modules\Types\Modules\Vector3.h" />
     <ClInclude Include="SOURCE\Modules\Types\Types.h" />
@@ -54,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EXAMPLES\LibTest.cpp" />
+    <ClCompile Include="SOURCE\Base.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

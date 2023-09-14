@@ -1,9 +1,8 @@
 #pragma once
 #include "Configs.h"
-
+#include "Base.h"
 
 // Types
-#include "Modules/Types/BaseTypes.h"
 #include "Modules/Types/Types.h"
 
 // Memory
@@ -20,3 +19,8 @@
 // DataIntegrity
 #include "Modules/Data/DataIntegrity/CRCs.h"
 #include "Modules/Data/DataIntegrity/MessageDigest.h"
+#include "Modules/Data/DataIntegrity/SimpleChecksums.h"
+
+// Protocols
+#include "Modules/Protocols/Network/ICMP.h"
+#include "Modules/Protocols/Network/IP.h"

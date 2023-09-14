@@ -33,7 +33,7 @@
     <ClInclude Include="SOURCE\Modules\Types\Modules\Color24.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\Modules\Types\Modules\List.h">
+    <ClInclude Include="SOURCE\Modules\Types\Modules\Lists.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\Modules\Types\Modules\Vector2.h">
@@ -105,15 +105,27 @@
     <ClInclude Include="SOURCE\Configs\UserDefined.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\Configs\Types.h">
+    <ClInclude Include="SOURCE\Base.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\Modules\Types\BaseTypes.h">
+    <ClInclude Include="SOURCE\Modules\Types\Modules\MemoryBuffer.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Modules\Protocols\Network\ICMP.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Modules\Data\DataIntegrity\SimpleChecksums.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Modules\Protocols\Network\IP.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EXAMPLES\LibTest.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\Base.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
   </ItemGroup>

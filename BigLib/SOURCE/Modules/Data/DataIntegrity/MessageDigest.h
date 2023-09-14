@@ -115,7 +115,7 @@ namespace BigLib {
 			class MD4 {
 			private:
 				uint8 p_Buffer[64]{};
-				uint32 p_Size[2];
+				umax p_Size[2];
 
 				void p_TransformBlock(uint32* State, uint32 CONST* X) CONST {
 					uint32 A = State[0], B = State[1], C = State[2], D = State[3];
@@ -196,8 +196,8 @@ namespace BigLib {
 
 					uint8 Bits[8];
 
-					((uint32*)Bits)[0] = this->p_Size[0];
-					((uint32*)Bits)[1] = this->p_Size[1];
+					((uint32*)Bits)[0] = (uint32)this->p_Size[0];
+					((uint32*)Bits)[1] = (uint32)this->p_Size[1];
 
 					uint32 Index = ((this->p_Size[0] >> 3) & 0b00111111);
 					uint32 PadLen = (Index < 56) ? (56 - Index) : (120 - Index);

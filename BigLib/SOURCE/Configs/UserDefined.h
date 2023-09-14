@@ -6,8 +6,8 @@
 
 /* IO */
 // Replace These To Custom Allocate/Deallocate Methods
-#define ALLOCATE(Type, Amount) new Type[Amount]
-#define FREE(Pointer) delete[] Pointer
+#define ALLOCATE(Type, Amount) (Type*)BigLib::Allocate(sizeof(Type) * (Amount)) // new Type[Amount]
+#define FREE(Pointer) BigLib::Free((void*)Pointer) // delete[] Pointer
 
 #define BIGGEST_DATATYPE long long
 
