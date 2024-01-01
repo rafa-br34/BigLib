@@ -106,7 +106,7 @@ namespace BigLib::Protocols::Network {
 			auto Checksum = DataIntegrity::SimpleChecksums::InternetChecksum();
 
 			Checksum.Update(Packet, 2); // TYPE & CODE values
-			Checksum.Update<uint16>(0x0000); // CHECKSUM value (always 0x0000 since we're recalculating) (do we even need this?)
+			Checksum.Update<uint16>(0x0000); // CHECKSUM value (always 0x0000 since we're recalculating) (TODO: do we even need this?)
 			Checksum.Update(Packet + 4, PacketSize - 4); // SEQUENCE, IDENTIFIER, and the MESSAGE
 
 			if (Bitwise::InterpretAsBigEndian((uint16)Checksum.Finalize()) != READ_AS(uint16, Packet)[1])
@@ -119,7 +119,7 @@ namespace BigLib::Protocols::Network {
 		// Assembles a ECHO_REQUEST/ECHO_REPLY packet
 		// Requires a buffer with at least 8 bytes
 		// MessageSize can be 0 up to 0xFFFF - 28(65507) bytes
-		void AssembleEchoPacket(uint16 Identifier, uint16 Sequence, CONST uint8* Message, uint16 MessageSize, uint8* Buffer, ICMPv4MessageTypes Type = ICMPv4MessageTypes::ECHO_REQUEST) {
+		void AssembleEchoPacket(uint8* Buffer, uint16 Identifier, uint16 Sequence, CONST uint8* Message, uint16 MessageSize, ICMPv4MessageTypes Type = ICMPv4MessageTypes::ECHO_REQUEST) {
 			if (Buffer == nullptr) return;
 
 			ICMP::WriteHeader(Buffer, Type); // HEADER(32)
@@ -133,7 +133,7 @@ namespace BigLib::Protocols::Network {
 
 		// Assembles a TIMESTAMP_REQUEST/TIMESTAMP_REPLY packet
 		// Requires a buffer with at least 20 bytes
-		void AssembleTimestampPacket(uint16 Identifier, uint16 Sequence, uint32 OriginateTimestamp, uint32 ReceiveTimestamp, uint32 TransmitTimestamp, uint8* Buffer, ICMPv4MessageTypes Type = ICMPv4MessageTypes::TIMESTAMP_REQUEST) {
+		void AssembleTimestampPacket(uint8* Buffer, uint16 Identifier, uint16 Sequence, uint32 OriginateTimestamp, uint32 ReceiveTimestamp, uint32 TransmitTimestamp, ICMPv4MessageTypes Type = ICMPv4MessageTypes::TIMESTAMP_REQUEST) {
 			if (Buffer == nullptr) return;
 
 			ICMP::WriteHeader(Buffer, Type); // HEADER(32)
@@ -149,7 +149,7 @@ namespace BigLib::Protocols::Network {
 
 		// Assembles a INFORMATION_REQUEST/INFORMATION_REPLY packet
 		// Requires a buffer with at least 8 bytes
-		void AssembleInformationPacket(uint16 Identifier, uint16 Sequence, uint8* Buffer, ICMPv4MessageTypes Type = ICMPv4MessageTypes::INFORMATION_REQUEST) {
+		void AssembleInformationPacket(uint8* Buffer, uint16 Identifier, uint16 Sequence, ICMPv4MessageTypes Type = ICMPv4MessageTypes::INFORMATION_REQUEST) {
 			if (Buffer == nullptr) return;
 
 			ICMP::WriteHeader(Buffer, Type); // HEADER(32)
@@ -162,7 +162,7 @@ namespace BigLib::Protocols::Network {
 
 		// Assembles a DESTINATION_UNREACHABLE packet
 		// Requires a buffer with at least 12 bytes
-		void AssembleDestinationUnreachablePacket(uint8 Code, CONST uint8* Message, uint16 MessageSize, uint8* Buffer) {
+		void AssembleDestinationUnreachablePacket(uint8* Buffer, uint8 Code, CONST uint8* Message, uint16 MessageSize) {
 			if (Buffer == nullptr) return;
 
 			ICMP::WriteHeader(Buffer, ICMPv4MessageTypes::DESTINATION_UNREACHABLE, Code); // HEADER(32)
@@ -177,7 +177,7 @@ namespace BigLib::Protocols::Network {
 
 		class EchoPacket {
 		private:
-			Memory::MemoryBuffer p_Buffer;
+			Memory::MemoryBuffer<> p_Buffer;
 		public:
 			uint16 Identifier = 0; // The identifier value. Usually used to detect packet order.
 			uint16 Sequence = 0; // The sequence value. Usually used to mark the sequence.
@@ -191,7 +191,7 @@ namespace BigLib::Protocols::Network {
 
 			CONST uint8* AssemblePacket(ICMPv4MessageTypes Type = ICMPv4MessageTypes::ECHO_REQUEST) {
 				this->p_Buffer.Allocate(8 + this->MessageSize);
-				AssembleEchoPacket(this->Identifier, this->Sequence, this->Message, this->MessageSize, this->p_Buffer.Buffer, Type);
+				AssembleEchoPacket(this->p_Buffer.Buffer, this->Identifier, this->Sequence, this->Message, this->MessageSize, Type);
 				return this->p_Buffer.Buffer;
 			}
 
@@ -233,7 +233,7 @@ namespace BigLib::Protocols::Network {
 			TimestampPacket() = default;
 
 			CONST uint8* AssemblePacket(ICMPv4MessageTypes Type = ICMPv4MessageTypes::TIMESTAMP_REQUEST) {
-				AssembleTimestampPacket(this->Identifier, this->Sequence, this->OriginateTimestamp, this->ReceiveTimestamp, this->TransmitTimestamp, this->p_Buffer, Type);
+				AssembleTimestampPacket(this->p_Buffer, this->Identifier, this->Sequence, this->OriginateTimestamp, this->ReceiveTimestamp, this->TransmitTimestamp, Type);
 				return this->p_Buffer;
 			}
 
@@ -269,7 +269,7 @@ namespace BigLib::Protocols::Network {
 			InformationPacket() = default;
 
 			CONST uint8* AssemblePacket(ICMPv4MessageTypes Type = ICMPv4MessageTypes::INFORMATION_REQUEST) {
-				AssembleInformationPacket(this->Identifier, this->Sequence, this->p_Buffer, Type);
+				AssembleInformationPacket(this->p_Buffer, this->Identifier, this->Sequence, Type);
 				return this->p_Buffer;
 			}
 
@@ -292,7 +292,7 @@ namespace BigLib::Protocols::Network {
 		// TODO: Properly test
 		class DestinationUnreachablePacket {
 		private:
-			Memory::MemoryBuffer p_Buffer;
+			Memory::MemoryBuffer<> p_Buffer;
 		public:
 			uint8 Code = 0;
 
@@ -305,7 +305,7 @@ namespace BigLib::Protocols::Network {
 
 			CONST uint8* AssemblePacket() {
 				this->p_Buffer.Allocate(8 + this->MessageSize);
-				AssembleDestinationUnreachablePacket(this->Code, this->Message, this->MessageSize, this->p_Buffer.Buffer);
+				AssembleDestinationUnreachablePacket(this->p_Buffer.Buffer, this->Code, this->Message, this->MessageSize);
 				return this->p_Buffer.Buffer;
 			}
 
@@ -412,7 +412,7 @@ namespace BigLib::Protocols::Network {
 
 		class EchoPacket {
 		private:
-			Memory::MemoryBuffer p_Buffer;
+			Memory::MemoryBuffer<> p_Buffer;
 		public:
 			uint16 Identifier = 0; // The identifier value. Usually used to detect packet order.
 			uint16 Sequence = 0; // The sequence value. Usually used to mark the sequence.

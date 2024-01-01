@@ -25,7 +25,7 @@
 
 // GCC
 #if __GNUC__
-#define STATIC_ASSERT(Value, Message) Static_assert(Value, Message)
+#define STATIC_ASSERT(Value, Message) static_assert(Value, Message)
 #define CONST_EXPRESSION constexpr
 #define FORCE_INLINE __attribute__((always_inline)) inline
 #define NO_INLINE __attribute__((noinline))

@@ -318,8 +318,8 @@ namespace BigLib {
 		// Template For PCG32Fast
 		typedef PCG32Fast<6364136223846793005u, 1442695040888963407u> T_PCG32Fast;
 
-
-		template<typename Type=long double, const umax K=150, const long double S=2.0L>
+		/* TODO: Fix........
+		template<typename Type=long double, const umax K=150, const double S=2.0>
 		struct ACORN {
 			Type SV1[K + 1];
 			Type SV2[K + 1];
@@ -354,7 +354,7 @@ namespace BigLib {
 				return S1[K - 1] / M;
 			}
 		};
-
+		*/
 
 
 		template<

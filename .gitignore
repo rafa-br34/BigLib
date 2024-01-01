@@ -1,4 +1,9 @@
+# Temp folders
+build/
 .vs/
-Binaries/
-BigLib/REMOVED FILES/
+
+# Eventually I'll remove this folder as I shouldn't even keep it here but whatever.
+REMOVED_FILES/
+
+# Fix for the workflow
 Documentation/site/

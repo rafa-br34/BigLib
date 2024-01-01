@@ -1,15 +1,15 @@
 #pragma once
 #include "../../Includes.h"
 
-#define BIT(Index)								(UI64(1) << (Index))
-#define SIZEOF_BITS(Value)							(sizeof(Value) * 8)
-#define HAS_BIT(Value, Index)						((Value) & BIT(Index))
-#define GET_BIT(Value, Index)						(HAS_BIT(Value, Index) >> (Index))
-#define SET_BIT(Value, Index, NewBit)				(GET_BIT(Value, Index) == (BitValue) ? (Value) : (Value) ^ BIT(Index))
-#define GET_LOW_BITS(Value, Lowest)					(((Value) << (SIZEOF_BITS(Value) - (Lowest))) >> (SIZEOF_BITS(Value) - (Lowest)))
-#define __GET_BITS_MAX(StartBit, EndBit)				((1 << ((EndBit) - (StartBit))) - 1)
+#define BIT(Index)					(UI64(1) << (Index))
+#define SIZEOF_BITS(Value)				(sizeof(Value) * 8)
+#define HAS_BIT(Value, Index)				((Value) & BIT(Index))
+#define GET_BIT(Value, Index)				(HAS_BIT(Value, Index) >> (Index))
+#define SET_BIT(Value, Index, NewBit)			(GET_BIT(Value, Index) == (BitValue) ? (Value) : (Value) ^ BIT(Index))
+#define GET_LOW_BITS(Value, Lowest)			(((Value) << (SIZEOF_BITS(Value) - (Lowest))) >> (SIZEOF_BITS(Value) - (Lowest)))
+#define __GET_BITS_MAX(StartBit, EndBit)		((1 << ((EndBit) - (StartBit))) - 1)
 #define SET_BITS(Value, StartBit, EndBit, NewVal)	(((Value) ^ ((Value) & (__GET_BITS_MAX(StartBit, EndBit) << (StartBit)))) | (((NewVal) & __GET_BITS_MAX(StartBit, EndBit)) << (StartBit)))
-#define GET_BITS(Value, StartBit, EndBit)			(((Value) & (__GET_BITS_MAX(StartBit, EndBit) << (StartBit))) >> (StartBit))
+#define GET_BITS(Value, StartBit, EndBit)		(((Value) & (__GET_BITS_MAX(StartBit, EndBit) << (StartBit))) >> (StartBit))
 
 
 

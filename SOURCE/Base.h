@@ -13,11 +13,11 @@ long long:  -       -       64      64      64      64
 pointer:    32      32      64      64      64      64
 */
 #define CHECKSIZE(Type, SizeBits) (sizeof(Type) == (SizeBits) / 8)
-CONST_EXPRESSION bool DT_LP32 		= CHECKSIZE(char, 8) && CHECKSIZE(short, 16) && CHECKSIZE(int, 16) && CHECKSIZE(long, 32) /*  Skip long long  */ && CHECKSIZE(void*, 32); // Defines If The Compiler Data Type Is LP32
-CONST_EXPRESSION bool DT_ILP32		= CHECKSIZE(char, 8) && CHECKSIZE(short, 16) && CHECKSIZE(int, 32) && CHECKSIZE(long, 32) /*  Skip long long  */ && CHECKSIZE(void*, 32); // Defines If The Compiler Data Type Is ILP32
+CONST_EXPRESSION bool DT_LP32 		= CHECKSIZE(char, 8) && CHECKSIZE(short, 16) && CHECKSIZE(int, 16) && CHECKSIZE(long, 32) /* -- -- --Skip-- -- -- */ && CHECKSIZE(void*, 32); // Defines If The Compiler Data Type Is LP32
+CONST_EXPRESSION bool DT_ILP32 		= CHECKSIZE(char, 8) && CHECKSIZE(short, 16) && CHECKSIZE(int, 32) && CHECKSIZE(long, 32) /* -- -- --Skip-- -- -- */ && CHECKSIZE(void*, 32); // Defines If The Compiler Data Type Is ILP32
 CONST_EXPRESSION bool DT_LP64 		= CHECKSIZE(char, 8) && CHECKSIZE(short, 16) && CHECKSIZE(int, 32) && CHECKSIZE(long, 64) && CHECKSIZE(long long, 64) && CHECKSIZE(void*, 64); // Defines If The Compiler Data Type Is LP64
 CONST_EXPRESSION bool DT_LLP64 		= CHECKSIZE(char, 8) && CHECKSIZE(short, 16) && CHECKSIZE(int, 32) && CHECKSIZE(long, 32) && CHECKSIZE(long long, 64) && CHECKSIZE(void*, 64); // Defines If The Compiler Data Type Is LLP64
-CONST_EXPRESSION bool DT_ILP64 		= CHECKSIZE(char, 8) && CHECKSIZE(short, 16) && CHECKSIZE(int, 64) && CHECKSIZE(long, 64) && CHECKSIZE(long long, 64) && CHECKSIZE(void*, 64); // Defines If The Compiler Data Type Is ILP64
+CONST_EXPRESSION bool DT_ILP64  	= CHECKSIZE(char, 8) && CHECKSIZE(short, 16) && CHECKSIZE(int, 64) && CHECKSIZE(long, 64) && CHECKSIZE(long long, 64) && CHECKSIZE(void*, 64); // Defines If The Compiler Data Type Is ILP64
 CONST_EXPRESSION bool DT_SILP64		= CHECKSIZE(char, 8) && CHECKSIZE(short, 64) && CHECKSIZE(int, 64) && CHECKSIZE(long, 64) && CHECKSIZE(long long, 64) && CHECKSIZE(void*, 64); // Defines If The Compiler Data Type Is SILP64
 
 
@@ -40,6 +40,7 @@ using uint64 = unsigned long long; // 64-Bit Unsigned Integer
 using byte = uint8; // Byte
 using smax = int64; // Signed Maximum
 using umax = uint64; // Unsigned Maximum
+
 
 STATIC_ASSERT(sizeof(int8) == 1, FILELINE_SUFFIX("Invalid Size For int8"));
 STATIC_ASSERT(sizeof(uint8) == 1, FILELINE_SUFFIX("Invalid Size For uint8"));

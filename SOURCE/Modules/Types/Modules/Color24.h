@@ -67,7 +67,7 @@ namespace BigLib {
 				auto C = Saturation * Lightness;
 				auto X = C * (1.0 - Math::Absolute(Math::Modulo(Hue / 60.0, 2.0) - 1.0));
 				auto SaturationKey = Lightness - C;
-				double Red, Green, Blue;
+				double Red = 0, Green = 0, Blue = 0;
 
 				if (Hue >= 0.0 && Hue < 60.0) {
 					Red = C;
@@ -119,7 +119,7 @@ namespace BigLib {
 				auto C = Saturation * Lightness;
 				auto X = C * (1.0f - Math::Absolute(Math::Modulo(Hue / 60.f, 2.f) - 1.f));
 				auto SaturationKey = Lightness - C;
-				float Red, Green, Blue;
+				float Red = 0, Green = 0, Blue = 0;
 
 				if (Hue >= 0.f && Hue < 60.f) {
 					Red = C;

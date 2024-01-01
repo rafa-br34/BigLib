@@ -1,9 +1,11 @@
+#include "Example.h"
+#if EXAMPLE_SELECTOR == 0
+
 #include <stdint.h>
 #include <iostream>
 #include <iomanip>
 #include <cmath>
 #include "../SOURCE/BigLib.h"
-#include "Example.h"
 
 size_t G_TOTAL_TESTS = 0;
 size_t G_TOTAL_FAILS = 0;
@@ -204,9 +206,8 @@ float TEST_MEM_UTILS() {
 					ExpectationBuffer[clr] = '\0';
 					FilledBuffer[clr] = '\0';
 				}
-				for (size_t a = 0; a < i; a++) {
+				for (size_t a = 0; a < i; a++)
 					ExpectationBuffer[a] = (uint8_t)b;
-				}
 
 				BigLib::Memory::MemoryFill(FilledBuffer, (uint8_t)b, i);
 				if (_TEST_MemoryCompare(FilledBuffer, ExpectationBuffer, i) != true) {
@@ -612,39 +613,36 @@ float TEST_MD2_6() {
 
 	uint8_t Tests = 0;
 	uint8_t Failed = 0;
+
+	const uint8_t* Expectation = nullptr;
 	const uint8_t* MDResult;
 
-	// MD2
 	auto MD2 = BigLib::DataIntegrity::MessageDigest::MD2();
 	auto MD4 = BigLib::DataIntegrity::MessageDigest::MD4();
-	const uint8_t* Expectation = nullptr;
-	const uint8_t* String = nullptr;
 
 	for (uint8_t i = 0; i < AvailableTests; i++) {
-		String = (uint8*)TestStrings[i];
+		const uint8_t* String = (CONST uint8*)TestStrings[i];
 
-		Expectation = (uint8*)ExpectationsMD2[i];
+		// Test MD2
+		Expectation = (CONST uint8*)ExpectationsMD2[i];
 		MDResult = MD2.Update(String, BigLib::Strings::StringLength(String)).Finalize(); Tests++;
 		if (!BigLib::Memory::MemoryCompare(MDResult, Expectation, 16)) {
 			std::cout << "MD2 String(" << (const char*)String << ") Failed\n\tValue: "; HexPrint(MDResult, 16); std::cout << "\tExpected: "; HexPrint(Expectation, 16);
 			Failed++;
 			G_TOTAL_FAILS++;
 		}
-		else {
-			std::cout << "MD2 String IDX:" << (int)i << " Passed.\n";
-		}
+		else std::cout << "MD2 String IDX:" << (int)i << " Passed.\n";
 		MD2.Reset();
 
-		Expectation = (uint8*)ExpectationsMD4[i];
+		// Test MD4
+		Expectation = (CONST uint8*)ExpectationsMD4[i];
 		MDResult = MD4.Update(String, BigLib::Strings::StringLength(String)).Finalize(); Tests++;
 		if (!BigLib::Memory::MemoryCompare(MDResult, Expectation, 16)) {
 			std::cout << "MD4 String(" << (const char*)String << ") Failed\n\tValue: "; HexPrint(MDResult, 16); std::cout << "\tExpected: "; HexPrint(Expectation, 16);
 			Failed++;
 			G_TOTAL_FAILS++;
 		}
-		else {
-			std::cout << "MD4 String IDX:" << (int)i << " Passed.\n";
-		}
+		else std::cout << "MD4 String IDX:" << (int)i << " Passed.\n";
 		MD4.Reset();
 	}
 	
@@ -716,7 +714,7 @@ void LIB_TEST() {
 }
 
 
-#if EXAMPLE_SELECTOR == 0
+
 int main() {
 	BigLib::Allocate = [](umax Size) -> void* {
 		return new uint8[Size];

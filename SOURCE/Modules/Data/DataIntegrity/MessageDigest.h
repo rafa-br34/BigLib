@@ -62,9 +62,9 @@ namespace BigLib {
 				}
 
 				MD2& Reset() {
-					Memory::MemoryFill(this->Checksum, 0x00, sizeof(this->Checksum));
-					Memory::MemoryFill(this->p_Block16, 0x00, sizeof(this->p_Block16));
-					Memory::MemoryFill(this->p_Block48, 0x00, sizeof(this->p_Block48));
+					Memory::MemoryFill<uint8>(this->Checksum, 0x00, sizeof(this->Checksum));
+					Memory::MemoryFill<uint8>(this->p_Block16, 0x00, sizeof(this->p_Block16));
+					Memory::MemoryFill<uint8>(this->p_Block48, 0x00, sizeof(this->p_Block48));
 					
 					this->p_Size = 0;
 					return *this;
@@ -93,7 +93,7 @@ namespace BigLib {
 					CONST uint8 N = 16 - (uint8)this->p_Size;
 
 					uint8 Padding[16];
-					Memory::MemoryFill(Padding, N, N);
+					Memory::MemoryFill<uint8>(Padding, N, N);
 
 					this->Update(Padding, N);
 					this->Update(this->Checksum, 16);
