@@ -15,5 +15,7 @@ endif()
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 20)
 
+message(STATUS "Generator = ${CMAKE_GENERATOR}")
+
 
 add_executable(${PROJECT_NAME} EXAMPLES/LibTest.cpp SOURCE/Base.cpp)

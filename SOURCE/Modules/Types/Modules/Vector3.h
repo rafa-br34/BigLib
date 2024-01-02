@@ -8,11 +8,7 @@ namespace BigLib {
 		public:
 			Value X, Y, Z;
 
-			Vector3<Value>()
-				: X()
-				, Y()
-				, Z()
-			{};
+			Vector3<Value>() = default;
 			Vector3<Value>(Value X, Value Y, Value Z)
 				: X(X)
 				, Y(Y)

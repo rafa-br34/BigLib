@@ -2,8 +2,5 @@
 build/
 .vs/
 
-# Eventually I'll remove this folder as I shouldn't even keep it here but whatever.
-REMOVED_FILES/
-
 # Fix for the workflow
 Documentation/site/
