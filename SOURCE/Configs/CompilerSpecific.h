@@ -111,7 +111,7 @@ namespace BigLib {
 			"BLACKFIN",
 			"EPIPHANY",
 			"MIPS",
-			"SUPERH"
+			"SUPERH",
 			"SPARC",
 			"POWER_PC", "POWER_PC64",
 
